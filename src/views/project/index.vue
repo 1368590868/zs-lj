@@ -123,7 +123,7 @@
   let selectId = ref<string | null>(null);
   // 勾选事件触发
   const onSelectionChange = async (e) => {
-    selectId.value = e.keys[0];
+    selectId.value = e.rows[0].id;
   };
 
   // 导出
