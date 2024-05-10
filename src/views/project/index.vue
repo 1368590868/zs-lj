@@ -1,14 +1,13 @@
 <template>
   <div>
-    <BasicTable @register="registerTable">
+    <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
         <a-button type="primary" @click="onAddExpenses"> 新增发生费用 </a-button>
-        <a-button type="primary" @click="handleCreate" :disabled="!hasRowSelection">
-          完善项目信息
-        </a-button>
+        <a-button type="primary" @click="handleCreate"> 完善项目信息 </a-button>
         <a-button type="primary" @click="exportExcel"> 下载 </a-button>
       </template>
       <!-- bodycell slot-->
+      <template #controlStatus="{ record }">{{ controlStatus(record) }} </template>
       <template #planDate="{ record }">
         {{ record.planStartDate }} - {{ record.planEndDate }}
       </template>
@@ -41,11 +40,11 @@
   import { pageApi, removeApi, exportApi } from '/@/api/project/project';
   import ProjectModal from './ProjectModal.vue';
   import { columns, searchFormSchema } from './project.data';
-  import { computed, unref } from 'vue';
+  import { computed, ref, unref } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
-  import { projectProgressEnum } from '/@/enums/projectControl';
+  import { controlStatusEnum, projectProgressEnum } from '/@/enums/projectControl';
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRows, clearSelectedRowKeys }] = useTable({
     title: '项目管理列表',
@@ -55,6 +54,7 @@
       labelWidth: 120,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
+      fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
     clickToRowSelect: false,
     rowSelection: {
@@ -75,42 +75,30 @@
       slots: { customRender: 'action' },
     },
   });
-  const { hasPermission } = usePermission();
-  const hasRowSelection = computed(
-    () => getSelectRows().length > 0 && getSelectRows()[0].disassembleStatus === 0,
-  );
   // 创建项目管理
   const handleCreate = () => {
-    const {
-      projectName,
-      projectOwnerName,
-      planStartDate,
-      planEndDate,
-      deptName,
-      id,
-      generalBudget,
-      projectArea,
-      filingStatus,
-      cooperationStatus,
-    } = getSelectRows()[0];
+    // 项目负责人+运营部可见
+    if (getSelectRows().length === 0) {
+      message.error('请选择一个项目');
+      return;
+    }
+
+    const { planStartDate, planEndDate } = getSelectRows()[0];
     const planDate = `${planStartDate} - ${planEndDate}`;
     console.log(getSelectRows()[0]);
     openModal(true, {
-      id,
+      ...getSelectRows()[0],
       isUpdate: true,
-      projectName,
-      projectOwnerName,
       planDate,
-      deptName,
-      generalBudget,
-      projectArea,
-      filingStatus,
-      cooperationStatus,
     });
   };
 
+  // 枚举转换
   const projectProgress = (record) => {
     return projectProgressEnum[record.projectProgress ?? 0];
+  };
+  const controlStatus = (record) => {
+    return controlStatusEnum[record.controlStatus ?? 0];
   };
 
   // 编辑项目管理 Modal
@@ -132,10 +120,17 @@
     reload();
   }
 
+  let selectId = ref<string | null>(null);
+  // 勾选事件触发
+  const onSelectionChange = async (e) => {
+    selectId.value = e.keys[0];
+  };
+
   // 导出
   const exportExcel = async () => {
     try {
-      let params = selectId.toString();
+      let params = unref(selectId);
+      console.log(params);
       const res = await exportApi(params);
       const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
       const url = window.URL.createObjectURL(blob);
@@ -160,3 +155,12 @@
     });
   };
 </script>
+
+<style lang="less" scoped>
+  :global(.ant-input-number) {
+    width: 100%;
+  }
+  :global(.ant-calendar-picker, .ant-calendar-picker-default) {
+    width: 100%;
+  }
+</style>

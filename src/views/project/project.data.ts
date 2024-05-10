@@ -1,7 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
-import { Tag } from 'ant-design-vue';
 import { projectProgressEnum, warningStatusEnum } from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
@@ -19,6 +18,7 @@ export const columns: BasicColumn[] = [
     title: '管控状态',
     dataIndex: 'controlStatus',
     width: 200,
+    slots: { customRender: 'controlStatus' },
   },
   {
     title: '预警状态',
@@ -98,7 +98,15 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   { field: 'projectNumber', label: '项目编号', component: 'Input', colProps: { span: 6 } },
   { field: 'projectName', label: '项目名称', component: 'Input', colProps: { span: 6 } },
-  { field: 'projectName', label: '创建时间', component: 'Input', colProps: { span: 6 } },
+  {
+    field: 'date',
+    label: '创建时间',
+    component: 'RangePicker',
+    componentProps: {
+      placeholder: ['开始日期', '结束日期'],
+    },
+    colProps: { span: 6 },
+  },
   {
     field: 'projectProgress',
     label: '工程进度',
@@ -168,11 +176,7 @@ export const formSchema: FormSchema[] = [
     field: 'generalBudget',
     component: 'Input',
     required: true,
-    renderComponentContent: () => {
-      return {
-        suffix: () => '元',
-      };
-    },
+    suffix: '元',
   },
   {
     label: '项目区域',
@@ -227,5 +231,16 @@ export const formSchema: FormSchema[] = [
         },
       ],
     },
+  },
+  {
+    label: '自有产值比例',
+    field: 'selfOwnedRatio',
+    component: 'InputNumber',
+    required: true,
+    componentProps: {
+      min: 0,
+      max: 100,
+    },
+    suffix: '%',
   },
 ];
