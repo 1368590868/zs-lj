@@ -1,51 +1,49 @@
+import { prefix } from '../project/project';
 import { UploadApiResult } from './model/uploadModel';
 import { UploadFileParams } from '/#/axios';
 import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
-export const prefix = '/bim-cost-control-backend';
-
 enum Api {
-  add = `${prefix}/project/add`,
-  edit = `${prefix}/project/edit`,
-  page = `${prefix}/project/page`,
-  remove = `${prefix}/project/remove/`,
-  detail = `${prefix}/project/detail/`,
-  import = `${prefix}/project/import`,
-  export = `${prefix}/project/export?ids=`,
-  getProjectNameAndId = `${prefix}/project/getProjectNameAndId`,
+  add = `${prefix}/project_phase_cost/add`,
+  edit = `${prefix}/project_phase_cost/edit`,
+  page = `${prefix}/project_phase_cost/page`,
+  remove = `${prefix}/project_phase_cost/remove/`,
+  detail = `${prefix}/project_phase_cost/detail/`,
+  import = `${prefix}/project_phase_cost/import`,
+  export = `${prefix}/project_phase_cost/export?ids=`,
 }
 
 /**
- * @description: 查询项目管理
+ * @description: 查询项目阶段成本明细
  */
 
 export const pageApi = (params) => {
   return defHttp.get({ url: Api.page, params });
 };
 /**
- * @description: 新增项目管理
+ * @description: 新增项目阶段成本明细
  */
 
 export const addApi = (params) => {
   return defHttp.post({ url: Api.add, params });
 };
 /**
- * @description: 修改项目管理
+ * @description: 修改项目阶段成本明细
  */
 
 export const editApi = (params) => {
   return defHttp.post({ url: Api.edit, params });
 };
 /**
- * @description: 删除项目管理
+ * @description: 删除项目阶段成本明细
  */
 
 export const removeApi = (id) => {
   return defHttp.get({ url: Api.remove + id });
 };
 /**
- * @description: 详情项目管理
+ * @description: 详情项目阶段成本明细
  */
 
 export const detail = (id) => {
@@ -53,7 +51,7 @@ export const detail = (id) => {
 };
 
 /**
- * @description: 项目管理导入
+ * @description: 项目阶段成本明细导入
  */
 export function importApi(params: UploadFileParams) {
   return defHttp.uploadFile<UploadApiResult>(
@@ -64,16 +62,9 @@ export function importApi(params: UploadFileParams) {
   );
 }
 /**
- * @description: 项目管理导出
+ * @description: 项目阶段成本明细导出
  */
 
 export const exportApi = (params) => {
   return defHttpFile.get({ url: Api.export + params, responseType: 'blob' });
-};
-
-/**
- * @description: 获取项目名称和id
- */
-export const getProjectNameAndId = () => {
-  return defHttp.get({ url: Api.getProjectNameAndId });
 };
