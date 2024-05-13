@@ -17,6 +17,10 @@
         <TableAction
           :actions="[
             {
+              label: '查看详情',
+              onClick: handleDetail.bind(null, record),
+            },
+            {
               label: '不需要管控',
               onClick: handleEditModal.bind(null, record),
             },
@@ -40,11 +44,13 @@
   import { pageApi, removeApi, exportApi } from '/@/api/project/project';
   import ProjectModal from './ProjectModal.vue';
   import { columns, searchFormSchema } from './project.data';
-  import { computed, ref, unref } from 'vue';
-  import { usePermission } from '/@/hooks/web/usePermission';
+  import { ref, unref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import { controlStatusEnum, projectProgressEnum } from '/@/enums/projectControl';
+
+  const router = useRouter();
+
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRows, clearSelectedRowKeys }] = useTable({
     title: '项目管理列表',
@@ -100,7 +106,15 @@
   const controlStatus = (record) => {
     return controlStatusEnum[record.controlStatus ?? 0];
   };
-
+  // 跳转详情
+  const handleDetail = (record: Recordable) => {
+    router.push({
+      path: '/projectDetail',
+      query: {
+        id: record.id,
+      },
+    });
+  };
   // 编辑项目管理 Modal
   const handleEditModal = (record: Recordable) => {
     openModal(true, {
@@ -138,9 +152,6 @@
       message.success('导出成功');
     } catch (error) {}
   };
-
-  // const go = useGo();
-  const router = useRouter();
 
   /**
    * 新增发生费用
