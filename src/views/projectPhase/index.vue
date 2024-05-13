@@ -9,7 +9,7 @@
           :actions="[
             {
               label: '查看',
-              onClick: handleEditModal.bind(null, record),
+              onClick: handleDetail.bind(null, record),
             },
           ]"
         />
@@ -30,6 +30,8 @@
   import { reactive } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
+  import { useRouter } from 'vue-router';
+  const router = useRouter();
   const [registerDrawer, { openDrawer }] = useDrawer();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
@@ -59,11 +61,13 @@
   const { hasPermission } = usePermission();
   let selectId = reactive<any[]>([]);
 
-  // 编辑项目阶段 Modal
-  const handleEditModal = (record: Recordable) => {
-    openModal(true, {
-      record,
-      isUpdate: true,
+  // 跳转里程碑详情
+  const handleDetail = (record: Recordable) => {
+    router.push({
+      path: '/projectPhaseCost',
+      query: {
+        id: record.id,
+      },
     });
   };
   // 成功

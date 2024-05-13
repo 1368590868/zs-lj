@@ -1,82 +1,74 @@
 <template>
-  <PageWrapper title="新增发生费用">
-    <Card>
-      <BasicForm class="form-wrap" @register="register">
-        <template #costProject="{ model, field }">
-          <ApiSelect
-            :api="getProjectNameAndId"
-            showSearch
-            placeholder="请选择项目名称"
-            v-model:value="model[field]"
-            resultField="data"
-            labelField="projectName"
-            valueField="id"
-            @change="handleProjectChange"
-          />
-        </template>
-        <template #tips
-          ><div class="text-xl"
-            >提示：提交后项目负责人审核，驳回后5天内可重新提交，否则过期失效作废。</div
-          ></template
-        >
-        <template #user>
-          {{ getUserInfo }}
-        </template>
-        <template #nowTime> <Time :value="now" mode="datetime" /></template>
-        <!-- Footer Slot  -->
-        <template #formFooter>
-          <div class="flex justify-center gap-6">
-            <a-button @click="resetFields">返回</a-button>
-            <a-button type="primary" @click="handleSubmit">提交</a-button>
-          </div>
-        </template>
-      </BasicForm>
-      <Divider />
-      <div v-show="showBar">
-        <h2>项目基础信息</h2>
-        <div class="flex justify-between mb-4">
-          <div>项目名称:{{ projectDetail.projectName }}</div>
-          <div>项目预算：{{ projectDetail.generalBudget }}</div>
-          <div
-            >工程计划时间：{{ projectDetail.planStartDate }} - {{ projectDetail.planEndDate }}</div
-          >
-          <div>归属部门：{{ projectDetail.deptName }}</div>
-          <div>项目负责人：{{ projectDetail.projectOwnerName }}</div>
-          <div>成本负责人：{{ projectDetail.costLeader }}</div>
-        </div>
-        <div ref="chartRef" class="w-full min-h-600px"></div>
-      </div>
-    </Card>
-  </PageWrapper>
+  <div>
+    <BasicTable @register="registerTable" @selection-change="onSelectionChange">
+      <!-- 顶部echarts -->
+      <template #headerTop>
+        <div ref="chartRef" class="w-full min-h-200px"></div>
+      </template>
+
+      <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              label: '详情',
+              onClick: handleEditModal.bind(null, record),
+            },
+          ]"
+        />
+      </template>
+    </BasicTable>
+    <ProjectPhaseCostDrawer @register="registerDrawer" @success="handleSuccess" />
+    <ProjectPhaseCostModal @register="registerModal" @success="handleSuccess" />
+  </div>
 </template>
 <script lang="ts" setup>
-  import { PageWrapper } from '/@/components/Page';
-  import { Card, Divider } from 'ant-design-vue';
-  import { BasicForm, useForm, ApiSelect } from '/@/components/Form';
-  import { Time } from '/@/components/Time';
-
-  import { detail, getProjectNameAndId } from '/@/api/project/project';
-  import { addApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import { formSchema } from './projectPhaseCost.data';
-  import { Ref, computed, onMounted, reactive, ref, unref } from 'vue';
-  import { useUserStore } from '/@/store/modules/user';
+  import { message } from 'ant-design-vue';
+  import { importFile } from '/@/components/System';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import {
+    pageApi,
+    removeApi,
+    exportApi,
+    importApi,
+  } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { useDrawer } from '/@/components/Drawer';
+  import ProjectPhaseCostDrawer from './ProjectPhaseCostDrawer.vue';
+  import ProjectPhaseCostModal from './ProjectPhaseCostModal.vue';
+  import { columns, searchFormSchema } from './projectPhaseCost.data';
+  import { Ref, onMounted, reactive, ref } from 'vue';
+  import { usePermission } from '/@/hooks/web/usePermission';
+  import { useModal } from '/@/components/Modal';
   import { useECharts } from '/@/hooks/web/useECharts';
-
-  const now = new Date().getTime();
-  const projectDetail = reactive({
-    projectName: '',
-    generalBudget: '',
-    planStartDate: '',
-    planEndDate: '',
-    deptName: '',
-    projectOwnerName: '',
-    costLeader: '',
+  const [registerDrawer, { openDrawer }] = useDrawer();
+  const [registerModal, { openModal }] = useModal();
+  const [registerTable, { reload }] = useTable({
+    title: '项目阶段成本明细列表',
+    api: pageApi,
+    columns,
+    formConfig: {
+      labelWidth: 120,
+      schemas: searchFormSchema,
+      autoSubmitOnEnter: true,
+    },
+    useSearchForm: true,
+    showTableSetting: true,
+    bordered: true,
+    showIndexColumn: true,
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+    actionColumn: {
+      width: 120,
+      title: '审批意见',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
+    },
   });
-
+  const { hasPermission } = usePermission();
+  // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
-
-  const showBar = ref<boolean>(false);
   onMounted(() => {
     setOptions({
       tooltip: {
@@ -130,42 +122,75 @@
       ],
     });
   });
-
-  const [register, { setProps, getFieldsValue, updateSchema, resetFields, validate }] = useForm({
-    labelWidth: 100,
-    schemas: formSchema,
-    actionColOptions: { span: 24 },
-    showActionButtonGroup: false,
-    baseRowStyle: { flexFlow: 'column' },
-    baseColProps: { span: 8 },
-  });
-
-  const userStore = useUserStore();
-
-  const getUserInfo = computed(() => {
-    const { nickName = '' } = userStore.getUserInfo || {};
-    return nickName;
-  });
-
-  /**修改项目 */
-  async function handleProjectChange(id) {
-    showBar.value = !!id;
-    const data = await detail(id);
-    Object.assign(projectDetail, data);
-    console.log(projectDetail, data);
+  let selectId = reactive<any[]>([]);
+  // 创建项目阶段成本明细
+  const handleCreate = () => {
+    openDrawer(true, {
+      isUpdate: false,
+    });
+  };
+  // 编辑项目阶段成本明细 Drawer
+  const handleEdit = (record: Recordable) => {
+    openDrawer(true, {
+      record,
+      isUpdate: true,
+    });
+  };
+  // 编辑项目阶段成本明细 Modal
+  const handleEditModal = (record: Recordable) => {
+    openModal(true, {
+      record,
+      isUpdate: true,
+    });
+  };
+  // 删除项目阶段成本明细
+  const handleDelete = async (record: Recordable) => {
+    await removeApi(record.id);
+    message.success('删除项目阶段成本明细成功');
+    reload();
+  };
+  // 成功
+  function handleSuccess() {
+    reload();
   }
 
-  async function handleSubmit() {
-    const values = await validate();
-    await addApi(values);
-  }
+  // excel导入
+  const importExcel = async (e) => {
+    try {
+      let params = {
+        file: e,
+      };
+      const res = await importApi(params);
+      let data = JSON.parse(JSON.stringify(res));
+      if (data.data.code == 1) {
+        message.success(data.data.msg);
+        return;
+      }
+      message.success('导入成功');
+      reload();
+    } catch (error) {}
+  };
+
+  // 导出
+  const exportExcel = async () => {
+    try {
+      let params = selectId.toString();
+      const res = await exportApi(params);
+      const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      message.success('导出成功');
+    } catch (error) {}
+  };
+  const onSelectionChange = async (e) => {
+    selectId = reactive<any[]>([]);
+    e.rows.forEach((it) => {
+      selectId.push(it.id);
+    });
+  };
+  // 批量删除
+  const HandleBatchDel = () => {
+    let params = selectId.toString();
+    message.success('批量删除' + params);
+  };
 </script>
-
-<style lang="less" scoped>
-  .form-wrap {
-    // :global(.ant-form-item-control-input-content) {
-    //   display: flex;
-    //   align-items: center;
-    // }
-  }
-</style>
