@@ -39,3 +39,11 @@ export const costSubjectEnum = {
   11: '餐补费',
   12: '其他',
 };
+
+// 里程碑管控状态
+export const milestoneControlStatusEnum = {
+  0: '待开始',
+  1: '进行中',
+  2: '待审核',
+  3: '已完成',
+};

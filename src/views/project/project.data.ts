@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
-import { projectProgressEnum, warningStatusEnum } from '/@/enums/projectControl';
+import { controlStatusEnum, projectProgressEnum, warningStatusEnum } from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
   {
@@ -119,7 +119,18 @@ export const searchFormSchema: FormSchema[] = [
     },
     colProps: { span: 6 },
   },
-  { field: 'controlStatus', label: '管控状态', component: 'Input', colProps: { span: 6 } },
+  {
+    field: 'controlStatus',
+    label: '管控状态',
+    component: 'Select',
+    componentProps: {
+      options: Object.keys(controlStatusEnum).map((key) => ({
+        label: controlStatusEnum[key],
+        value: key,
+      })),
+    },
+    colProps: { span: 6 },
+  },
   { field: 'projectTypeCode', label: '项目类型', component: 'Input', colProps: { span: 6 } },
   { field: 'projectOwnerName', label: '项目负责人', component: 'Input', colProps: { span: 6 } },
   { field: 'businessTypeCode', label: '业务类型', component: 'Input', colProps: { span: 6 } },
