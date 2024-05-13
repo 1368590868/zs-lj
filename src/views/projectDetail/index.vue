@@ -25,9 +25,9 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
-  import { Card, Divider, Badge } from 'ant-design-vue';
+  import { Card } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
-  import { detail, getProjectNameAndId, pageApi } from '/@/api/project/project';
+  import { detail, getLogsApi } from '/@/api/project/project';
   import { Ref, onMounted, reactive, ref } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { DescItem, useDescription, Description } from '/@/components/Description';
@@ -76,8 +76,9 @@
     schema,
   });
 
+  // 项目操作日志
   const [registerTable] = useTable({
-    api: pageApi,
+    api: getLogsApi,
     columns: basicColumns,
     pagination: { pageSize: 10 },
   });
@@ -141,7 +142,6 @@
 
   const getDetail = async () => {
     const params = router.currentRoute.value.query;
-
     const data = await detail(params.id);
     Object.assign(dataSource, data);
   };

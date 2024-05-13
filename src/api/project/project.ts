@@ -14,6 +14,7 @@ enum Api {
   import = `${prefix}/project/import`,
   export = `${prefix}/project/export?ids=`,
   getProjectNameAndId = `${prefix}/project/getProjectNameAndId`,
+  logs = `${prefix}/project_operation_log/page`,
 }
 
 /**
@@ -76,4 +77,8 @@ export const exportApi = (params) => {
  */
 export const getProjectNameAndId = () => {
   return defHttp.get({ url: Api.getProjectNameAndId });
+};
+
+export const getLogsApi = (params) => {
+  return defHttp.get({ url: Api.logs, params });
 };
