@@ -1,0 +1,110 @@
+import { BasicColumn } from '/@/components/Table';
+import { FormSchema } from '/@/components/Table';
+import { h } from 'vue';
+import { InputNumber, Tag } from 'ant-design-vue';
+import { professionTypeEnum, projectTypeEnum } from '/@/enums/projectControl';
+import InputNumbers from './component/InputNumbers';
+
+export const columns: BasicColumn[] = [
+  {
+    title: '项目类型',
+    dataIndex: 'projectType',
+    width: 200,
+  },
+  {
+    title: '专业类型',
+    dataIndex: 'professionType',
+    width: 200,
+  },
+  {
+    title: '里程碑阶段数',
+    dataIndex: 'phaseNum',
+    width: 200,
+  },
+  //   阶段预算比例（JSON格式字符串存储）
+  {
+    title: '阶段预算比例',
+    dataIndex: 'phaseBudgetRatio',
+    width: 200,
+    customRender: ({ record }) => {
+      return h(
+        'span',
+        JSON.parse(record.phaseBudgetRatio ?? [])
+          .map((v) => v + '%')
+          .join()
+          .replace(/,/g, '/'),
+      );
+    },
+  },
+  {
+    title: '编制人',
+    dataIndex: 'createByName',
+    width: 200,
+  },
+  {
+    title: '编制时间',
+    dataIndex: 'createTime',
+    width: 200,
+  },
+];
+
+export const searchFormSchema: FormSchema[] = [
+  {
+    label: '项目类型',
+    field: 'projectType',
+    component: 'Select',
+    componentProps: {
+      options: Object.values(projectTypeEnum).map((val) => ({ label: val, value: val })),
+    },
+    colProps: { span: 6 },
+  },
+  {
+    label: '专业类型',
+    field: 'professionType',
+    component: 'Select',
+    componentProps: {
+      options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
+      getPopupContainer: () => document.body,
+    },
+    colProps: { span: 6 },
+  },
+];
+
+export const formSchema: FormSchema[] = [
+  {
+    label: '项目类型',
+    field: 'projectType',
+    component: 'Select',
+    componentProps: {
+      options: Object.values(projectTypeEnum).map((val) => ({ label: val, value: val })),
+    },
+  },
+  {
+    label: '专业类型',
+    field: 'professionType',
+    component: 'Select',
+    componentProps: {
+      options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
+      getPopupContainer: () => document.body,
+    },
+  },
+  {
+    label: '管控阶段数',
+    field: 'phaseNum',
+    component: 'Select',
+    componentProps: {
+      options: Array.from({ length: 18 }, (v, k) => k + 3).map((val) => ({
+        label: val,
+        value: val,
+      })),
+      defaultValue: 3,
+      getPopupContainer: () => document.body,
+    },
+  },
+  {
+    label: '阶段预算比例',
+    field: 'phaseBudgetRatio',
+    component: 'Input',
+    slot: 'phaseBudgetRatio',
+  },
+];
