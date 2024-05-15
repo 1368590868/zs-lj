@@ -1,4 +1,4 @@
-import { BasicColumn } from '/@/components/Table';
+import { BasicColumn, FormSchema } from '/@/components/Table';
 
 export const basicColumns: BasicColumn[] = [
   {
@@ -14,5 +14,24 @@ export const basicColumns: BasicColumn[] = [
   {
     title: '备注',
     dataIndex: 'remark',
+  },
+];
+
+export const formSchema: FormSchema[] = [
+  {
+    label: '管控意见',
+    field: 'auditOpinion',
+    component: 'InputTextArea',
+    componentProps: {
+      rows: 12,
+      placeholder: '请输入您对项目的管控意见',
+    },
+    labelWidth: 80,
+  },
+  {
+    label: '项目ID',
+    field: 'id',
+    component: 'Input',
+    show: false,
   },
 ];
