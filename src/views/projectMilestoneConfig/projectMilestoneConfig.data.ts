@@ -1,0 +1,87 @@
+import { DescItem } from '/@/components/Description';
+import { BasicColumn, FormSchema } from '/@/components/Table';
+
+export const basicColumns: BasicColumn[] = [
+  {
+    title: '操作时间',
+    dataIndex: 'createTime',
+    width: 200,
+  },
+  {
+    title: '操作人',
+    dataIndex: 'createBy',
+    width: 200,
+  },
+  {
+    title: '备注',
+    dataIndex: 'remark',
+  },
+];
+
+export const formSchema = (count): FormSchema[] => [
+  {
+    field: `field[${count.value}].phaseTitle`,
+    component: 'Input',
+    label: `里程碑${count.value + 1}`,
+    colProps: { span: 6 },
+    required: true,
+  },
+  {
+    field: `field[${count.value}].date`,
+    colProps: { span: 6 },
+    component: 'RangePicker',
+    label: ' ',
+    required: true,
+  },
+  {
+    field: `field[${count.value}].phaseBudgetRatio`,
+    component: 'Input',
+    label: `预算比例`,
+    colProps: { span: 6 },
+    componentProps: {
+      disabled: true,
+    },
+    slot: 'phaseBudgetRatio',
+  },
+  {
+    label: '阶段预算成本',
+    field: `field[${count.value}].phaseBudgetCost`,
+    component: 'Input',
+    componentProps: {
+      suffix: '元',
+    },
+    required: true,
+
+    colProps: { span: 6 },
+  },
+];
+
+export const schema: DescItem[] = [
+  {
+    field: 'projectName',
+    label: '项目名称',
+  },
+  {
+    field: 'generalBudget',
+    label: '项目预算',
+  },
+  {
+    field: 'date',
+    label: '合同时间',
+    render: (_, data) => {
+      return `${data.planStartDate} - ${data.planEndDate}`;
+    },
+  },
+  {
+    field: 'deptName',
+    label: '归属部门',
+  },
+  {
+    field: 'projectOwnerName',
+    label: '项目负责人',
+  },
+  {
+    field: 'costLeader',
+    label: '成本负责人',
+  },
+];

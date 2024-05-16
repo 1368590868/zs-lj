@@ -17,6 +17,10 @@
         <TableAction
           :actions="[
             {
+              label: '里程碑配置',
+              onClick: handleMilestoneConfig.bind(null, record),
+            },
+            {
               label: '查看详情',
               onClick: handleDetail.bind(null, record),
             },
@@ -115,6 +119,14 @@
       },
     });
   };
+  const handleMilestoneConfig = (record: Recordable) => {
+    router.push({
+      path: '/projectMilestoneConfig',
+      query: {
+        id: record.id,
+      },
+    });
+  };
   // 编辑项目管理 Modal
   const handleEditModal = (record: Recordable) => {
     openModal(true, {
@@ -159,7 +171,7 @@
    */
   const onAddExpenses = () => {
     router.push({
-      path: '/project/expenses',
+      path: '/projectIncurredExpense',
       query: {
         projectName: getSelectRows()[0]?.projectName,
       },
