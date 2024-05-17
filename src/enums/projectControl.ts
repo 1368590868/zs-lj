@@ -73,3 +73,11 @@ export const professionTypeEnum = {
   11: '科研',
   12: '其他',
 };
+
+// 我的成本记录状态
+export const myCostStatusEnum = {
+  0: '待审核',
+  1: '已通过',
+  2: '已驳回',
+  3: '失效作废',
+};

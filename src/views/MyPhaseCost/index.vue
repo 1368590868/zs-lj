@@ -1,11 +1,6 @@
 <template>
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
-      <!-- 顶部echarts -->
-      <template #headerTop>
-        <div ref="chartRef" class="w-full min-h-200px"></div>
-      </template>
-
       <template #action="{ record }">
         <TableAction
           :actions="[
@@ -23,27 +18,25 @@
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import {
-    pageApi,
-    removeApi,
-    exportApi,
-    importApi,
-  } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import ProjectPhaseCostModal from './ProjectPhaseCostModal.vue';
-  import { columns, searchFormSchema } from './projectPhaseCost.data';
+  import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import ProjectPhaseCostModal from './MyPhaseCostModal.vue';
+  import { columns, searchFormSchema } from './MyPhaseCost.data';
   import { Ref, onMounted, reactive, ref } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
   import { useECharts } from '/@/hooks/web/useECharts';
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
-    title: '项目阶段成本明细列表',
     api: pageApi,
     columns,
     formConfig: {
       labelWidth: 120,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
+      fieldMapToTime: [
+        ['date', ['startDate', 'endDate'], 'YYYY-MM-DD'],
+        ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
+      ],
     },
     useSearchForm: true,
     showTableSetting: true,
@@ -53,6 +46,7 @@
       current: 1,
       pageSize: 10,
     },
+
     actionColumn: {
       width: 120,
       title: '审批意见',
