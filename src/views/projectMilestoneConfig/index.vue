@@ -16,6 +16,7 @@
           <InputNumber
             :min="0"
             :max="100"
+            disabled
             :formatter="(value) => `${value}%`"
             :parser="(value) => value.replace('%', '')"
             v-model:value="model[field]"
@@ -42,7 +43,7 @@
     <div class="flex justify-center">
       <Space>
         <a-button @click="onCancel">返回</a-button>
-        <a-button type="primary" @click="onSubmit">提交</a-button>
+        <a-button type="primary" @click="confirmDialog">提交</a-button>
       </Space>
     </div>
     <ProjectDetailModal @register="registerModal" @success="onModalSuccess" />
@@ -50,16 +51,18 @@
 </template>
 <script lang="ts" setup>
   import { BasicForm, useForm } from '/@/components/Form';
-  import { Card, InputNumber, Table, Space, message } from 'ant-design-vue';
+  import { Card, InputNumber, Table, Space, message, Modal } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
-  import { onMounted, reactive, ref, unref } from 'vue';
+  import { createVNode, onMounted, reactive, ref, unref } from 'vue';
   import { useDescription, Description } from '/@/components/Description';
   import { useRouter } from 'vue-router';
   import { formSchema, schema } from './projectMilestoneConfig.data';
   import ProjectDetailModal from './projectMilestoneConfigModal.vue';
   import { useModal } from '/@/components/Modal';
   import { addApi } from '/@/api/projectPhase/projectPhase';
+  import _ from 'lodash-es';
+  import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   const router = useRouter();
   const templateData = ref([]);
@@ -141,8 +144,12 @@
     console.log(field, 'field');
     field.map((x, i) => {
       setFieldsValue({
-        [`field[${i}].phaseBudgetRatio`]: x.phaseBudgetRatio,
+        [`field[${i}].phaseBudgetRatio`]: x['phaseBudgetRatio'],
         [`field[${i}].date`]: [dataSource['planEndDate'], dataSource['planEndDate']],
+        [`field[${i}].phaseBudgetCost`]: _.round(
+          dataSource['generalBudget'] * (x.phaseBudgetRatio / 100),
+          2,
+        ).toFixed(2),
       });
     });
   };
@@ -156,11 +163,34 @@
     count.value++;
   };
 
-  const onSubmit = async () => {
+  const confirmDialog = async () => {
     const values = await validate();
-    await addApi(convertObjectToArray(values));
+    if (convertObjectToArray(values).length === 0) {
+      message.error('请选择项目模板');
+      return;
+    }
+    Modal.confirm({
+      title: '确认提交吗？',
+      icon: createVNode(ExclamationCircleOutlined),
+      content: '提交后将不能修改，请仔细检查填写数据！',
+      okText: '确认',
+      onOk: () => onSubmit(values),
+      cancelText: '取消',
+    });
+  };
+
+  const onSubmit = async (values) => {
+    await addApi(
+      convertObjectToArray(values).map((x) => ({
+        ...x,
+        projectId: router.currentRoute.value.query.id,
+        phaseStartDate: x.date[0],
+        phaseEndDate: x.date[1],
+      })),
+    );
     console.log(convertObjectToArray(values), 'values');
     message.success('添加成功');
+    router.push('/projectPhase');
   };
   const onCancel = () => {
     router.push('/project/projectList');

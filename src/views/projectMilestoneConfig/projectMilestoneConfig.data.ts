@@ -24,6 +24,9 @@ export const formSchema = (count): FormSchema[] => [
     component: 'Input',
     label: `里程碑${count.value + 1}`,
     colProps: { span: 6 },
+    componentProps: {
+      maxlength: 50,
+    },
     required: true,
   },
   {
@@ -38,9 +41,6 @@ export const formSchema = (count): FormSchema[] => [
     component: 'Input',
     label: `预算比例`,
     colProps: { span: 6 },
-    componentProps: {
-      disabled: true,
-    },
     slot: 'phaseBudgetRatio',
   },
   {
@@ -49,9 +49,8 @@ export const formSchema = (count): FormSchema[] => [
     component: 'Input',
     componentProps: {
       suffix: '元',
+      disabled: true,
     },
-    required: true,
-
     colProps: { span: 6 },
   },
 ];
