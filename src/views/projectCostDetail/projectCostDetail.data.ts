@@ -12,7 +12,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '阶段标题',
-    dataIndex: 'projectPhaseId',
+    dataIndex: 'phaseTitle',
     width: 200,
   },
   {
@@ -22,17 +22,17 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '成本科目',
-    dataIndex: 'createByName',
+    dataIndex: 'costTypeName',
     width: 200,
   },
   {
     title: '金额',
-    dataIndex: 'createByName',
+    dataIndex: 'phaseBudget',
     width: 200,
   },
   {
     title: '提交时间',
-    dataIndex: 'createByName',
+    dataIndex: 'createTime',
     width: 200,
   },
   {
