@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
-import { myCostStatusEnum } from '/@/enums/projectControl';
+import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
   {
@@ -12,7 +12,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '阶段标题',
-    dataIndex: 'projectPhaseId',
+    dataIndex: 'phaseTitle',
     width: 200,
   },
   {
@@ -95,6 +95,12 @@ export const columns: BasicColumn[] = [
       );
     },
   },
+  {
+    title: '审批意见',
+    dataIndex: 'auditOpinion',
+    slots: { customRender: 'auditOpinion' },
+    width: 200,
+  },
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -156,5 +162,47 @@ export const formSchema: FormSchema[] = [
       placeholder: '暂无管控意见',
     },
     labelWidth: 80,
+  },
+];
+
+export const formEditSchema: FormSchema[] = [
+  {
+    label: '成本科目',
+    field: 'costTypeName',
+    component: 'Select',
+    labelWidth: 80,
+    componentProps: {
+      options: Object.keys(costSubjectEnum).map((key) => ({
+        label: costSubjectEnum[key],
+        value: key,
+      })),
+      getPopupContainer: () => document.body,
+    },
+    required: true,
+  },
+  {
+    label: '金额',
+    field: 'phaseBudget',
+    component: 'InputNumber',
+    labelWidth: 80,
+    componentProps: {
+      precision: 2,
+    },
+    required: true,
+  },
+  {
+    label: '成本备注',
+    field: 'remark',
+    component: 'InputTextArea',
+    labelWidth: 80,
+    componentProps: {
+      rows: 4,
+    },
+  },
+  {
+    label: 'id',
+    field: 'id',
+    component: 'Input',
+    show: false,
   },
 ];

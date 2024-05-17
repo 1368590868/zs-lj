@@ -1,31 +1,42 @@
 <template>
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
+      <template #auditOpinion="{ record }">
+        <a-button type="link" @click="handleDetailModal(record)">详情</a-button>
+      </template>
       <template #action="{ record }">
         <TableAction
           :actions="[
             {
-              label: '详情',
+              label: '修改',
               onClick: handleEditModal.bind(null, record),
+            },
+            {
+              label: '删除',
+              popConfirm: {
+                title: '确定删除这条记录吗？',
+                confirm: handleDelete.bind(null, record),
+              },
             },
           ]"
         />
       </template>
     </BasicTable>
-    <ProjectPhaseCostModal @register="registerModal" @success="handleSuccess" />
+    <MyPhaseCostModal @register="registerModal" />
+    <MyPhaseEditModal @register="registerEditModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import ProjectPhaseCostModal from './MyPhaseCostModal.vue';
+  import { pageApi, exportApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import MyPhaseCostModal from './MyPhaseCostModal.vue';
   import { columns, searchFormSchema } from './MyPhaseCost.data';
-  import { Ref, onMounted, reactive, ref } from 'vue';
-  import { usePermission } from '/@/hooks/web/usePermission';
+  import { reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
-  import { useECharts } from '/@/hooks/web/useECharts';
+  import MyPhaseEditModal from './MyPhaseEditModal.vue';
   const [registerModal, { openModal }] = useModal();
+  const [registerEditModal, { openModal: openEditModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     api: pageApi,
     columns,
@@ -49,76 +60,32 @@
 
     actionColumn: {
       width: 120,
-      title: '审批意见',
+      title: '操作',
       dataIndex: 'action',
       slots: { customRender: 'action' },
     },
   });
-  const { hasPermission } = usePermission();
-  // 图表
-  const chartRef = ref<HTMLDivElement | null>(null);
-  const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
-  onMounted(() => {
-    setOptions({
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
-      legend: {},
-      grid: {},
-      xAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01],
-        axisLine: {
-          lineStyle: {
-            color: '#ccc',
-          },
-        },
-        axisLabel: {
-          formatter: '{value} 元',
-        },
-      },
-      yAxis: {
-        type: 'category',
-        boundaryGap: false,
-        data: ['第一阶段'],
-      },
-      series: [
-        {
-          name: '实际成本',
-          type: 'bar',
-          data: [18203],
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            color: '#DBD8FF',
-          },
-        },
-        {
-          name: '预估成本',
-          type: 'bar',
-          data: [19325],
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            color: '#8DD0FF',
-          },
-        },
-      ],
-    });
-  });
+
   let selectId = reactive<any[]>([]);
 
   // 编辑项目阶段成本明细 Modal
-  const handleEditModal = (record: Recordable) => {
+  const handleDetailModal = (record: Recordable) => {
     openModal(true, {
       record,
       isUpdate: true,
     });
+  };
+  const handleEditModal = (record: Recordable) => {
+    openEditModal(true, {
+      record,
+    });
+  };
+  const handleDelete = async (record: Recordable) => {
+    try {
+      await removeApi(record.id);
+      message.success('删除成功');
+      reload();
+    } catch (error) {}
   };
   // 成功
   function handleSuccess() {
