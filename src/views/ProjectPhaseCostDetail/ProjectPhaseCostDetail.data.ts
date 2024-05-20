@@ -6,6 +6,11 @@ import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
   {
+    title: '项目编号',
+    dataIndex: 'projectNumber',
+    width: 200,
+  },
+  {
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
@@ -13,6 +18,11 @@ export const columns: BasicColumn[] = [
   {
     title: '阶段标题',
     dataIndex: 'phaseTitle',
+    width: 200,
+  },
+  {
+    title: '提交人',
+    dataIndex: 'createByName',
     width: 200,
   },
   {
@@ -27,11 +37,6 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '提交时间',
-    dataIndex: 'costSubmitTime',
-    width: 200,
-  },
-  {
-    title: '最近修改时间',
     dataIndex: 'costSubmitTime',
     width: 200,
   },
@@ -118,22 +123,13 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     field: 'projectLeaderStatus',
-    label: '状态',
+    label: '审核状态',
     component: 'Select',
     componentProps: {
       options: Object.keys(myCostStatusEnum).map((key) => ({
         label: myCostStatusEnum[key],
         value: key,
       })),
-    },
-    colProps: { span: 6 },
-  },
-  {
-    field: 'costSubmitTime',
-    label: '提交时间',
-    component: 'RangePicker',
-    componentProps: {
-      placeholder: ['开始日期', '结束日期'],
     },
     colProps: { span: 6 },
   },
@@ -146,6 +142,15 @@ export const searchFormSchema: FormSchema[] = [
         label: costSubjectEnum[key],
         value: key,
       })),
+    },
+    colProps: { span: 6 },
+  },
+  {
+    field: 'costSubmitTime',
+    label: '提交时间',
+    component: 'RangePicker',
+    componentProps: {
+      placeholder: ['开始日期', '结束日期'],
     },
     colProps: { span: 6 },
   },
