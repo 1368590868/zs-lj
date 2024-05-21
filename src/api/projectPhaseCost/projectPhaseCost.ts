@@ -6,6 +6,7 @@ import { defHttpFile } from '/@/utils/http/axios/file';
 
 enum Api {
   add = `${prefix}/project_phase_cost/add`,
+  audit = `${prefix}/project_phase_cost/audit`,
   edit = `${prefix}/project_phase_cost/edit`,
   page = `${prefix}/project_phase_cost/page`,
   remove = `${prefix}/project_phase_cost/remove/`,
@@ -27,6 +28,13 @@ export const pageApi = (params) => {
 
 export const addApi = (params) => {
   return defHttp.post({ url: Api.add, params });
+};
+/**
+ * @description: 成本明细审核
+ */
+
+export const auditApi = (params) => {
+  return defHttp.post({ url: Api.audit, params });
 };
 /**
  * @description: 修改项目阶段成本明细

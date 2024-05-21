@@ -12,6 +12,15 @@
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">详情</a-button>
       </template>
+      <!-- Column slots -->
+      <template #projectLeaderStatus="{ record }">
+        <ProjectLeaderStatus
+          :text="record.projectLeaderStatus"
+          :id="record.id"
+          @reload="reload"
+          :time="record.projectLeaderTime"
+        />
+      </template>
     </BasicTable>
     <MyPhaseCostModal @register="registerModal" />
     <MyPhaseEditModal @register="registerEditModal" @success="handleSuccess" />
@@ -20,17 +29,18 @@
 <script lang="ts" setup>
   import { Modal, message } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { pageApi, exportApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi, auditApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import MyPhaseCostModal from './ProjectPhaseCostDetailModal.vue';
-  import { columns, searchFormSchema } from './ProjectPhaseCostDetail.data';
+  import { columns, searchFormSchema, ProjectLeaderStatus } from './ProjectPhaseCostDetail.data';
   import { computed, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
   import MyPhaseEditModal from './ProjectPhaseCostEditModal.vue';
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
-  const [registerTable, { reload, getSelectRows }] = useTable({
+  const [registerTable, { reload, getSelectRowKeys, getSelectRows }] = useTable({
     api: pageApi,
     columns,
+    rowKey: 'id',
     formConfig: {
       labelWidth: 120,
       schemas: searchFormSchema,
@@ -44,7 +54,7 @@
     showTableSetting: true,
     bordered: true,
     showIndexColumn: true,
-    clickToRowSelect: true,
+    clickToRowSelect: false,
     rowSelection: {
       type: 'checkbox',
     },
@@ -90,11 +100,15 @@
   };
 
   const onBatchReject = () => {
-    console.log(getSelectRows());
+    console.log(getSelectRowKeys(), getSelectRowKeys());
     Modal.confirm({
       title: '提示',
       content: '确定批量驳回吗？',
-      onOk: () => {
+      onOk: async () => {
+        await auditApi({
+          ids: getSelectRowKeys(),
+          projectLeaderStatus: 2,
+        });
         message.success('批量驳回成功');
         reload();
       },
@@ -104,7 +118,11 @@
     Modal.confirm({
       title: '提示',
       content: '确定批量通过吗？',
-      onOk: () => {
+      onOk: async () => {
+        await auditApi({
+          ids: getSelectRowKeys(),
+          projectLeaderStatus: 1,
+        });
         message.success('批量通过成功');
         reload();
       },

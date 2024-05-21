@@ -1,8 +1,9 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { h } from 'vue';
-import { TypographyText } from 'ant-design-vue';
+import { defineComponent, h } from 'vue';
+import { Button, Popconfirm, Space, TypographyText, message } from 'ant-design-vue';
 import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
 export const columns: BasicColumn[] = [
   {
@@ -50,24 +51,13 @@ export const columns: BasicColumn[] = [
     title: '项目负责人审核',
     dataIndex: 'projectLeaderStatus',
     width: 200,
-    customRender: ({ record }) => {
-      const idx = record.projectLeaderStatus;
-      const textType = {
-        0: 'warning',
-        1: 'success',
-        2: 'danger',
-      };
-      return h(
-        TypographyText,
-        { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.projectLeaderTime}`,
-      );
-    },
+    slots: { customRender: 'projectLeaderStatus' },
   },
   {
     title: '成本负责人审核',
     dataIndex: 'costLeaderStatus',
     width: 200,
+    slots: { customRender: 'costLeaderStatus' },
     customRender: ({ record }) => {
       const idx = record.costLeaderStatus;
       const textType = {
@@ -211,3 +201,72 @@ export const formEditSchema: FormSchema[] = [
     show: false,
   },
 ];
+
+// child column ui
+export const ProjectLeaderStatus = defineComponent({
+  props: {
+    text: {
+      type: Number,
+      default: () => 0,
+    },
+    reload: {
+      type: Function,
+    },
+    id: {
+      type: String,
+      default: () => '0',
+    },
+    time: {
+      type: String,
+      default: () => new Date(),
+    },
+  },
+  setup(props, { emit }) {
+    console.log(props.text);
+    const textType = {
+      0: 'warning',
+      1: 'success',
+      2: 'danger',
+    };
+    const onConfirm = async (state: number) => {
+      await auditApi({
+        ids: [props.id],
+        projectLeaderStatus: state,
+      });
+      console.log(emit('reload'));
+      emit('reload');
+      message.success('操作成功');
+    };
+
+    return () => (
+      <>
+        {props.text === 0 ? (
+          <Space>
+            <Popconfirm
+              title="是否通过？"
+              okText="通过"
+              cancelText="取消"
+              onConfirm={() => onConfirm(1)}
+            >
+              <Button type="link">通过</Button>
+            </Popconfirm>
+            <Popconfirm
+              title="是否驳回？"
+              okText="驳回"
+              cancelText="取消"
+              onConfirm={() => onConfirm(2)}
+            >
+              <Button type="link">驳回</Button>
+            </Popconfirm>
+          </Space>
+        ) : (
+          <TypographyText type={textType[props.text]}>
+            {props.text === 1
+              ? myCostStatusEnum[props.text]
+              : `${myCostStatusEnum[props.text]}/${props.time}`}
+          </TypographyText>
+        )}
+      </>
+    );
+  },
+});
