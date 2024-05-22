@@ -6,7 +6,7 @@
       <template #title>
         <div class="flex justify-between">
           <div>设置项目阶段里程碑及预算</div>
-          <div>
+          <div v-if="isDefer">
             <a-button type="primary" @click="onRemark">设置项目里程碑时间和标题</a-button>
           </div>
         </div>
@@ -54,18 +54,21 @@
   import { Card, InputNumber, Table, Space, message, Modal } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
-  import { createVNode, onMounted, reactive, ref, unref } from 'vue';
+  import { computed, createVNode, onMounted, reactive, ref, unref } from 'vue';
   import { useDescription, Description } from '/@/components/Description';
   import { useRouter } from 'vue-router';
   import { formSchema, schema } from './projectMilestoneConfig.data';
   import ProjectDetailModal from './projectMilestoneConfigModal.vue';
   import { useModal } from '/@/components/Modal';
-  import { addApi } from '/@/api/projectPhase/projectPhase';
+  import { addApi, pageApi } from '/@/api/projectPhase/projectPhase';
   import _ from 'lodash-es';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   const router = useRouter();
   const templateData = ref([]);
+  const isDefer = computed(() => {
+    return router.currentRoute.value.query.isDefer;
+  });
   const [registerModal, { openModal }] = useModal();
 
   const tipsArr = [
@@ -103,9 +106,17 @@
   });
 
   onMounted(() => {
-    getDetail();
+    // 是否延期配置 1是 0否
+    if (isDefer.value === '1') {
+      getPhaseList();
+    } else {
+      getDetail();
+    }
   });
-
+  const getPhaseList = async () => {
+    const res = await pageApi({ current: 1, size: 9999, id: router.currentRoute.value.query.id });
+    console.log(res);
+  };
   const getDetail = async () => {
     const params = router.currentRoute.value.query;
     const data = await detail(params.id);
@@ -141,7 +152,6 @@
     JSON.parse(rowData['phaseBudgetRatio']).map((x) => {
       field.push({ phaseBudgetRatio: x });
     });
-    console.log(field, 'field');
     field.map((x, i) => {
       setFieldsValue({
         [`field[${i}].phaseBudgetRatio`]: x['phaseBudgetRatio'],

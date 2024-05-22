@@ -8,12 +8,12 @@ export const basicColumns: BasicColumn[] = [
   },
   {
     title: '操作人',
-    dataIndex: 'createBy',
+    dataIndex: 'createByName',
     width: 200,
   },
   {
     title: '备注',
-    dataIndex: 'remark',
+    dataIndex: 'logText',
   },
 ];
 

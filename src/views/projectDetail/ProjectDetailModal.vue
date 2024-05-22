@@ -19,6 +19,7 @@
   import { message } from 'ant-design-vue';
   import { formSchema } from './projectDetail.data';
   import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
+  import { useUserStore } from '/@/store/modules/user';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
@@ -44,13 +45,24 @@
   });
   const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
 
+  const userStore = useUserStore();
+
+  const getUserInfo = computed(() => {
+    const { nickName = '' } = userStore.getUserInfo || {};
+    return nickName;
+  });
+
   //   提交
   const handleSubmit = async () => {
     try {
       const values = await validate();
       setModalProps({ confirmLoading: true });
-
-      await addApi(values);
+      await addApi({
+        ...values,
+        createByName: getUserInfo.value,
+        auditOpinionFlag: 0,
+        projectId: values.id,
+      });
       message.success('添加成功');
 
       closeModal();

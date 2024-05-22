@@ -15,6 +15,9 @@ enum Api {
   export = `${prefix}/project/export?ids=`,
   getProjectNameAndId = `${prefix}/project/getProjectNameAndId`,
   logs = `${prefix}/project_operation_log/page`,
+  controlDetermine = `${prefix}/project/controlDetermine/`,
+  controlEndApply = `${prefix}/project/controlEndApply/`,
+  controlExtensionApply = `${prefix}/project/controlExtensionApply/`,
 }
 
 /**
@@ -81,4 +84,19 @@ export const getProjectNameAndId = () => {
 
 export const getLogsApi = (params) => {
   return defHttp.get({ url: Api.logs, params });
+};
+
+// 管控判定
+export const controlDetermineApi = ({ id, determineStatus }) => {
+  return defHttp.get({ url: Api.controlDetermine + id, params: { determineStatus } });
+};
+
+// 管控结束申请
+export const controlEndApplyApi = (id) => {
+  return defHttp.get({ url: Api.controlEndApply + id });
+};
+
+// 管控延期申请
+export const controlExtensionApplyApi = (id) => {
+  return defHttp.get({ url: Api.controlExtensionApply + id });
 };

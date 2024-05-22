@@ -26,7 +26,7 @@
     <Card title="项目日志">
       <BasicTable @register="registerTable" />
     </Card>
-    <ProjectDetailModal @register="registerModal" />
+    <ProjectDetailModal @register="registerModal" @success="reload" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -86,8 +86,11 @@
   });
 
   // 项目操作日志
-  const [registerTable] = useTable({
+  const [registerTable, { reload }] = useTable({
     api: getLogsApi,
+    searchInfo: {
+      projectId: router.currentRoute.value.query.id,
+    },
     columns: basicColumns,
     pagination: { pageSize: 10 },
   });

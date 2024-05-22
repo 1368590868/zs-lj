@@ -3,7 +3,9 @@
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
         <a-button type="primary" @click="onAddExpenses"> 新增发生费用 </a-button>
-        <a-button type="primary" @click="handleCreate"> 完善项目信息 </a-button>
+        <a-button type="primary" v-if="showProjectModal" @click="handleCreate">
+          完善项目信息
+        </a-button>
         <a-button type="primary" @click="exportExcel"> 下载 </a-button>
       </template>
       <!-- bodycell slot-->
@@ -19,21 +21,49 @@
             {
               label: '里程碑配置',
               onClick: handleMilestoneConfig.bind(null, record),
+              ifShow: [1, 4].includes(record.controlStatus),
             },
             {
               label: '查看详情',
               onClick: handleDetail.bind(null, record),
+              ifShow: record.controlStatus === 2,
             },
             {
               label: '不需要管控',
-              onClick: handleEditModal.bind(null, record),
+              popConfirm: {
+                title: '是否确认操作',
+                confirm: handleControl.bind(null, record, false),
+              },
+              ifShow: record.controlStatus === 6,
             },
             {
               label: '需要管控',
               popConfirm: {
-                title: '是否确认删除',
-                confirm: handleDelete.bind(null, record),
+                title: '是否确认操作',
+                confirm: handleControl.bind(null, record, true),
               },
+              ifShow: record.controlStatus === 6,
+            },
+            {
+              label: '延期配置',
+              onClick: handleDeferConfig.bind(null, record),
+              ifShow: record.controlStatus === 7,
+            },
+            {
+              label: '结束管控',
+              popConfirm: {
+                title: '是否确认操作',
+                confirm: handleControlBtn.bind(null, record, true),
+              },
+              ifShow: record.controlStatus === 3,
+            },
+            {
+              label: '延期管控',
+              popConfirm: {
+                title: '是否确认操作',
+                confirm: handleControlBtn.bind(null, record, false),
+              },
+              ifShow: record.controlStatus === 3,
             },
           ]"
         />
@@ -45,15 +75,24 @@
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { pageApi, removeApi, exportApi } from '/@/api/project/project';
+  import {
+    pageApi,
+    controlDetermineApi,
+    exportApi,
+    controlEndApplyApi,
+    controlExtensionApplyApi,
+  } from '/@/api/project/project';
   import ProjectModal from './ProjectModal.vue';
   import { columns, searchFormSchema } from './project.data';
-  import { ref, unref } from 'vue';
+  import { computed, ref, unref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import { controlStatusEnum, projectProgressEnum } from '/@/enums/projectControl';
 
   const router = useRouter();
+  const showProjectModal = computed(() => {
+    return getSelectRows().length && getSelectRows()[0].controlStatus === 1;
+  });
 
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRows, clearSelectedRowKeys }] = useTable({
@@ -124,6 +163,7 @@
       path: '/projectMilestoneConfig',
       query: {
         id: record.id,
+        isDefer: 0,
       },
     });
   };
@@ -134,10 +174,32 @@
       isUpdate: true,
     });
   };
-  // 删除项目管理
-  const handleDelete = async (record: Recordable) => {
-    await removeApi(record.id);
-    message.success('删除项目管理成功');
+  // 管控项目确认
+  const handleControl = async (record: Recordable, isControl: Boolean) => {
+    const { id } = record;
+    await controlDetermineApi({ id, determineStatus: isControl ? 1 : 0 });
+    message.success('操作成功');
+    reload();
+  };
+  // 延期配置
+  const handleDeferConfig = (record: Recordable) => {
+    router.push({
+      path: '/projectMilestoneConfig',
+      query: {
+        id: record.id,
+        isDefer: 1,
+      },
+    });
+  };
+  // 结束或延期管控
+  const handleControlBtn = async (record: Recordable, isFinish: Boolean) => {
+    const { id } = record;
+    if (isFinish) {
+      await controlEndApplyApi(id);
+    } else {
+      await controlExtensionApplyApi(id);
+    }
+    message.success('操作成功');
     reload();
   };
   // 成功

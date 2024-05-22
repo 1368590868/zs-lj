@@ -51,7 +51,7 @@
 </template>
 <script lang="ts" setup>
   import { PageWrapper } from '/@/components/Page';
-  import { Card, Divider } from 'ant-design-vue';
+  import { Card, Divider, message } from 'ant-design-vue';
   import { BasicForm, useForm, ApiSelect } from '/@/components/Form';
   import { Time } from '/@/components/Time';
 
@@ -157,7 +157,9 @@
 
   async function handleSubmit() {
     const values = await validate();
-    await addApi(values);
+    await addApi({ ...values, createByName: getUserInfo.value });
+    message.success('提交成功');
+    resetFields();
   }
 </script>
 

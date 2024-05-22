@@ -2,6 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { controlStatusEnum, projectProgressEnum, warningStatusEnum } from '/@/enums/projectControl';
+import { TypographyText } from 'ant-design-vue';
 
 export const columns: BasicColumn[] = [
   {
@@ -24,12 +25,17 @@ export const columns: BasicColumn[] = [
     title: '预警状态',
     dataIndex: 'warningStatus',
     width: 200,
+    customRender: ({ record }) => {
+      const status = record.warningStatus;
+
+      const colorEnum = [{ success: '正常' }, { warning: '黄色警告' }, { danger: '红色警告' }];
+      return h(
+        TypographyText,
+        { type: Object.keys(colorEnum[status]) },
+        Object.values(colorEnum[status]),
+      );
+    },
   },
-  //   {
-  //     title: '项目类型编码',
-  //     dataIndex: 'projectTypeCode',
-  //     width: 200,
-  //   },
   {
     title: '项目类型',
     dataIndex: 'projectTypeName',
