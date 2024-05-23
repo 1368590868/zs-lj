@@ -155,7 +155,10 @@
     field.map((x, i) => {
       setFieldsValue({
         [`field[${i}].phaseBudgetRatio`]: x['phaseBudgetRatio'],
-        [`field[${i}].date`]: [dataSource['planEndDate'], dataSource['planEndDate']],
+        [`field[${i}].date`]: [
+          i === 0 ? dataSource['planStartDate'] : null,
+          i === field.length - 1 ? dataSource['planEndDate'] : null,
+        ],
         [`field[${i}].phaseBudgetCost`]: _.round(
           dataSource['generalBudget'] * (x.phaseBudgetRatio / 100),
           2,

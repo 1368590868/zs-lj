@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
-import { Tag } from 'ant-design-vue';
+import { Tag, TypographyText } from 'ant-design-vue';
 import { costSubjectEnum } from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
@@ -43,18 +43,40 @@ export const columns: BasicColumn[] = [
   // 项目负责人审核状态（0-待审核1-已通过2-已驳回）
   {
     title: '项目负责人审核',
-    dataIndex: 'projectLeaderStatus',
+    dataIndex: 'projectOwnerName',
     width: 200,
+    customRender: ({ record }) => {
+      return h(
+        TypographyText,
+        { type: 'success' },
+        `${record.projectOwnerName ?? ''} ${record.projectLeaderTime ?? ''}`,
+      );
+    },
   },
   {
     title: '成本负责人审核',
-    dataIndex: 'projectLeaderStatus',
+    dataIndex: 'costOwnerName',
     width: 200,
+    slots: { customRender: 'costLeaderStatus' },
+    customRender: ({ record }) => {
+      return h(
+        TypographyText,
+        { type: 'success' },
+        `${record.costOwnerName ?? ''} ${record.costLeaderTime ?? ''}`,
+      );
+    },
   },
   {
     title: '运营管理部审核',
-    dataIndex: 'projectLeaderStatus',
+    dataIndex: 'operationOwnerName',
     width: 200,
+    customRender: ({ record }) => {
+      return h(
+        TypographyText,
+        { type: 'success' },
+        `${record?.operationOwnerName ?? ''} ${record.operationDeptTime ?? ''}`,
+      );
+    },
   },
   // {
   //   title: '审批意见',

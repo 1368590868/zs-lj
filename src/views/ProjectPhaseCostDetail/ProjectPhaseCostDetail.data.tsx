@@ -233,7 +233,6 @@ export const ProjectLeaderStatus = defineComponent({
         ids: [props.id],
         projectLeaderStatus: state,
       });
-      console.log(emit('reload'));
       emit('reload');
       message.success('操作成功');
     };

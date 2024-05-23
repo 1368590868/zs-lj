@@ -35,10 +35,15 @@
   import { computed, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
   import ProjectReviewCostEditModal from './ProjectReviewCostEditModal.vue';
+  import { useRouter } from 'vue-router';
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
+  const router = useRouter();
   const [registerTable, { reload, getSelectRowKeys, getSelectRows }] = useTable({
     api: pageApi,
+    searchInfo: {
+      projectId: router.currentRoute.value.query.projectId,
+    },
     columns,
     rowKey: 'id',
     formConfig: {

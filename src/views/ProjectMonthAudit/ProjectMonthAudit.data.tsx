@@ -2,8 +2,8 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h } from 'vue';
 import { Button, Popconfirm, Space, TypographyText, message } from 'ant-design-vue';
-import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
-import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+import { costChargeEnum, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import { auditApi, costLeaderAuditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
 export const columns: BasicColumn[] = [
   {
@@ -38,37 +38,12 @@ export const columns: BasicColumn[] = [
     dataIndex: 'costLeaderStatus',
     width: 200,
     slots: { customRender: 'costLeaderStatus' },
-    customRender: ({ record }) => {
-      const idx = record.costLeaderStatus;
-      const textType = {
-        0: 'warning',
-        1: 'success',
-        2: 'danger',
-      };
-      return h(
-        TypographyText,
-        { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.costLeaderTime}`,
-      );
-    },
   },
   {
     title: '运营管理部审核',
     dataIndex: 'operationDeptStatus',
     width: 200,
-    customRender: ({ record }) => {
-      const idx = record.operationDeptStatus;
-      const textType = {
-        0: 'warning',
-        1: 'success',
-        2: 'danger',
-      };
-      return h(
-        TypographyText,
-        { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.operationDeptTime}`,
-      );
-    },
+    slots: { customRender: 'operationDeptStatus' },
   },
   {
     title: '审批意见',
@@ -191,6 +166,10 @@ export const ProjectLeaderStatus = defineComponent({
       type: String,
       default: () => new Date(),
     },
+    type: {
+      type: String,
+      default: () => 'cost',
+    },
   },
   setup(props, { emit }) {
     console.log(props.text);
@@ -200,11 +179,11 @@ export const ProjectLeaderStatus = defineComponent({
       2: 'danger',
     };
     const onConfirm = async (state: number) => {
-      await auditApi({
-        ids: [props.id],
-        projectLeaderStatus: state,
+      await costLeaderAuditApi({
+        id: [props.id],
+        [props.type === 'cost' ? 'costLeaderStatus' : 'operationDeptStatus']: state,
       });
-      console.log(emit('reload'));
+
       emit('reload');
       message.success('操作成功');
     };
@@ -233,8 +212,8 @@ export const ProjectLeaderStatus = defineComponent({
         ) : (
           <TypographyText type={textType[props.text]}>
             {props.text === 1
-              ? myCostStatusEnum[props.text]
-              : `${myCostStatusEnum[props.text]}/${props.time}`}
+              ? costChargeEnum[props.text]
+              : `${costChargeEnum[props.text]} ${props.time ?? ''}`}
           </TypographyText>
         )}
       </>

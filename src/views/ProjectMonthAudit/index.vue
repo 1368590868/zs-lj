@@ -9,12 +9,30 @@
           批量通过
         </a-button>
       </template>
+      <!-- Column slots -->
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">意见详情</a-button>
       </template>
-      <!-- Column slots -->
       <template #costDetail="{ record }">
-        <a-button type="link" @click="handleEditModal(record)">查看详情</a-button>
+        <a-button type="link" @click="handleCostDetail(record)">查看详情</a-button>
+      </template>
+      <template #costLeaderStatus="{ record }">
+        <ProjectLeaderStatus
+          :text="record.costLeaderStatus"
+          :id="record.id"
+          @reload="reload"
+          :time="record.costLeaderTime"
+          type="cost"
+        />
+      </template>
+      <template #operationDeptStatus="{ record }">
+        <ProjectLeaderStatus
+          :text="record.operationDeptStatus"
+          :id="record.id"
+          @reload="reload"
+          :time="record.operationDeptTime"
+          type="operation"
+        />
       </template>
     </BasicTable>
     <MyPhaseCostModal @register="registerModal" />
@@ -31,6 +49,7 @@
   import { useModal } from '/@/components/Modal';
   import MyPhaseEditModal from './ProjectMonthAuditEditModal.vue';
   import { pageApi } from '/@/api/projectMonthAudit/projectMonthAudit';
+  import { useRouter } from 'vue-router';
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
   const [registerTable, { reload, getSelectRowKeys, getSelectRows }] = useTable({
@@ -121,6 +140,15 @@
         });
         message.success('批量通过成功');
         reload();
+      },
+    });
+  };
+  const router = useRouter();
+  const handleCostDetail = (record: Recordable) => {
+    router.push({
+      path: '/ProjectReviewCostDetail',
+      query: {
+        projectId: record.projectId,
       },
     });
   };

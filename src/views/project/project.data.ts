@@ -1,7 +1,12 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
-import { controlStatusEnum, projectProgressEnum, warningStatusEnum } from '/@/enums/projectControl';
+import {
+  controlStatusEnum,
+  projectProgressEnum,
+  provinceEnum,
+  warningStatusEnum,
+} from '/@/enums/projectControl';
 import { TypographyText } from 'ant-design-vue';
 
 export const columns: BasicColumn[] = [
@@ -201,16 +206,7 @@ export const formSchema: FormSchema[] = [
     component: 'Select',
     required: true,
     componentProps: {
-      options: [
-        {
-          label: '区域1',
-          value: '1',
-        },
-        {
-          label: '区域2',
-          value: '2',
-        },
-      ],
+      options: provinceEnum.map((x) => ({ label: x.name, value: x.name })),
     },
   },
   {

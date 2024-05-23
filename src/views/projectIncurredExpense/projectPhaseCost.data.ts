@@ -9,13 +9,13 @@ export const formSchema: FormSchema[] = [
     required: true,
   },
   {
-    field: 'costTypeId',
+    field: 'costTypeName',
     component: 'Select',
     label: '成本科目',
     componentProps: {
-      options: Object.keys(costSubjectEnum).map((key) => ({
-        label: costSubjectEnum[key],
-        value: key,
+      options: Object.values(costSubjectEnum).map((val) => ({
+        label: val,
+        value: val,
       })),
     },
     required: true,
