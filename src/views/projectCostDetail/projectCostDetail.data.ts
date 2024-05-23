@@ -111,13 +111,13 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
-    label: '管控意见',
+    label: '审批意见',
     field: 'auditOpinion',
     component: 'InputTextArea',
     componentProps: {
       rows: 12,
       disabled: true,
-      placeholder: '暂无管控意见',
+      placeholder: '暂无审批意见',
     },
     labelWidth: 80,
   },

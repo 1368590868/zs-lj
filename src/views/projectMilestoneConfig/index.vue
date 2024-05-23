@@ -72,10 +72,10 @@
   const [registerModal, { openModal }] = useModal();
 
   const tipsArr = [
-    { title: '1.可拆解3-20个阶段，管控时间为合同开始时间到结束时间', key: '1' },
-    { title: '2.各个阶段的预算总金额不超过项目总预算', key: '1' },
-    { title: '3.可拆解3-20个阶段，管控时间为合同开始时间到结束时间', key: '1' },
-    { title: '4.各个阶段的预算总金额不超过项目总预算', key: '1' },
+    { title: '1.管控时间为工程计划开始时间到结束时间；', key: '1' },
+    { title: '2.里程碑阶段数和对应的预算比例是根据模板计数；', key: '1' },
+    { title: '3.只需要设置里程碑标题和阶段时间，请谨慎设置，提交后不允许修改；', key: '1' },
+    { title: '4.系统上线前的项目默认拆分为一个阶段，不允许修改；', key: '1' },
   ];
   const tipsColumns = [{ title: 'tips', dataIndex: 'title', key: 'tips' }];
 

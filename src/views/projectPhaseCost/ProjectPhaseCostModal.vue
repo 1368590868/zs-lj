@@ -2,9 +2,10 @@
   <BasicModal
     v-bind="$attrs"
     @register="register"
-    :title="getTitle"
+    title="审批意见"
     width="700px"
     @ok="handleSubmit"
+    :show-cancel-btn="false"
   >
     <div>
       <BasicForm @register="registerFrom" />
@@ -15,12 +16,10 @@
 <script setup lang="ts">
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { formSchema } from './projectPhaseCost.data';
   import { computed, ref, unref } from 'vue';
-  import { addApi, editApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import { message } from 'ant-design-vue';
+  import { formSchema } from './projectPhaseCost.data';
 
-  const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
+  const [registerFrom, { resetFields, setFieldsValue }] = useForm({
     labelWidth: 120,
     schemas: formSchema,
     showActionButtonGroup: false,
@@ -29,7 +28,6 @@
     },
   });
   const isUpdate = ref(true);
-  const emits = defineEmits(['success', 'register']);
   const [register, { setModalProps, closeModal }] = useModalInner((data) => {
     resetFields();
     setModalProps({ confirmLoading: false });
@@ -40,26 +38,10 @@
     }
     setFieldsValue({});
   });
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
 
   //   提交
   const handleSubmit = async () => {
-    try {
-      const values = await validate();
-      setModalProps({ confirmLoading: true });
-      if (!isUpdate.value) {
-        values.orderNum = Number(values.orderNum);
-        await addApi(values);
-        message.success('添加成功');
-      } else {
-        await editApi(values);
-        message.success('修改成功');
-      }
-      closeModal();
-      emits('success');
-    } finally {
-      setModalProps({ confirmLoading: false });
-    }
+    closeModal();
   };
 </script>
 

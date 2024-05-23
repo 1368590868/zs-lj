@@ -5,6 +5,7 @@
     :title="getTitle"
     width="700px"
     @ok="handleSubmit"
+    :show-cancel-btn="false"
   >
     <div>
       <BasicForm @register="registerFrom" />
@@ -37,7 +38,7 @@
     }
     setFieldsValue({});
   });
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
+  const getTitle = computed(() => '审批意见');
 
   //   提交
   const handleSubmit = async () => {
