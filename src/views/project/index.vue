@@ -2,7 +2,6 @@
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
-        <a-button type="primary" @click="onAddExpenses"> 新增发生费用 </a-button>
         <a-button type="primary" v-if="showProjectModal" @click="handleCreate">
           完善项目信息
         </a-button>
@@ -225,19 +224,6 @@
       window.open(url, '_blank');
       message.success('导出成功');
     } catch (error) {}
-  };
-
-  /**
-   * 新增发生费用
-   * 如果跳转带有项目，则自动选择项目
-   */
-  const onAddExpenses = () => {
-    router.push({
-      path: '/projectIncurredExpense',
-      query: {
-        projectName: getSelectRows()[0]?.projectName,
-      },
-    });
   };
 </script>
 

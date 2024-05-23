@@ -25,6 +25,13 @@ export const warningStatusEnum = {
   2: '红色预警',
 };
 
+// 预警颜色
+export const warningColorEnum = {
+  0: '#27CB0D',
+  1: '#EFAD03',
+  2: '#FF7455',
+};
+
 // 成本科目
 export const costSubjectEnum = {
   0: '住宿费',

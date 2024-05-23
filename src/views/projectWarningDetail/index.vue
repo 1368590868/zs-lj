@@ -18,12 +18,14 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { Ref, onMounted, reactive, ref } from 'vue';
+  import { Ref, onMounted, reactive, ref, watchEffect } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { useRouter } from 'vue-router';
   import { PageWrapper } from '/@/components/Page';
   import { Card, Row, Col } from 'ant-design-vue';
+  import { statisticsProjectApi, statisticsProjectByDeptApi } from '/@/api/project/project';
+  import { warningColorEnum, warningStatusEnum } from '/@/enums/projectControl';
 
   const router = useRouter();
 
@@ -35,11 +37,37 @@
   const { setOptions: setControlOptions } = useECharts(chartControlRef as Ref<HTMLDivElement>);
   const { setOptions: setControlOptions2 } = useECharts(chartControlRef2 as Ref<HTMLDivElement>);
   const { setOptions: setBarOptions } = useECharts(chartBarRef as Ref<HTMLDivElement>);
-  onMounted(() => {
+
+  const chartData1 = ref<{ value: number; name: string }[]>([]);
+  let chartData3 = reactive({
+    xData: [],
+    redStatus: [],
+    yellowStatus: [],
+  });
+
+  (async () => {
+    const apiArr = [statisticsProjectApi, statisticsProjectByDeptApi];
+    const res = await Promise.all(apiArr.map((api) => api()));
+    console.log(res);
+    chartData1.value = res[0].map((item) => ({
+      value: item.number,
+      name: warningStatusEnum[item.warningStatus],
+      itemStyle: {
+        color: warningColorEnum[item.warningStatus],
+      },
+    }));
+    console.log(chartData1.value);
+
+    // const redArr = res[1].find((item) => +item.warningStatus === 2);
+    // const yellowArr = res[1].find((item) => +item.warningStatus === 0);
+    // const yellowDept = yellowArr && yellowArr.statisticsProjectDtoList.map((x) => x.deptName);
+    // const redDept = redArr && yellowArr.statisticsProjectDtoList.map((x) => x.deptName);
+
+    // console.log(redArr, yellowArr);
+    // chartData3 = Object.assign(chartData3, {});
+  })();
+  watchEffect(() => {
     setControlOptions({
-      // tooltip: {
-      //   trigger: 'item',
-      // },
       legend: {
         show: false,
         bottom: '0',
@@ -52,7 +80,6 @@
       },
       series: [
         {
-          color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
           name: '访问来源',
           type: 'pie',
           top: 0,
@@ -79,16 +106,9 @@
           },
           labelLine: {
             length: 15,
-            length2: 0,
+            length2: 100,
             maxSurfaceAngle: 80,
           },
-          // labelLayout: function (params) {
-          //   const points = params.labelLinePoints;
-          //   params.labelRect.x + params.labelRect.width;
-          //   return {
-          //     labelLinePoints: points,
-          //   };
-          // },
           emphasis: {
             label: {
               show: true,
@@ -96,12 +116,7 @@
               fontWeight: 'bold',
             },
           },
-          data: [
-            { value: 1048, name: '搜索引擎' },
-            { value: 735, name: '直接访问' },
-            { value: 580, name: '邮件营销' },
-            { value: 484, name: '联盟广告' },
-          ],
+          data: chartData1.value,
           animationType: 'scale',
           animationEasing: 'exponentialInOut',
           animationDelay: function () {
@@ -110,6 +125,10 @@
         },
       ],
     });
+  });
+  onMounted(() => {
+    console.log(chartData1.value, 'test');
+
     setControlOptions2({
       tooltip: {
         trigger: 'item',

@@ -23,12 +23,7 @@
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import {
-    pageApi,
-    removeApi,
-    exportApi,
-    importApi,
-  } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import ProjectPhaseCostModal from './ProjectPhaseCostModal.vue';
   import { columns, searchFormSchema } from './projectPhaseCost.data';
   import { Ref, onMounted, reactive, ref } from 'vue';

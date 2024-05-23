@@ -111,79 +111,14 @@ export const searchFormSchema: FormSchema[] = [
 
 export const formSchema: FormSchema[] = [
   {
-    label: '编号',
-    field: 'id',
-    component: 'Input',
-    show: false,
-  },
-  {
-    label: '项目id',
-    field: 'projectId',
-    component: 'Input',
-  },
-  {
-    label: '项目阶段id',
-    field: 'projectPhaseId',
-    component: 'Input',
-  },
-  {
-    label: '项目月度审核id',
-    field: 'monthAuditId',
-    component: 'Input',
-  },
-  {
-    label: '阶段成本明细',
-    field: 'phaseBudget',
-    component: 'Input',
-  },
-  {
-    label: '成本类型ID',
-    field: 'costTypeId',
-    component: 'Input',
-  },
-  {
-    label: '成本类型',
-    field: 'costTypeName',
-    component: 'Input',
-  },
-  {
-    label: '项目负责人审核状态（0-待审核1-已通过2-已驳回）',
-    field: 'projectLeaderStatus',
-    component: 'Input',
-  },
-  {
-    label: '项目负责人审核时间',
-    field: 'projectLeaderTime',
-    component: 'Input',
-  },
-  {
-    label: '成本提交时间',
-    field: 'costSubmitTime',
-    component: 'Input',
-  },
-  {
-    label: '创建者名称',
-    field: 'createByName',
-    component: 'Input',
-  },
-  {
-    label: '更新者名称',
-    field: 'updateByName',
-    component: 'Input',
-  },
-  {
-    label: '备注',
-    field: 'remark',
-    component: 'Input',
-  },
-  {
-    label: '状态（0正常1删除）',
-    field: 'status',
-    component: 'Input',
-  },
-  {
-    label: '排序',
-    field: 'order',
-    component: 'Input',
+    label: '审批意见',
+    field: 'auditOpinion',
+    component: 'InputTextArea',
+    componentProps: {
+      rows: 12,
+      disabled: true,
+      placeholder: '暂无审批意见',
+    },
+    labelWidth: 80,
   },
 ];

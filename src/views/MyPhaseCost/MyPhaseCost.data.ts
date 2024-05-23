@@ -55,7 +55,9 @@ export const columns: BasicColumn[] = [
       return h(
         TypographyText,
         { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.projectLeaderTime}`,
+        idx === 1
+          ? myCostStatusEnum[idx]
+          : `${myCostStatusEnum[idx] ?? ''} ${record.projectLeaderTime ?? ''}`,
       );
     },
   },
@@ -73,7 +75,9 @@ export const columns: BasicColumn[] = [
       return h(
         TypographyText,
         { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.costLeaderTime}`,
+        idx === 1
+          ? myCostStatusEnum[idx]
+          : `${myCostStatusEnum[idx] ?? ''} ${record.costLeaderTime ?? ''}`,
       );
     },
   },
@@ -91,7 +95,9 @@ export const columns: BasicColumn[] = [
       return h(
         TypographyText,
         { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.operationDeptTime}`,
+        idx === 1
+          ? myCostStatusEnum[idx]
+          : `${myCostStatusEnum[idx] ?? ''} ${record.operationDeptTime ?? ''}`,
       );
     },
   },

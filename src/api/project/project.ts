@@ -4,6 +4,7 @@ import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
 export const prefix = '/bim-cost-control-backend';
+const depPrefix = '/cmct-auth';
 
 enum Api {
   add = `${prefix}/project/add`,
@@ -18,6 +19,8 @@ enum Api {
   controlDetermine = `${prefix}/project/controlDetermine/`,
   controlEndApply = `${prefix}/project/controlEndApply/`,
   controlExtensionApply = `${prefix}/project/controlExtensionApply/`,
+  statisticsProject = `${prefix}/project/statisticsProject`,
+  statisticsProjectByDept = `${prefix}/project/statisticsProjectByDept`,
 }
 
 /**
@@ -99,4 +102,14 @@ export const controlEndApplyApi = (id) => {
 // 管控延期申请
 export const controlExtensionApplyApi = (id) => {
   return defHttp.get({ url: Api.controlExtensionApply + id });
+};
+
+// 通过预警状态分组统计数
+export const statisticsProjectApi = () => {
+  return defHttp.get({ url: Api.statisticsProject });
+};
+
+// 通过预警状态与部门分组统计项目数
+export const statisticsProjectByDeptApi = () => {
+  return defHttp.get({ url: Api.statisticsProjectByDept });
 };
