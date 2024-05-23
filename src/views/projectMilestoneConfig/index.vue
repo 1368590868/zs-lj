@@ -60,7 +60,7 @@
   import { formSchema, schema } from './projectMilestoneConfig.data';
   import ProjectDetailModal from './projectMilestoneConfigModal.vue';
   import { useModal } from '/@/components/Modal';
-  import { addApi, pageApi } from '/@/api/projectPhase/projectPhase';
+  import { addApi, listApi, pageApi } from '/@/api/projectPhase/projectPhase';
   import _ from 'lodash-es';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
@@ -114,7 +114,7 @@
     }
   });
   const getPhaseList = async () => {
-    const res = await pageApi({ current: 1, size: 9999, id: router.currentRoute.value.query.id });
+    const res = await listApi(router.currentRoute.value.query);
     console.log(res);
   };
   const getDetail = async () => {

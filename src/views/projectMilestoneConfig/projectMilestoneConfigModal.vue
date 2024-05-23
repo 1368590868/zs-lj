@@ -49,7 +49,7 @@
   const [register, { setModalProps, closeModal }] = useModalInner((data) => {
     setModalProps({ confirmLoading: false });
   });
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
+  const getTitle = computed(() => '选择项目模板');
 
   //   提交
   const handleSubmit = async () => {

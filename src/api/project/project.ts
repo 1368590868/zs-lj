@@ -4,7 +4,6 @@ import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
 export const prefix = '/bim-cost-control-backend';
-const depPrefix = '/cmct-auth';
 
 enum Api {
   add = `${prefix}/project/add`,

@@ -12,6 +12,7 @@ enum Api {
   detail = `${prefix}/project_phase/detail/`,
   import = `${prefix}/project_phase/import`,
   export = `${prefix}/project_phase/export?ids=`,
+  list = `${prefix}/project_phase/list/`,
 }
 
 /**
@@ -67,4 +68,9 @@ export function importApi(params: UploadFileParams) {
 
 export const exportApi = (params) => {
   return defHttpFile.get({ url: Api.export + params, responseType: 'blob' });
+};
+
+// 项目阶段查询
+export const listApi = (params) => {
+  return defHttp.get({ url: Api.list + params.id, params });
 };
