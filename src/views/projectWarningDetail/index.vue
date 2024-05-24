@@ -18,13 +18,17 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { Ref, onMounted, reactive, ref, watchEffect } from 'vue';
+  import { Ref, onMounted, reactive, ref, unref, watch, watchEffect } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { useRouter } from 'vue-router';
   import { PageWrapper } from '/@/components/Page';
   import { Card, Row, Col } from 'ant-design-vue';
-  import { statisticsProjectApi, statisticsProjectByDeptApi } from '/@/api/project/project';
+  import {
+    deptListApi,
+    statisticsProjectApi,
+    statisticsProjectByDeptApi,
+  } from '/@/api/project/project';
   import { warningColorEnum, warningStatusEnum } from '/@/enums/projectControl';
 
   const router = useRouter();
@@ -39,15 +43,27 @@
   const { setOptions: setBarOptions } = useECharts(chartBarRef as Ref<HTMLDivElement>);
 
   const chartData1 = ref<{ value: number; name: string }[]>([]);
+  const deptList = ref<string[]>([]);
   let chartData3 = reactive({
-    xData: [],
     redStatus: [],
     yellowStatus: [],
   });
 
+  const getData = (data, type) => {
+    const innerData = data.find((x) => x.warningStatus === type);
+    if (!innerData) return [];
+
+    const number = unref(deptList).map((dep) => {
+      let obj = innerData.statisticsProjectDtoList.find((x) => x.deptName === dep);
+      return obj ? +obj.number : 0;
+    });
+    return number;
+  };
+
   (async () => {
-    const apiArr = [statisticsProjectApi, statisticsProjectByDeptApi];
+    const apiArr = [statisticsProjectApi, statisticsProjectByDeptApi, deptListApi];
     const res = await Promise.all(apiArr.map((api) => api()));
+    deptList.value = res[2].map((x) => x.deptName);
     console.log(res);
     chartData1.value = res[0].map((item) => ({
       value: item.number,
@@ -56,16 +72,13 @@
         color: warningColorEnum[item.warningStatus],
       },
     }));
+    Object.assign(chartData3, {
+      redStatus: getData(res[1], '2'),
+      yellowStatus: getData(res[1], '1'),
+    });
     console.log(chartData1.value);
-
-    // const redArr = res[1].find((item) => +item.warningStatus === 2);
-    // const yellowArr = res[1].find((item) => +item.warningStatus === 0);
-    // const yellowDept = yellowArr && yellowArr.statisticsProjectDtoList.map((x) => x.deptName);
-    // const redDept = redArr && yellowArr.statisticsProjectDtoList.map((x) => x.deptName);
-
-    // console.log(redArr, yellowArr);
-    // chartData3 = Object.assign(chartData3, {});
   })();
+
   watchEffect(() => {
     setControlOptions({
       legend: {
@@ -125,7 +138,60 @@
         },
       ],
     });
+    // 柱状图
+    setBarOptions({
+      tooltip: {
+        trigger: 'axis',
+        axisPointer: {
+          type: 'shadow',
+        },
+      },
+      legend: {},
+      grid: {},
+      yAxis: {
+        type: 'value',
+        boundaryGap: [0, 0.01],
+        axisLine: {
+          lineStyle: {
+            color: '#ccc',
+          },
+        },
+        axisLabel: {
+          formatter: '{value} 元',
+        },
+      },
+      xAxis: {
+        type: 'category',
+        boundaryGap: true,
+        data: unref(deptList),
+      },
+      series: [
+        {
+          name: '红色预警',
+          type: 'bar',
+          data: chartData3.redStatus,
+          label: {
+            show: true,
+          },
+          itemStyle: {
+            color: '#FF7455',
+          },
+        },
+        {
+          name: '黄色预警',
+          type: 'bar',
+          data: chartData3.yellowStatus,
+          label: {
+            show: true,
+          },
+          itemStyle: {
+            color: '#EFAD03',
+          },
+        },
+      ],
+    });
   });
+
   onMounted(() => {
     console.log(chartData1.value, 'test');
 
@@ -173,58 +239,6 @@
           animationEasing: 'exponentialInOut',
           animationDelay: function () {
             return Math.random() * 100;
-          },
-        },
-      ],
-    });
-
-    setBarOptions({
-      tooltip: {
-        trigger: 'axis',
-        axisPointer: {
-          type: 'shadow',
-        },
-      },
-      legend: {},
-      grid: {},
-      yAxis: {
-        type: 'value',
-        boundaryGap: [0, 0.01],
-        axisLine: {
-          lineStyle: {
-            color: '#ccc',
-          },
-        },
-        axisLabel: {
-          formatter: '{value} 元',
-        },
-      },
-      xAxis: {
-        type: 'category',
-        boundaryGap: true,
-        data: ['第一部门', '第二部门', '第三部门', '第四部门'],
-      },
-      series: [
-        {
-          name: '红色预警',
-          type: 'bar',
-          data: [18203, 23489, 29034, 104970],
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            color: '#FF7455',
-          },
-        },
-        {
-          name: '黄色预警',
-          type: 'bar',
-          data: [19325, 23438, 31000, 121594],
-          label: {
-            show: true,
-          },
-          itemStyle: {
-            color: '#EFAD03',
           },
         },
       ],

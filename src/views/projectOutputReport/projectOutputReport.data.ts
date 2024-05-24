@@ -3,6 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import { controlStatusEnum, warningStatusEnum } from '/@/enums/projectControl';
+import { deptListApi } from '/@/api/project/project';
 
 export const columns: BasicColumn[] = [
   {
@@ -603,7 +604,12 @@ export const searchFormSchema: FormSchema[] = [
   {
     field: 'deptName',
     label: '归属部门',
-    component: 'Select',
+    component: 'ApiSelect',
+    componentProps: {
+      api: deptListApi,
+      labelField: 'deptName',
+      valueField: 'deptNumber',
+    },
     colProps: { span: 6 },
   },
 ];

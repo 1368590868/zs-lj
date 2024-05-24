@@ -20,6 +20,7 @@ enum Api {
   controlExtensionApply = `${prefix}/project/controlExtensionApply/`,
   statisticsProject = `${prefix}/project/statisticsProject`,
   statisticsProjectByDept = `${prefix}/project/statisticsProjectByDept`,
+  deptList = `${prefix}/project/deptList`,
 }
 
 /**
@@ -111,4 +112,9 @@ export const statisticsProjectApi = () => {
 // 通过预警状态与部门分组统计项目数
 export const statisticsProjectByDeptApi = () => {
   return defHttp.get({ url: Api.statisticsProjectByDept });
+};
+
+// 获取部门列表
+export const deptListApi = () => {
+  return defHttp.get({ url: Api.deptList });
 };
