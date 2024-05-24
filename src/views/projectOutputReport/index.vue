@@ -1,18 +1,12 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" @selection-change="onSelectionChange">
+    <BasicTable
+      @register="registerTable"
+      @selection-change="onSelectionChange"
+      :beforeEditSubmit="beforeEditSubmit"
+    >
       <template #toolbar>
         <a-button type="primary" @click="exportExcel"> 下载 </a-button>
-      </template>
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              label: '查看',
-              onClick: handleDetail.bind(null, record),
-            },
-          ]"
-        />
       </template>
     </BasicTable>
     <ProjectPhaseModal @register="registerModal" @success="handleSuccess" />
@@ -20,20 +14,22 @@
 </template>
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { pageApi, exportApi } from '/@/api/projectPhase/projectPhase';
+  import { BasicTable, useTable } from '/@/components/Table';
   import ProjectPhaseModal from './projectOutputReportModal.vue';
   import { columns, searchFormSchema } from './projectOutputReport.data';
   import { reactive } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
+  import { exportApi, pageApi } from '/@/api/projectOutputValue/projectOutputValue';
   const router = useRouter();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
-    title: '项目阶段列表',
     api: pageApi,
     columns,
+    searchInfo: {
+      outputValueMonth: router.currentRoute.value.query.outputValueMonth,
+    },
     formConfig: {
       labelWidth: 120,
       schemas: searchFormSchema,
@@ -47,28 +43,17 @@
       current: 1,
       pageSize: 10,
     },
-    actionColumn: {
-      width: 120,
-      title: '成本明细',
-      dataIndex: 'action',
-      slots: { customRender: 'action' },
-    },
   });
   const { hasPermission } = usePermission();
   let selectId = reactive<any[]>([]);
 
-  // 跳转里程碑详情
-  const handleDetail = (record: Recordable) => {
-    router.push({
-      path: '/projectPhaseCost',
-      query: {
-        id: record.id,
-      },
-    });
-  };
   // 成功
   function handleSuccess() {
     reload();
+  }
+
+  async function beforeEditSubmit({ record, index, key, value }) {
+    console.log('单元格数据正在准备提交', { record, index, key, value });
   }
 
   // 导出
