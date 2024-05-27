@@ -14,6 +14,7 @@ enum Api {
   import = `${prefix}/project_phase_cost/import`,
   export = `${prefix}/project_phase_cost/export?ids=`,
   costLeaderAudit = `${prefix}/project_phase_cost/costLeaderAudit`,
+  operationDeptAudit = `${prefix}/project_phase_cost/operationDeptAudit`,
 }
 
 /**
@@ -43,6 +44,13 @@ export const auditApi = (params) => {
  */
 export const costLeaderAuditApi = (params) => {
   return defHttp.post({ url: Api.costLeaderAudit, params });
+};
+
+/**
+ * @description: 运营管理部审核
+ */
+export const operationDeptAuditApi = (params) => {
+  return defHttp.post({ url: Api.operationDeptAudit, params });
 };
 
 /**

@@ -3,7 +3,11 @@ import { FormSchema } from '/@/components/Table';
 import { defineComponent, h } from 'vue';
 import { Button, Popconfirm, Space, TypographyText, message } from 'ant-design-vue';
 import { costChargeEnum, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
-import { auditApi, costLeaderAuditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+import {
+  auditApi,
+  costLeaderAuditApi,
+  operationDeptAuditApi,
+} from '/@/api/projectPhaseCost/projectPhaseCost';
 
 export const columns: BasicColumn[] = [
   {
@@ -179,7 +183,7 @@ export const ProjectLeaderStatus = defineComponent({
       2: 'danger',
     };
     const onConfirm = async (state: number) => {
-      await costLeaderAuditApi({
+      await operationDeptAuditApi({
         id: [props.id],
         [props.type === 'cost' ? 'costLeaderStatus' : 'operationDeptStatus']: state,
       });
