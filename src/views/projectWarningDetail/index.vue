@@ -30,6 +30,7 @@
     statisticsProjectByDeptApi,
   } from '/@/api/project/project';
   import { warningColorEnum, warningStatusEnum } from '/@/enums/projectControl';
+  import { statisticsProjectPhaseApi } from '/@/api/projectPhase/projectPhase';
 
   const router = useRouter();
 
@@ -43,6 +44,7 @@
   const { setOptions: setBarOptions } = useECharts(chartBarRef as Ref<HTMLDivElement>);
 
   const chartData1 = ref<{ value: number; name: string }[]>([]);
+  const chartData2 = ref<{ value: number; name: string }[]>([]);
   const deptList = ref<string[]>([]);
   let chartData3 = reactive({
     redStatus: [],
@@ -59,19 +61,28 @@
     });
     return number;
   };
-
-  (async () => {
-    const apiArr = [statisticsProjectApi, statisticsProjectByDeptApi, deptListApi];
-    const res = await Promise.all(apiArr.map((api) => api()));
-    deptList.value = res[2].map((x) => x.deptName);
-    console.log(res);
-    chartData1.value = res[0].map((item) => ({
+  const getChartData = (data) => {
+    return data.map((item) => ({
       value: item.number,
       name: warningStatusEnum[item.warningStatus],
       itemStyle: {
         color: warningColorEnum[item.warningStatus],
       },
     }));
+  };
+
+  (async () => {
+    const apiArr = [
+      statisticsProjectApi,
+      statisticsProjectByDeptApi,
+      deptListApi,
+      statisticsProjectPhaseApi,
+    ];
+    const res = await Promise.all(apiArr.map((api) => api()));
+    deptList.value = res[2].map((x) => x.deptName);
+    console.log(res);
+    chartData1.value = getChartData(res[0] ?? []);
+    chartData2.value = getChartData(res[3] ?? []);
     Object.assign(chartData3, {
       redStatus: getData(res[1], '2'),
       yellowStatus: getData(res[1], '1'),
@@ -80,6 +91,7 @@
   })();
 
   watchEffect(() => {
+    // 图表1
     setControlOptions({
       legend: {
         show: false,
@@ -134,6 +146,89 @@
           animationEasing: 'exponentialInOut',
           animationDelay: function () {
             return Math.random() * 100;
+          },
+        },
+      ],
+      graphic: [
+        {
+          type: 'text',
+          left: 'center',
+          top: 'center',
+          style: {
+            text: `管控项目:${chartData1.value.reduce((prev, cur) => prev + cur.value, 0)}个`,
+            fill: '#999',
+            fontSize: 16,
+          },
+        },
+      ],
+    });
+    // 图表2
+    setControlOptions2({
+      legend: {
+        show: false,
+        bottom: '0',
+        left: 'center',
+      },
+      textStyle: {
+        color: '#999',
+        fontWeight: 'normal',
+        fontSize: 14,
+      },
+      series: [
+        {
+          name: '访问来源',
+          type: 'pie',
+          top: 0,
+          radius: ['40%', '70%'],
+          avoidLabelOverlap: false,
+          itemStyle: {
+            borderRadius: 10,
+            borderColor: '#fff',
+            borderWidth: 2,
+          },
+          label: {
+            alignTo: 'labelLine',
+            formatter: '{name|{b}}\n{time|{c} }',
+            minMargin: 5,
+            edgeDistance: 10,
+            lineHeight: 15,
+            distance: 10,
+            rich: {
+              time: {
+                fontSize: 10,
+                color: '#999',
+              },
+            },
+          },
+          labelLine: {
+            length: 15,
+            length2: 100,
+            maxSurfaceAngle: 80,
+          },
+          emphasis: {
+            label: {
+              show: true,
+              fontSize: '12',
+              fontWeight: 'bold',
+            },
+          },
+          data: chartData2.value,
+          animationType: 'scale',
+          animationEasing: 'exponentialInOut',
+          animationDelay: function () {
+            return Math.random() * 100;
+          },
+        },
+      ],
+      graphic: [
+        {
+          type: 'text',
+          left: 'center',
+          top: 'center',
+          style: {
+            text: `管控阶段:${chartData2.value.reduce((prev, cur) => prev + cur.value, 0)}个`,
+            fill: '#999',
+            fontSize: 16,
           },
         },
       ],
@@ -192,56 +287,5 @@
     });
   });
 
-  onMounted(() => {
-    console.log(chartData1.value, 'test');
-
-    setControlOptions2({
-      tooltip: {
-        trigger: 'item',
-      },
-      legend: {
-        bottom: '1%',
-        left: 'center',
-      },
-      series: [
-        {
-          color: ['#5ab1ef', '#b6a2de', '#67e0e3', '#2ec7c9'],
-          name: '访问来源',
-          type: 'pie',
-          radius: ['40%', '70%'],
-          avoidLabelOverlap: false,
-          itemStyle: {
-            borderRadius: 10,
-            borderColor: '#fff',
-            borderWidth: 2,
-          },
-          label: {
-            show: false,
-            position: 'center',
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: '12',
-              fontWeight: 'bold',
-            },
-          },
-          labelLine: {
-            show: false,
-          },
-          data: [
-            { value: 1048, name: '搜索引擎' },
-            { value: 735, name: '直接访问' },
-            { value: 580, name: '邮件营销' },
-            { value: 484, name: '联盟广告' },
-          ],
-          animationType: 'scale',
-          animationEasing: 'exponentialInOut',
-          animationDelay: function () {
-            return Math.random() * 100;
-          },
-        },
-      ],
-    });
-  });
+  onMounted(() => {});
 </script>

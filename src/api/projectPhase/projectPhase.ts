@@ -13,6 +13,7 @@ enum Api {
   import = `${prefix}/project_phase/import`,
   export = `${prefix}/project_phase/export?ids=`,
   list = `${prefix}/project_phase/list/`,
+  statisticsProjectPhase = `${prefix}/project_phase/statisticsProjectPhase`,
 }
 
 /**
@@ -73,4 +74,9 @@ export const exportApi = (params) => {
 // 项目阶段查询
 export const listApi = (params) => {
   return defHttp.get({ url: Api.list + params.id, params });
+};
+
+// 通过预警状态分组统计阶段
+export const statisticsProjectPhaseApi = () => {
+  return defHttp.get({ url: Api.statisticsProjectPhase });
 };
