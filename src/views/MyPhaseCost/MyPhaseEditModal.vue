@@ -12,6 +12,8 @@
   import { editApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { formEditSchema } from './MyPhaseCost.data';
 
+  const emit = defineEmits(['success', 'register']);
+
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
     schemas: formEditSchema,
@@ -33,6 +35,7 @@
   const handleSubmit = async () => {
     const values = await validate();
     await editApi({ ...values, id: values.id });
+    emit('success');
     closeModal();
   };
 </script>
