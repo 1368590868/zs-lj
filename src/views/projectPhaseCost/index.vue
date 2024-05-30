@@ -26,10 +26,12 @@
   import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import ProjectPhaseCostModal from './ProjectPhaseCostModal.vue';
   import { columns, searchFormSchema } from './projectPhaseCost.data';
-  import { Ref, onMounted, reactive, ref } from 'vue';
+  import { Ref, onMounted, reactive, ref, unref, watchEffect } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
   import { useECharts } from '/@/hooks/web/useECharts';
+  import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';
+  import { useRouter } from 'vue-router';
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     title: '项目阶段成本明细列表',
@@ -59,7 +61,14 @@
   // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
-  onMounted(() => {
+
+  const router = useRouter();
+  const detail = ref({});
+  const getFindCurrent = async () => {
+    const res = await findNowPhasesByProjectIdApi(router.currentRoute.value.query.projectId);
+    detail.value = res;
+  };
+  watchEffect(() => {
     setOptions({
       tooltip: {
         trigger: 'axis',
@@ -84,13 +93,13 @@
       yAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['第一阶段'],
+        data: [detail.value['phaseTitle'] ?? ''],
       },
       series: [
         {
           name: '实际成本',
           type: 'bar',
-          data: [18203],
+          data: [detail.value['phaseOutlayCost'] ?? 0],
           label: {
             show: true,
           },
@@ -101,7 +110,7 @@
         {
           name: '预估成本',
           type: 'bar',
-          data: [19325],
+          data: [detail.value['phaseBudgetCost'] ?? 0],
           label: {
             show: true,
           },
@@ -111,6 +120,9 @@
         },
       ],
     });
+  });
+  onMounted(() => {
+    getFindCurrent();
   });
   let selectId = reactive<any[]>([]);
 
@@ -125,18 +137,6 @@
   function handleSuccess() {
     reload();
   }
-
-  // 导出
-  const exportExcel = async () => {
-    try {
-      let params = selectId.toString();
-      const res = await exportApi(params);
-      const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
-      const url = window.URL.createObjectURL(blob);
-      window.open(url, '_blank');
-      message.success('导出成功');
-    } catch (error) {}
-  };
   const onSelectionChange = async (e) => {
     selectId = reactive<any[]>([]);
     e.rows.forEach((it) => {

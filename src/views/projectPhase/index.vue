@@ -67,6 +67,7 @@
       path: '/projectPhaseCost',
       query: {
         id: record.id,
+        projectId: record.projectId,
       },
     });
   };

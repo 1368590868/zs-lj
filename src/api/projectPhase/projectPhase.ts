@@ -14,6 +14,7 @@ enum Api {
   export = `${prefix}/project_phase/export?ids=`,
   list = `${prefix}/project_phase/list/`,
   statisticsProjectPhase = `${prefix}/project_phase/statisticsProjectPhase`,
+  findNowPhasesByProjectId = `${prefix}/project_phase/findNowPhasesByProjectId/`,
 }
 
 /**
@@ -79,4 +80,9 @@ export const listApi = (params) => {
 // 通过预警状态分组统计阶段
 export const statisticsProjectPhaseApi = () => {
   return defHttp.get({ url: Api.statisticsProjectPhase });
+};
+
+/**根据当前ID查询项目当前阶段 */
+export const findNowPhasesByProjectIdApi = (id) => {
+  return defHttp.get({ url: Api.findNowPhasesByProjectId + id });
 };
