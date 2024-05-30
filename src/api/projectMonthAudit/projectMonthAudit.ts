@@ -12,7 +12,21 @@ enum Api {
   detail = `${prefix}/project_month_audit/detail/`,
   import = `${prefix}/project_month_audit/import`,
   export = `${prefix}/project_month_audit/export?ids=`,
+  operationDeptAudit = `${prefix}/project_month_audit/operationDeptAudit`,
+  costLeaderAudit = `${prefix}/project_month_audit/costLeaderAudit`,
 }
+
+/**
+ * 月度审核意见
+ */
+export const monthAuditApi = (params, type) => {
+  switch (type) {
+    case 'cost':
+      return defHttp.post({ url: Api.costLeaderAudit, params });
+    default:
+      return defHttp.post({ url: Api.operationDeptAudit, params });
+  }
+};
 
 /**
  * @description: 查询项目月度审核

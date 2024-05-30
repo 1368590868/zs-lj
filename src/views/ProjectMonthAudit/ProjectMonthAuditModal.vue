@@ -5,6 +5,7 @@
     title="审批意见"
     width="700px"
     @ok="handleSubmit"
+    :show-cancel-btn="false"
   >
     <div v-for="item of detail" :key="item.id" class="flex justify-between">
       <span>{{ item.createByName }}: {{ item.auditOpinion }}</span>

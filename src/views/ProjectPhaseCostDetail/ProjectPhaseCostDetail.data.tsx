@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { defineComponent, h } from 'vue';
-import { Button, Popconfirm, Space, TypographyText, message } from 'ant-design-vue';
+import { defineComponent, h, ref } from 'vue';
+import { Button, Popconfirm, Space, Textarea, TypographyText, message } from 'ant-design-vue';
 import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
@@ -202,6 +202,9 @@ export const formEditSchema: FormSchema[] = [
   },
 ];
 
+import { BasicModal, useModal } from '/@/components/Modal';
+import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
+import { useUserStore } from '/@/store/modules/user';
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
   props: {
@@ -222,41 +225,70 @@ export const ProjectLeaderStatus = defineComponent({
     },
   },
   setup(props, { emit }) {
-    console.log(props.text);
+    const [register, { openModal, closeModal }] = useModal();
+    const isPass = ref<number>(1);
+    const store = useUserStore();
     const textType = {
       0: 'warning',
       1: 'success',
       2: 'danger',
     };
-    const onConfirm = async (state: number) => {
+    const onConfirm = async () => {
       await auditApi({
         ids: [props.id],
-        projectLeaderStatus: state,
-      });
-      emit('reload');
-      message.success('操作成功');
+        projectLeaderStatus: isPass.value,
+      })
+        .then(() => {
+          return addApi({
+            projectPhaseCostId: props.id,
+            auditOpinion: remark.value,
+            auditOpinionFlag: 1,
+            createByName: store.getUserInfo.nickName,
+          });
+        })
+        .then(() => {
+          closeModal();
+        })
+        .finally(() => {
+          emit('reload');
+          message.success('操作成功');
+        });
+    };
+    const remark = ref<string>('');
+    const onOpenModal = (state: number) => {
+      isPass.value = state;
+      openModal(true);
+    };
+    const handleInput = (event: Event) => {
+      const target = event.target as HTMLTextAreaElement;
+      remark.value = target.value;
     };
 
     return () => (
       <>
+        <BasicModal
+          onRegister={register}
+          onOk={onConfirm}
+          title={`确认审核${isPass.value === 1 ? '通过' : '驳回'}`}
+        >
+          <Textarea
+            rows={10}
+            showCount
+            maxlength={15}
+            placeholder={'非必填备注信息不超过15个字'}
+            value={remark.value}
+            onInput={handleInput}
+          />
+        </BasicModal>
         {props.text === 0 ? (
           <Space>
-            <Popconfirm
-              title="是否通过？"
-              okText="通过"
-              cancelText="取消"
-              onConfirm={() => onConfirm(1)}
-            >
-              <Button type="link">通过</Button>
-            </Popconfirm>
-            <Popconfirm
-              title="是否驳回？"
-              okText="驳回"
-              cancelText="取消"
-              onConfirm={() => onConfirm(2)}
-            >
-              <Button type="link">驳回</Button>
-            </Popconfirm>
+            <Button type="link" onClick={() => onOpenModal(1)}>
+              通过
+            </Button>
+
+            <Button type="link" onClick={() => onOpenModal(2)}>
+              驳回
+            </Button>
           </Space>
         ) : (
           <TypographyText type={textType[props.text]}>
