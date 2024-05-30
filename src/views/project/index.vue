@@ -187,7 +187,6 @@
       query: {
         id: record.id,
         isDefer: 1,
-        projectId: record.projectId,
       },
     });
   };

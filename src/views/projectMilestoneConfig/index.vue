@@ -6,7 +6,7 @@
       <template #title>
         <div class="flex justify-between">
           <div>设置项目阶段里程碑及预算</div>
-          <div v-if="isDefer">
+          <div v-if="isDefer !== '1'">
             <a-button type="primary" @click="onRemark">设置项目里程碑时间和标题</a-button>
           </div>
         </div>
@@ -16,7 +16,7 @@
           <InputNumber
             :min="0"
             :max="100"
-            disabled
+            :disabled="!isDefer"
             :formatter="(value) => `${value}%`"
             :parser="(value) => value.replace('%', '')"
             v-model:value="model[field]"
@@ -54,7 +54,7 @@
   import { Card, InputNumber, Table, Space, message, Modal } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
-  import { computed, createVNode, onMounted, reactive, ref, unref } from 'vue';
+  import { computed, createVNode, nextTick, onMounted, reactive, ref, unref } from 'vue';
   import { useDescription, Description } from '/@/components/Description';
   import { useRouter } from 'vue-router';
   import { formSchema, schema } from './projectMilestoneConfig.data';
@@ -65,7 +65,7 @@
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
 
   const router = useRouter();
-  const templateData = ref([]);
+  const templateData = ref<any[]>([]);
   const isDefer = computed(() => {
     return router.currentRoute.value.query.isDefer;
   });
@@ -105,17 +105,28 @@
     schema,
   });
 
-  onMounted(() => {
+  onMounted(async () => {
     // 是否延期配置 1是 0否
-    if (isDefer.value === '1') {
-      getPhaseList();
-    } else {
-      getDetail();
-    }
+    await getDetail();
+    await getPhaseList();
   });
   const getPhaseList = async () => {
-    const res = await listApi(router.currentRoute.value.query);
-    console.log(res);
+    const res = await pageApi({ projectId: router.currentRoute.value.query.id });
+    const arr = res.records.map((x) => x.phaseBudgetRatio);
+    // 重新初始化表单
+    templateData.value = [{ phaseBudgetRatio: JSON.stringify(arr) }];
+    initForm();
+    res.records.map((x, i) => {
+      setFieldsValue({
+        [`field[${i}].phaseTitle`]: x['phaseTitle'],
+        [`field[${i}].phaseBudgetRatio`]: x['phaseBudgetRatio'],
+        [`field[${i}].date`]: [x['phaseStartDate'], x['phaseEndDate']],
+        [`field[${i}].phaseBudgetCost`]: _.round(
+          dataSource['generalBudget'] * (x.phaseBudgetRatio / 100),
+          2,
+        ).toFixed(2),
+      });
+    });
   };
   const getDetail = async () => {
     const params = router.currentRoute.value.query;
@@ -133,6 +144,7 @@
     console.log(getFieldsValueGroup());
   };
   const onModalSuccess = (val) => {
+    console.log(val, 'val');
     templateData.value = val;
     initForm();
   };
@@ -143,6 +155,9 @@
     JSON.parse(unref(templateData)[0]['phaseBudgetRatio']).map((x) => {
       addGroup();
     });
+    if (isDefer.value === '1') {
+      addGroup();
+    }
 
     initValue();
   };

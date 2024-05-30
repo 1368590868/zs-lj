@@ -18,42 +18,44 @@ export const basicColumns: BasicColumn[] = [
   },
 ];
 
-export const formSchema = (count): FormSchema[] => [
-  {
-    field: `field[${count.value}].phaseTitle`,
-    component: 'Input',
-    label: `里程碑${count.value + 1}`,
-    colProps: { span: 6 },
-    componentProps: {
-      maxlength: 50,
+export const formSchema = (count): FormSchema[] => {
+  return [
+    {
+      field: `field[${count.value}].phaseTitle`,
+      component: 'Input',
+      label: `里程碑${count.value + 1}`,
+      colProps: { span: 6 },
+      componentProps: {
+        maxlength: 50,
+      },
+      required: true,
     },
-    required: true,
-  },
-  {
-    field: `field[${count.value}].date`,
-    colProps: { span: 6 },
-    component: 'RangePicker',
-    label: ' ',
-    required: true,
-  },
-  {
-    field: `field[${count.value}].phaseBudgetRatio`,
-    component: 'Input',
-    label: `预算比例`,
-    colProps: { span: 6 },
-    slot: 'phaseBudgetRatio',
-  },
-  {
-    label: '阶段预算成本',
-    field: `field[${count.value}].phaseBudgetCost`,
-    component: 'Input',
-    componentProps: {
-      suffix: '元',
-      disabled: true,
+    {
+      field: `field[${count.value}].date`,
+      colProps: { span: 6 },
+      component: 'RangePicker',
+      label: ' ',
+      required: true,
     },
-    colProps: { span: 6 },
-  },
-];
+    {
+      field: `field[${count.value}].phaseBudgetRatio`,
+      component: 'Input',
+      label: `预算比例`,
+      colProps: { span: 6 },
+      slot: 'phaseBudgetRatio',
+    },
+    {
+      label: '阶段预算成本',
+      field: `field[${count.value}].phaseBudgetCost`,
+      component: 'Input',
+      componentProps: {
+        suffix: '元',
+        disabled: true,
+      },
+      colProps: { span: 6 },
+    },
+  ];
+};
 
 export const schema: DescItem[] = [
   {
