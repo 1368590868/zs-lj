@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
 import { Button, Popconfirm, Space, Textarea, TypographyText, message } from 'ant-design-vue';
-import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import { costChargeEnum, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
 export const columns: BasicColumn[] = [
@@ -68,7 +68,7 @@ export const columns: BasicColumn[] = [
       return h(
         TypographyText,
         { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.costLeaderTime}`,
+        idx === 1 ? costChargeEnum[idx] : `${costChargeEnum[idx]} ${record.costLeaderTime ?? ''}`,
       );
     },
   },
@@ -86,7 +86,9 @@ export const columns: BasicColumn[] = [
       return h(
         TypographyText,
         { type: textType[idx] },
-        idx === 1 ? myCostStatusEnum[idx] : `${myCostStatusEnum[idx]}/${record.operationDeptTime}`,
+        idx === 1
+          ? myCostStatusEnum[idx]
+          : `${myCostStatusEnum[idx]} ${record.operationDeptTime ?? ''}`,
       );
     },
   },

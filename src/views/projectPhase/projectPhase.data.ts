@@ -31,7 +31,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '里程碑名称',
-    dataIndex: 'phaseName',
+    dataIndex: 'phaseTitle',
     width: 200,
   },
   {
@@ -45,7 +45,7 @@ export const columns: BasicColumn[] = [
 
   {
     title: '创建时间',
-    dataIndex: 'auditTime',
+    dataIndex: 'createTime',
     width: 200,
   },
 
