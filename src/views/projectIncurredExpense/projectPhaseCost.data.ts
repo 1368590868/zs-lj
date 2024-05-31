@@ -22,7 +22,10 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'phaseBudget',
-    component: 'Input',
+    component: 'InputNumber',
+    componentProps: {
+      precision: 2,
+    },
     label: '成本金额',
     suffix: '元',
     required: true,

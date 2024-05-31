@@ -164,10 +164,7 @@
 </script>
 
 <style lang="less" scoped>
-  .form-wrap {
-    // :global(.ant-form-item-control-input-content) {
-    //   display: flex;
-    //   align-items: center;
-    // }
+  :global(.ant-input-number) {
+    width: 100%;
   }
 </style>
