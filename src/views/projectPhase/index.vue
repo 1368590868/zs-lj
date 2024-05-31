@@ -42,6 +42,7 @@
       labelWidth: 120,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
+      fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
     useSearchForm: true,
     showTableSetting: true,
