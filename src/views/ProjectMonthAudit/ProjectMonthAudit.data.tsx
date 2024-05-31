@@ -174,6 +174,10 @@ export const ProjectLeaderStatus = defineComponent({
       type: String,
       default: () => 'cost',
     },
+    costStatus: {
+      type: Number,
+      default: () => 0,
+    },
   },
   setup(props, { emit }) {
     const [register, { openModal, closeModal }] = useModal();
@@ -229,7 +233,7 @@ export const ProjectLeaderStatus = defineComponent({
             onInput={handleInput}
           />
         </BasicModal>
-        {props.text === 0 ? (
+        {props.text === 0 && props.costStatus === 1 ? (
           <Space>
             <Button type="link" onClick={() => onOpenModal(1)}>
               通过

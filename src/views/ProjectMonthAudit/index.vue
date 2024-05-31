@@ -1,14 +1,6 @@
 <template>
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
-      <template #toolbar>
-        <a-button type="primary" @click="onBatchReject" :disabled="!isSelectRows">
-          批量驳回
-        </a-button>
-        <a-button type="primary" @click="onBatchPass" :disabled="!isSelectRows">
-          批量通过
-        </a-button>
-      </template>
       <!-- Column slots -->
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">意见详情</a-button>
@@ -28,6 +20,7 @@
       <template #operationDeptStatus="{ record }">
         <ProjectLeaderStatus
           :text="record.operationDeptStatus"
+          :costStatus="record.costLeaderStatus"
           :id="record.id"
           @reload="reload"
           :time="record.operationDeptTime"
@@ -70,9 +63,7 @@
     bordered: true,
     showIndexColumn: true,
     clickToRowSelect: false,
-    rowSelection: {
-      type: 'checkbox',
-    },
+
     pagination: {
       current: 1,
       pageSize: 10,
@@ -114,34 +105,6 @@
     });
   };
 
-  const onBatchReject = () => {
-    Modal.confirm({
-      title: '提示',
-      content: '确定批量驳回吗？',
-      onOk: async () => {
-        await auditApi({
-          ids: getSelectRowKeys(),
-          projectLeaderStatus: 2,
-        });
-        message.success('批量驳回成功');
-        reload();
-      },
-    });
-  };
-  const onBatchPass = () => {
-    Modal.confirm({
-      title: '提示',
-      content: '确定批量通过吗？',
-      onOk: async () => {
-        await auditApi({
-          ids: getSelectRowKeys(),
-          projectLeaderStatus: 1,
-        });
-        message.success('批量通过成功');
-        reload();
-      },
-    });
-  };
   const router = useRouter();
   const handleCostDetail = (record: Recordable) => {
     router.push({
