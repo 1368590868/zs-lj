@@ -5,6 +5,7 @@
         <a-button type="primary" v-if="showProjectModal" @click="handleCreate">
           完善项目信息
         </a-button>
+        <a-button type="primary" @click="onRefresh"> 刷新项目数据 </a-button>
         <a-button type="primary" @click="exportExcel"> 下载 </a-button>
       </template>
       <!-- bodycell slot-->
@@ -140,7 +141,9 @@
       planDate,
     });
   };
-
+  const onRefresh = () => {
+    reload();
+  };
   // 枚举转换
   const projectProgress = (record) => {
     return projectProgressEnum[record.projectProgress ?? 0];
