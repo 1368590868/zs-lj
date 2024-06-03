@@ -29,7 +29,7 @@
     statisticsProjectApi,
     statisticsProjectByDeptApi,
   } from '/@/api/project/project';
-  import { warningColorEnum, warningStatusEnum } from '/@/enums/projectControl';
+  import { warningColorEnum, warningStatusOptions } from '/@/enums/projectControl';
   import { statisticsProjectPhaseApi } from '/@/api/projectPhase/projectPhase';
 
   const router = useRouter();
@@ -64,7 +64,7 @@
   const getChartData = (data) => {
     return data.map((item) => ({
       value: item.number,
-      name: warningStatusEnum[item.warningStatus],
+      name: warningStatusOptions[item.warningStatus],
       itemStyle: {
         color: warningColorEnum[item.warningStatus],
       },

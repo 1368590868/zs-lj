@@ -21,12 +21,15 @@
             {
               label: '里程碑配置',
               onClick: handleMilestoneConfig.bind(null, record),
-              ifShow: [1, 4].includes(record.controlStatus),
+              ifShow: [
+                ControlStatusEnum.UNCONFIGURED,
+                ControlStatusEnum.DELAY_CONFIGURATION,
+              ].includes(record.controlStatus),
             },
             {
               label: '查看详情',
               onClick: handleDetail.bind(null, record),
-              ifShow: record.controlStatus === 2,
+              ifShow: record.controlStatus === ControlStatusEnum.CONTROL,
             },
             {
               label: '不需要管控',
@@ -34,7 +37,7 @@
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, false),
               },
-              ifShow: record.controlStatus === 6,
+              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_JUDGED,
             },
             {
               label: '需要管控',
@@ -42,12 +45,12 @@
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, true),
               },
-              ifShow: record.controlStatus === 6,
+              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_JUDGED,
             },
             {
               label: '延期配置',
               onClick: handleDeferConfig.bind(null, record),
-              ifShow: record.controlStatus === 7,
+              ifShow: record.controlStatus === ControlStatusEnum.DELAY_AUDIT,
             },
             {
               label: '结束管控',
@@ -55,7 +58,7 @@
                 title: '是否确认操作',
                 confirm: handleControlBtn.bind(null, record, true),
               },
-              ifShow: record.controlStatus === 3,
+              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_COMPLETED,
             },
             {
               label: '延期管控',
@@ -63,7 +66,7 @@
                 title: '是否确认操作',
                 confirm: handleControlBtn.bind(null, record, false),
               },
-              ifShow: record.controlStatus === 3,
+              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_COMPLETED,
             },
           ]"
         />
@@ -87,7 +90,11 @@
   import { computed, ref, unref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
-  import { controlStatusEnum, projectProgressEnum } from '/@/enums/projectControl';
+  import {
+    controlStatusOptions,
+    projectProgressEnum,
+    ControlStatusEnum,
+  } from '/@/enums/projectControl';
 
   const router = useRouter();
   const showProjectModal = computed(() => {
@@ -149,7 +156,7 @@
     return projectProgressEnum[record.projectProgress ?? 0];
   };
   const controlStatus = (record) => {
-    return controlStatusEnum[record.controlStatus ?? 0];
+    return controlStatusOptions[record.controlStatus ?? 0];
   };
   // 跳转详情
   const handleDetail = (record: Recordable) => {
@@ -157,6 +164,7 @@
       path: '/projectDetail',
       query: {
         id: record.id,
+        warningStatus: record.warningStatus,
       },
     });
   };

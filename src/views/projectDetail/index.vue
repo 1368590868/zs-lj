@@ -2,52 +2,89 @@
   <PageWrapper>
     <Description @register="register" />
     <div class="mt-6"></div>
-    <Card>
-      <template #title>
+    <BasicTable @register="registerTable">
+      <!-- 顶部echarts -->
+      <template #headerTop>
         <div class="flex justify-between">
           <div>工程阶段：进行中</div>
           <div class="flex"
             >项目预警状态：
-            <div :class="badgeClass('#EFAD03')">黄</div>
-            <div :class="badgeClass('#FF7455')">红</div>
-            <div :class="badgeClass('#27CB0D')">绿</div>
+            <div :class="badgeClass()" style="background: #efad03">黄</div>
+            <div :class="badgeClass()" style="background: #ff7455">红</div>
+            <div :class="badgeClass()" style="background: #27cb0d">绿</div>
           </div>
           <div>
             <Space>
-              <a-button type="primary" @click="onDetail">项目成本明细</a-button>
+              <!-- <a-button type="primary" @click="onDetail">项目成本明细</a-button> -->
+              <a-button type="primary" @click="onLogs">项目管控日志</a-button>
               <a-button type="primary" @click="onRemark">管控意见</a-button>
             </Space>
           </div>
         </div>
+        <div ref="chartRef" class="w-full min-h-200px"></div>
       </template>
-      <div ref="chartRef" class="w-full min-h-600px"></div>
-    </Card>
-    <div class="mt-6"></div>
-    <Card title="项目日志">
-      <BasicTable @register="registerTable" />
-    </Card>
+
+      <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              label: '详情',
+              onClick: onRemarkDetail.bind(null, record),
+            },
+          ]"
+        />
+      </template>
+    </BasicTable>
+
     <ProjectDetailModal @register="registerModal" @success="reload" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { Card, Space } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
-  import { detail, getLogsApi } from '/@/api/project/project';
-  import { Ref, onMounted, reactive, ref } from 'vue';
+  import { detail } from '/@/api/project/project';
+  import { Ref, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { DescItem, useDescription, Description } from '/@/components/Description';
-  import { RouteParamValueRaw, useRouter } from 'vue-router';
-  import { basicColumns } from './projectDetail.data';
+  import { useRouter } from 'vue-router';
+  import { columns, searchFormSchema } from './projectDetail.data';
   import ProjectDetailModal from './ProjectDetailModal.vue';
   import { useModal } from '/@/components/Modal';
-
+  import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi as projectPhase } from '/@/api/projectPhase/projectPhase';
   // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
-  const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
+  const { setOptions, resize } = useECharts(chartRef as Ref<HTMLDivElement>);
   const router = useRouter();
   const [registerModal, { openModal }] = useModal();
-
+  const [registerTable, { reload }] = useTable({
+    api: pageApi,
+    columns,
+    searchInfo: {
+      projectId: router.currentRoute.value.query?.id,
+    },
+    formConfig: {
+      labelWidth: 100,
+      schemas: searchFormSchema,
+      autoSubmitOnEnter: true,
+      fieldMapToTime: [['date', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD']],
+    },
+    useSearchForm: true,
+    showTableSetting: true,
+    bordered: true,
+    showIndexColumn: true,
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+    actionColumn: {
+      width: 120,
+      title: '审批意见',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
+    },
+  });
   const schema: DescItem[] = [
     {
       field: 'projectName',
@@ -85,20 +122,31 @@
     schema,
   });
 
-  // 项目操作日志
-  const [registerTable, { reload }] = useTable({
-    api: getLogsApi,
-    searchInfo: {
-      projectId: router.currentRoute.value.query.id,
-    },
-    columns: basicColumns,
-    pagination: { pageSize: 10 },
-  });
+  const badgeClass = () =>
+    `w-6 h-6 rounded-[1.5rem] text-[12px] leading-[24px] text-center text-white`;
 
-  const badgeClass = (color: string) =>
-    `bg-color-[${color}] w-6 h-6 rounded-[1.5rem] text-[12px] leading-[24px] text-center text-white`;
   onMounted(() => {
     getDetail();
+  });
+
+  const echartsData = reactive({
+    yAxis: ['第一阶段'],
+    actualCost: [0],
+    estimatedCost: [0],
+  });
+
+  (async () => {
+    const res = await projectPhase({ projectId: router.currentRoute.value.query.id });
+    const { records = [] } = res;
+    echartsData.yAxis = records.map((item) => item.phaseTitle);
+    echartsData.actualCost = records.map((item) => item.phaseOutlayCost ?? 0);
+    echartsData.estimatedCost = records.map((item) => item.phaseBudgetCost);
+    console.log(echartsData, '************');
+  })();
+
+  watchEffect(async () => {
+    const barWidth = 30; // 柱状图的宽度
+    const chartHeight = 2 * (echartsData.yAxis.length * barWidth + 50); // 计算图表的宽度，+100 是为了留出左右的边距
     setOptions({
       tooltip: {
         trigger: 'axis',
@@ -123,13 +171,13 @@
       yAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['第一阶段'],
+        data: echartsData.yAxis,
       },
       series: [
         {
           name: '实际成本',
           type: 'bar',
-          data: [18203],
+          data: echartsData.actualCost,
           label: {
             show: true,
           },
@@ -140,7 +188,7 @@
         {
           name: '预估成本',
           type: 'bar',
-          data: [19325],
+          data: echartsData.estimatedCost,
           label: {
             show: true,
           },
@@ -149,6 +197,12 @@
           },
         },
       ],
+    });
+    nextTick(() => {
+      if (chartRef.value) {
+        chartRef.value.setAttribute('style', `height: ${chartHeight}px`);
+        resize();
+      }
     });
   });
 
@@ -164,14 +218,23 @@
       dataSource,
     });
   };
-  const onDetail = () => {
+  const onLogs = () => {
     router.push({
-      path: '/projectCostDetail',
+      path: '/projectLogs',
       query: {
         id: router.currentRoute.value.query.id,
-        generalBudget: dataSource['generalBudget'],
-        totalCost: dataSource['totalCost'],
       },
     });
   };
+  const onRemarkDetail = (record: Recordable) => {
+    openModal(true, {
+      record,
+      isUpdate: false,
+    });
+  };
 </script>
+<style lang="less" scoped>
+  .vben-basic-table-form-container {
+    padding: initial;
+  }
+</style>

@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
-import { controlStatusEnum, warningStatusEnum } from '/@/enums/projectControl';
+import { controlStatusOptions, warningStatusOptions } from '/@/enums/projectControl';
 import { deptListApi } from '/@/api/project/project';
 
 export const columns: BasicColumn[] = [

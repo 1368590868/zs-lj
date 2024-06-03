@@ -1,3 +1,37 @@
+// 预警状态
+export enum WarningStatusEnum {
+  GREEN = 0,
+  YELLOW = 1,
+  RED = 2,
+}
+// 管控状态
+export enum ControlStatusEnum {
+  NONE = 0,
+  /**未配置 */
+  UNCONFIGURED = 1,
+  /**管控中 */
+  CONTROL = 2,
+  /**待完成 */
+  TO_BE_COMPLETED = 3,
+  /**延期配置 */
+  DELAY_CONFIGURATION = 4,
+  /**已结束 */
+  END = 5,
+  /**待判定 */
+  TO_BE_JUDGED = 6,
+  /**延期审核中 */
+  DELAY_AUDIT = 7,
+  /**结束审核中 */
+  END_AUDIT = 8,
+}
+
+//  预警状态
+export const warningStatusOptions = {
+  0: '正常',
+  1: '黄色预警',
+  2: '红色预警',
+};
+
 // 项目进度
 export const projectProgressEnum = {
   0: '进行中',
@@ -6,7 +40,7 @@ export const projectProgressEnum = {
 };
 
 //   管控状态
-export const controlStatusEnum = {
+export const controlStatusOptions = {
   0: '无',
   1: '未配置',
   2: '管控中',
@@ -16,13 +50,6 @@ export const controlStatusEnum = {
   6: '待判定',
   7: '延期审核中',
   8: '结束审核中',
-};
-
-//  预警状态
-export const warningStatusEnum = {
-  0: '正常',
-  1: '黄色预警',
-  2: '红色预警',
 };
 
 // 预警颜色

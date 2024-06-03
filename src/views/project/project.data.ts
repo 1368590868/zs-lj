@@ -2,10 +2,10 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import {
-  controlStatusEnum,
+  controlStatusOptions,
   projectProgressEnum,
   provinceEnum,
-  warningStatusEnum,
+  warningStatusOptions,
 } from '/@/enums/projectControl';
 import { TypographyText } from 'ant-design-vue';
 
@@ -135,8 +135,8 @@ export const searchFormSchema: FormSchema[] = [
     label: '管控状态',
     component: 'Select',
     componentProps: {
-      options: Object.keys(controlStatusEnum).map((key) => ({
-        label: controlStatusEnum[key],
+      options: Object.keys(controlStatusOptions).map((key) => ({
+        label: controlStatusOptions[key],
         value: key,
       })),
     },
@@ -150,8 +150,8 @@ export const searchFormSchema: FormSchema[] = [
     label: '预警状态',
     component: 'Select',
     componentProps: {
-      options: Object.keys(warningStatusEnum).map((key) => ({
-        label: warningStatusEnum[key],
+      options: Object.keys(warningStatusOptions).map((key) => ({
+        label: warningStatusOptions[key],
         value: key,
       })),
     },

@@ -3,9 +3,9 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag } from 'ant-design-vue';
 import {
-  controlStatusEnum,
+  controlStatusOptions,
   milestoneControlStatusEnum,
-  warningStatusEnum,
+  warningStatusOptions,
 } from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
@@ -63,7 +63,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'warningStatus',
     width: 200,
     customRender: ({ record }) => {
-      return h('span', warningStatusEnum[record?.warningStatus]);
+      return h('span', warningStatusOptions[record?.warningStatus]);
     },
   },
 ];
@@ -83,8 +83,8 @@ export const searchFormSchema: FormSchema[] = [
     label: '管控状态',
     component: 'Select',
     componentProps: {
-      options: Object.keys(controlStatusEnum).map((key) => ({
-        label: controlStatusEnum[key],
+      options: Object.keys(controlStatusOptions).map((key) => ({
+        label: controlStatusOptions[key],
         value: key,
       })),
     },
@@ -95,8 +95,8 @@ export const searchFormSchema: FormSchema[] = [
     label: '预警状态',
     component: 'Select',
     componentProps: {
-      options: Object.keys(warningStatusEnum).map((key) => ({
-        label: warningStatusEnum[key],
+      options: Object.keys(warningStatusOptions).map((key) => ({
+        label: warningStatusOptions[key],
         value: key,
       })),
     },
