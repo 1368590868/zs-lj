@@ -24,6 +24,12 @@ export enum ControlStatusEnum {
   /**结束审核中 */
   END_AUDIT = 8,
 }
+// 工程进度
+export enum ProjectProgressEnum {
+  IN_PROGRESS = 0,
+  COMPLETED = 1,
+  TO_BE_COMPLETED = 2,
+}
 
 //  预警状态
 export const warningStatusOptions = {
@@ -33,7 +39,7 @@ export const warningStatusOptions = {
 };
 
 // 项目进度
-export const projectProgressEnum = {
+export const projectProgressOptions = {
   0: '进行中',
   1: '已完成',
   2: '待完成',

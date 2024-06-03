@@ -3,7 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import {
   controlStatusOptions,
-  projectProgressEnum,
+  projectProgressOptions,
   provinceEnum,
   warningStatusOptions,
 } from '/@/enums/projectControl';
@@ -123,8 +123,8 @@ export const searchFormSchema: FormSchema[] = [
     label: '工程进度',
     component: 'Select',
     componentProps: {
-      options: Object.keys(projectProgressEnum).map((key) => ({
-        label: projectProgressEnum[key],
+      options: Object.keys(projectProgressOptions).map((key) => ({
+        label: projectProgressOptions[key],
         value: key,
       })),
     },

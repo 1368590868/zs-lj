@@ -6,12 +6,27 @@
       <!-- 顶部echarts -->
       <template #headerTop>
         <div class="flex justify-between">
-          <div>工程阶段：进行中</div>
+          <div>工程阶段：{{ getProgress }}</div>
           <div class="flex"
             >项目预警状态：
-            <div :class="badgeClass()" style="background: #efad03">黄</div>
-            <div :class="badgeClass()" style="background: #ff7455">红</div>
-            <div :class="badgeClass()" style="background: #27cb0d">绿</div>
+            <div
+              v-if="showStatus === WarningStatusEnum.YELLOW"
+              :class="badgeClass()"
+              style="background: #efad03"
+              >黄</div
+            >
+            <div
+              v-if="showStatus === WarningStatusEnum.RED"
+              :class="badgeClass()"
+              style="background: #ff7455"
+              >红</div
+            >
+            <div
+              v-if="showStatus === WarningStatusEnum.GREEN"
+              :class="badgeClass()"
+              style="background: #27cb0d"
+              >绿</div
+            >
           </div>
           <div>
             <Space>
@@ -44,13 +59,14 @@
   import { Card, Space } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
-  import { Ref, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue';
+  import { Ref, computed, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { DescItem, useDescription, Description } from '/@/components/Description';
   import { useRouter } from 'vue-router';
   import { columns, searchFormSchema } from './projectDetail.data';
   import ProjectDetailModal from './ProjectDetailModal.vue';
   import { useModal } from '/@/components/Modal';
+  import { WarningStatusEnum, projectProgressOptions } from '/@/enums/projectControl';
   import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { pageApi as projectPhase } from '/@/api/projectPhase/projectPhase';
   // 图表
@@ -120,6 +136,12 @@
     bordered: false,
     data: dataSource,
     schema,
+  });
+  const showStatus = computed(() => {
+    return Number(router.currentRoute.value.query?.warningStatus);
+  });
+  const getProgress = computed<string>(() => {
+    return projectProgressOptions[Number(router.currentRoute.value.query?.projectProgress)];
   });
 
   const badgeClass = () =>

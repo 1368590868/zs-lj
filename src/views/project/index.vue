@@ -92,7 +92,7 @@
   import { useRouter } from 'vue-router';
   import {
     controlStatusOptions,
-    projectProgressEnum,
+    projectProgressOptions,
     ControlStatusEnum,
   } from '/@/enums/projectControl';
 
@@ -153,7 +153,7 @@
   };
   // 枚举转换
   const projectProgress = (record) => {
-    return projectProgressEnum[record.projectProgress ?? 0];
+    return projectProgressOptions[record.projectProgress ?? 0];
   };
   const controlStatus = (record) => {
     return controlStatusOptions[record.controlStatus ?? 0];
@@ -165,6 +165,7 @@
       query: {
         id: record.id,
         warningStatus: record.warningStatus,
+        projectProgress: record.projectProgress,
       },
     });
   };
