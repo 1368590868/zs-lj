@@ -12,14 +12,26 @@
         </div>
       </template>
       <BasicForm @register="registerGroup" @submit="handleSubmitGroup">
+        <template #phaseTitle="{ model, field }">
+          <!-- 需要使用field判断 -->
+          <Input required :disabled="phaseTitleDisabled(field)" v-model:value="model[field]" />
+        </template>
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumber
             :min="0"
             :max="100"
-            :disabled="!isDefer"
+            :disabled="isDefer !== '1'"
             :formatter="(value) => `${value}%`"
             :parser="(value) => value.replace('%', '')"
             v-model:value="model[field]"
+            @change="
+              () => {
+                model[`field[${field.match(/\d+/)?.[0]}].phaseBudgetCost`] = _.round(
+                  dataSource['generalBudget'] * (model[field] / 100),
+                  2,
+                ).toFixed(2);
+              }
+            "
           />
         </template>
       </BasicForm>
@@ -51,7 +63,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicForm, useForm } from '/@/components/Form';
-  import { Card, InputNumber, Table, Space, message, Modal } from 'ant-design-vue';
+  import { Card, InputNumber, Table, Space, message, Modal, Input } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
   import { computed, createVNode, nextTick, onMounted, reactive, ref, unref } from 'vue';
@@ -80,6 +92,7 @@
   const tipsColumns = [{ title: 'tips', dataIndex: 'title', key: 'tips' }];
 
   const count = ref(0);
+
   const [
     registerGroup,
     {
@@ -105,10 +118,22 @@
     schema,
   });
 
+  const phaseTitleDisabled = (field: string) => {
+    // 找出最后一个阶段索引
+    const currentLength = JSON.parse(templateData.value[0]['phaseBudgetRatio'])?.length;
+    return (
+      isDefer.value === '1' &&
+      templateData.value.length > 0 &&
+      currentLength !== +(field.match(/\d+/)?.[0] ?? 0)
+    );
+  };
+
   onMounted(async () => {
     // 是否延期配置 1是 0否
     await getDetail();
-    await getPhaseList();
+    if (isDefer.value === '1') {
+      await getPhaseList();
+    }
   });
   const getPhaseList = async () => {
     const res = await pageApi({ projectId: router.currentRoute.value.query.id });
