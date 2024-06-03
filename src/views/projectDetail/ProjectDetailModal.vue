@@ -7,21 +7,22 @@
     @ok="handleSubmit"
   >
     <div>
-      <BasicForm @register="registerFrom" />
+      <BasicForm @register="registerFrom" v-show="isUpdate" />
+      <div v-show="!isUpdate">审批意见: {{ data.auditOpinion }}</div>
     </div>
   </BasicModal>
 </template>
 
 <script setup lang="ts">
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { BasicForm, useForm } from '/@/components/Form';
-  import { computed, reactive, ref, unref } from 'vue';
+  import { BasicForm, FormSchema, useForm } from '/@/components/Form';
+  import { computed, ref, unref, watchEffect } from 'vue';
   import { message } from 'ant-design-vue';
   import { formSchema } from './projectDetail.data';
   import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
   import { useUserStore } from '/@/store/modules/user';
-
-  const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
+  const isUpdate = ref(true);
+  const [registerFrom, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 120,
     schemas: formSchema,
     showActionButtonGroup: false,
@@ -29,24 +30,38 @@
       span: 24,
     },
   });
-  const isUpdate = ref(true);
+  const data = ref({ auditOpinion: '' });
+
   const emits = defineEmits(['success', 'register']);
   const [register, { setModalProps, closeModal }] = useModalInner((data) => {
     resetFields();
     setModalProps({ confirmLoading: false });
-    console.log(data.dataSource);
+    isUpdate.value = data.isUpdate;
     if (unref(isUpdate)) {
       setFieldsValue({
         ...data.dataSource,
         auditOpinionFlag: 0,
       });
+    } else {
+      data.value = data.dataSource;
     }
     setFieldsValue({});
   });
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
+  const getTitle = computed(() => (!unref(isUpdate) ? '审批意见' : '管控意见填写'));
+
+  watchEffect(() => {
+    // 如果isUpdate变化，更新表达label
+    const formSchemas = formSchema.map((item: FormSchema & any) => {
+      if (item.field === 'auditOpinion') {
+        item.label = unref(isUpdate) ? '管控意见' : '审批意见';
+        item.componentProps!.placeholder = unref(isUpdate) ? '请输入管控意见' : '请输入审批意见';
+      }
+      return item;
+    });
+    updateSchema(formSchemas);
+  });
 
   const userStore = useUserStore();
-
   const getUserInfo = computed(() => {
     const { nickName = '' } = userStore.getUserInfo || {};
     return nickName;
@@ -54,6 +69,7 @@
 
   //   提交
   const handleSubmit = async () => {
+    if (!isUpdate.value) return closeModal();
     try {
       const values = await validate();
       setModalProps({ confirmLoading: true });
