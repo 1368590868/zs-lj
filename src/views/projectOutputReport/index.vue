@@ -1,12 +1,18 @@
 <template>
   <div>
-    <BasicTable
-      @register="registerTable"
-      @selection-change="onSelectionChange"
-      :beforeEditSubmit="beforeEditSubmit"
-    >
+    <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
         <a-button type="primary" @click="exportExcel"> 下载 </a-button>
+      </template>
+      <template #action="{ record }">
+        <TableAction
+          :actions="[
+            {
+              label: record.controlStatus === 1 ? '查看详情' : '编辑',
+              onClick: onHandleEdit.bind(null, record),
+            },
+          ]"
+        />
       </template>
     </BasicTable>
     <ProjectPhaseModal @register="registerModal" @success="handleSuccess" />
@@ -14,7 +20,7 @@
 </template>
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import ProjectPhaseModal from './projectOutputReportModal.vue';
   import { columns, searchFormSchema } from './projectOutputReport.data';
   import { reactive } from 'vue';
@@ -22,6 +28,7 @@
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import { exportApi, pageApi } from '/@/api/projectOutputValue/projectOutputValue';
+  import { useProjectControl } from '/@/store/modules/projectControl';
   const router = useRouter();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
@@ -34,6 +41,12 @@
       labelWidth: 120,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
+    },
+    actionColumn: {
+      width: 120,
+      title: '操作',
+      dataIndex: 'action',
+      slots: { customRender: 'action' },
     },
     useSearchForm: true,
     showTableSetting: true,
@@ -52,9 +65,11 @@
     reload();
   }
 
-  async function beforeEditSubmit({ record, index, key, value }) {
-    console.log('单元格数据正在准备提交', { record, index, key, value });
-  }
+  const store = useProjectControl();
+  const onHandleEdit = (record) => {
+    store.setReportData(record);
+    router.push({ path: '/projectReportDetail' });
+  };
 
   // 导出
   const exportExcel = async () => {
