@@ -22,14 +22,14 @@
               label: '里程碑配置',
               onClick: handleMilestoneConfig.bind(null, record),
               ifShow: [
-                ControlStatusEnum.UNCONFIGURED,
-                ControlStatusEnum.DELAY_CONFIGURATION,
+                +ControlStatusEnum.UNCONFIGURED,
+                +ControlStatusEnum.DELAY_CONFIGURATION,
               ].includes(record.controlStatus),
             },
             {
               label: '查看详情',
               onClick: handleDetail.bind(null, record),
-              ifShow: record.controlStatus === ControlStatusEnum.CONTROL,
+              ifShow: record.controlStatus === +ControlStatusEnum.CONTROL,
             },
             {
               label: '不需要管控',
@@ -37,7 +37,7 @@
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, false),
               },
-              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_JUDGED,
+              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED,
             },
             {
               label: '需要管控',
@@ -45,12 +45,12 @@
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, true),
               },
-              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_JUDGED,
+              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED,
             },
             {
               label: '延期配置',
               onClick: handleDeferConfig.bind(null, record),
-              ifShow: record.controlStatus === ControlStatusEnum.DELAY_AUDIT,
+              ifShow: record.controlStatus === +ControlStatusEnum.DELAY_AUDIT,
             },
             {
               label: '结束管控',
@@ -58,7 +58,7 @@
                 title: '是否确认操作',
                 confirm: handleControlBtn.bind(null, record, true),
               },
-              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_COMPLETED,
+              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED,
             },
             {
               label: '延期管控',
@@ -66,7 +66,7 @@
                 title: '是否确认操作',
                 confirm: handleControlBtn.bind(null, record, false),
               },
-              ifShow: record.controlStatus === ControlStatusEnum.TO_BE_COMPLETED,
+              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED,
             },
           ]"
         />

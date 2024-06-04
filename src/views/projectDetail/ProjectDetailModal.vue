@@ -52,7 +52,6 @@
       });
     } else {
       setModalProps({ confirmLoading: true });
-      console.log(data, 'data');
       const projectPhaseCostId = data.record.id;
       // 获取审批意见详情
       const res = await pageApi({ projectPhaseCostId }).finally(() => {

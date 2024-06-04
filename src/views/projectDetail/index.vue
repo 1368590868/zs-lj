@@ -138,7 +138,7 @@
     schema,
   });
   const showStatus = computed(() => {
-    return Number(router.currentRoute.value.query?.warningStatus);
+    return router.currentRoute.value.query?.warningStatus;
   });
   const getProgress = computed<string>(() => {
     return projectProgressOptions[Number(router.currentRoute.value.query?.projectProgress)];

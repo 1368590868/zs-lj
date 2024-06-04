@@ -1,28 +1,28 @@
 // 预警状态
 export enum WarningStatusEnum {
-  GREEN = 0,
-  YELLOW = 1,
-  RED = 2,
+  GREEN = '0',
+  YELLOW = '1',
+  RED = '2',
 }
 // 管控状态
 export enum ControlStatusEnum {
-  NONE = 0,
+  NONE = '0',
   /**未配置 */
-  UNCONFIGURED = 1,
+  UNCONFIGURED = '1',
   /**管控中 */
-  CONTROL = 2,
+  CONTROL = '2',
   /**待完成 */
-  TO_BE_COMPLETED = 3,
+  TO_BE_COMPLETED = '3',
   /**延期配置 */
-  DELAY_CONFIGURATION = 4,
+  DELAY_CONFIGURATION = '4',
   /**已结束 */
-  END = 5,
+  END = '5',
   /**待判定 */
-  TO_BE_JUDGED = 6,
+  TO_BE_JUDGED = '6',
   /**延期审核中 */
-  DELAY_AUDIT = 7,
+  DELAY_AUDIT = '7',
   /**结束审核中 */
-  END_AUDIT = 8,
+  END_AUDIT = '8',
 }
 // 工程进度
 export enum ProjectProgressEnum {
