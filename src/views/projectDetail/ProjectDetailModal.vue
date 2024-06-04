@@ -5,6 +5,7 @@
     :title="getTitle"
     width="700px"
     @ok="handleSubmit"
+    :show-cancel-btn="isUpdate"
   >
     <div>
       <BasicForm @register="registerFrom" v-show="isUpdate" />
