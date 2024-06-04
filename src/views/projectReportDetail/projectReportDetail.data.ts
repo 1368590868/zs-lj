@@ -286,3 +286,47 @@ export const formSchema: FormSchema[] = [
     },
   },
 ];
+
+export const ratioOptions = {
+  janRatio: '1月',
+  fedRatio: '2月',
+  marRatio: '3月',
+  aprRatio: '4月',
+  mayRatio: '5月',
+  junRatio: '6月',
+  julRatio: '7月',
+  augRatio: '8月',
+  sepRatio: '9月',
+  octRatio: '10月',
+  novRatio: '11月',
+  decRatio: '12月',
+};
+export const outputValueOptions = {
+  janOutputValue: '1月',
+  fedOutputValue: '2月',
+  marOutputValue: '3月',
+  aprOutputValue: '4月',
+  mayOutputValue: '5月',
+  junOutputValue: '6月',
+  julOutputValue: '7月',
+  augOutputValue: '8月',
+  sepOutputValue: '9月',
+  octOutputValue: '10月',
+  novOutputValue: '11月',
+  decOutputValue: '12月',
+};
+
+export const costOptions = {
+  janCost: '1月',
+  fedCost: '2月',
+  marCost: '3月',
+  aprCost: '4月',
+  mayCost: '5月',
+  junCost: '6月',
+  julCost: '7月',
+  augCost: '8月',
+  sepCost: '9月',
+  octCost: '10月',
+  novCost: '11月',
+  decCost: '12月',
+};
