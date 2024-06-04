@@ -9,7 +9,12 @@
   >
     <div>
       <BasicForm @register="registerFrom" v-show="isUpdate" />
-      <div v-show="!isUpdate">审批意见: {{ data.auditOpinion }}</div>
+      <div v-show="!isUpdate">
+        <div v-for="item of detail" :key="item.id" class="flex justify-between">
+          <span>{{ item.createByName }}: {{ item.auditOpinion }}</span>
+          <span class="text-xs">{{ item.createTime }}</span>
+        </div></div
+      >
     </div>
   </BasicModal>
 </template>
@@ -22,6 +27,7 @@
   import { formSchema } from './projectDetail.data';
   import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
   import { useUserStore } from '/@/store/modules/user';
+  import { pageApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
   const isUpdate = ref(true);
   const [registerFrom, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 120,
@@ -31,10 +37,11 @@
       span: 24,
     },
   });
-  const data = ref({ auditOpinion: '' });
 
   const emits = defineEmits(['success', 'register']);
-  const [register, { setModalProps, closeModal }] = useModalInner((data) => {
+  const detail = ref<Recordable[]>([]);
+
+  const [register, { setModalProps, closeModal }] = useModalInner(async (data) => {
     resetFields();
     setModalProps({ confirmLoading: false });
     isUpdate.value = data.isUpdate;
@@ -44,7 +51,14 @@
         auditOpinionFlag: 0,
       });
     } else {
-      data.value = data.dataSource;
+      setModalProps({ confirmLoading: true });
+      console.log(data, 'data');
+      const projectPhaseCostId = data.record.id;
+      // 获取审批意见详情
+      const res = await pageApi({ projectPhaseCostId }).finally(() => {
+        setModalProps({ confirmLoading: false });
+      });
+      detail.value = res.records;
     }
     setFieldsValue({});
   });
