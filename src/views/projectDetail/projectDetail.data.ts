@@ -83,7 +83,6 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }) => {
       return h(
         TypographyText,
-        { type: 'success' },
         `${record.projectOwnerName ?? ''} ${record.projectLeaderTime ?? ''}`,
       );
     },
@@ -94,11 +93,7 @@ export const columns: BasicColumn[] = [
     width: 200,
     slots: { customRender: 'costLeaderStatus' },
     customRender: ({ record }) => {
-      return h(
-        TypographyText,
-        { type: 'success' },
-        `${record.costOwnerName ?? ''} ${record.costLeaderTime ?? ''}`,
-      );
+      return h(TypographyText, `${record.costOwnerName ?? ''} ${record.costLeaderTime ?? ''}`);
     },
   },
   {
@@ -108,7 +103,6 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }) => {
       return h(
         TypographyText,
-        { type: 'success' },
         `${record?.operationOwnerName ?? ''} ${record.operationDeptTime ?? ''}`,
       );
     },
