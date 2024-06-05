@@ -191,6 +191,10 @@ export const formSchema: FormSchema[] = [
           value: 0,
         },
       ],
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
   },
   {
@@ -216,6 +220,10 @@ export const formSchema: FormSchema[] = [
           value: 0,
         },
       ],
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     label: `是否签订租赁合同`,
     helpMessage: '租赁设备是否全部签订租赁合同',
@@ -246,6 +254,10 @@ export const formSchema: FormSchema[] = [
           value: 0,
         },
       ],
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     label: `租赁设备是否在有效期`,
     helpMessage: '租赁设备的计量证书是否全部在有效期内',

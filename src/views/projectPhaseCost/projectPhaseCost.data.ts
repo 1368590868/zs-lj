@@ -104,6 +104,10 @@ export const searchFormSchema: FormSchema[] = [
         label: costSubjectEnum[key],
         value: key,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },

@@ -130,6 +130,9 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       options: Object.values(costSubjectEnum).map((val) => ({
         label: val,
         value: val,

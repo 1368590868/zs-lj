@@ -386,21 +386,6 @@ export const columns: BasicColumn[] = [
         customRender: ({ record }) => {
           return h('div', record.equipmentLeaseStatus ? '是' : '否');
         },
-        editComponent: 'Select',
-        edit: true,
-        editable: true,
-        editComponentProps: {
-          options: [
-            {
-              label: '是',
-              value: 1,
-            },
-            {
-              label: '否',
-              value: 0,
-            },
-          ],
-        },
       },
       {
         title: '租赁的检测设备数量',

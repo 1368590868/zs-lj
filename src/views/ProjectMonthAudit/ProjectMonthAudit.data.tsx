@@ -76,6 +76,10 @@ export const searchFormSchema: FormSchema[] = [
         label: myCostStatusEnum[key],
         value: key,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },
@@ -88,6 +92,10 @@ export const searchFormSchema: FormSchema[] = [
         label: myCostStatusEnum[key],
         value: key,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },
@@ -118,6 +126,10 @@ export const formEditSchema: FormSchema[] = [
         label: costSubjectEnum[key],
         value: key,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       getPopupContainer: () => document.body,
     },
     required: true,

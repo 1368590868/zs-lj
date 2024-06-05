@@ -218,6 +218,10 @@ export const formSchema: FormSchema[] = [
     required: true,
     componentProps: {
       options: provinceEnum.map((x) => ({ label: x.name, value: x.name })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
   },
   {
@@ -236,6 +240,10 @@ export const formSchema: FormSchema[] = [
           value: 0,
         },
       ],
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
   },
   {
@@ -254,6 +262,10 @@ export const formSchema: FormSchema[] = [
           value: 0,
         },
       ],
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
   },
   {

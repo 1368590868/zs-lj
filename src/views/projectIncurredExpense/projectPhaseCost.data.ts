@@ -13,10 +13,12 @@ export const formSchema: FormSchema[] = [
     component: 'Select',
     label: '成本科目',
     componentProps: {
-      options: Object.values(costSubjectEnum).map((val) => ({
-        label: val,
-        value: val,
-      })),
+      options: Object.values(costSubjectEnum)
+        .filter((x) => x !== '人力成本')
+        .map((val) => ({
+          label: val,
+          value: val,
+        })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
