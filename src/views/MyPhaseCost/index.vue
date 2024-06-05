@@ -10,6 +10,7 @@
             {
               label: '修改',
               onClick: handleEditModal.bind(null, record),
+              ifShow: record.projectLeaderStatus !== ProjectOwnerStatusEnum.PASSED,
             },
             {
               label: '删除',
@@ -17,6 +18,7 @@
                 title: '确定删除这条记录吗？',
                 confirm: handleDelete.bind(null, record),
               },
+              ifShow: record.projectLeaderStatus !== ProjectOwnerStatusEnum.PASSED,
             },
           ]"
         />
@@ -35,6 +37,8 @@
   import { reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
   import MyPhaseEditModal from './MyPhaseEditModal.vue';
+  import { ProjectOwnerStatusEnum } from '/@/enums/projectControl';
+
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
   const [registerTable, { reload }] = useTable({

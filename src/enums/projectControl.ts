@@ -30,7 +30,15 @@ export enum ProjectProgressEnum {
   COMPLETED = 1,
   TO_BE_COMPLETED = 2,
 }
-
+// 项目负责人审核状态
+export enum ProjectOwnerStatusEnum {
+  /**待审核 */
+  TO_BE_AUDITED = 0,
+  /**通过 */
+  PASSED = 1,
+  /**驳回 */
+  REJECTED = 2,
+}
 //  预警状态
 export const warningStatusOptions = {
   0: '正常',
