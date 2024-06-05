@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
-        <a-button type="primary" v-if="showProjectModal" @click="handleCreate">
+        <a-button type="primary" :disabled="!showProjectModal" @click="handleCreate">
           完善项目信息
         </a-button>
         <a-button type="primary" @click="onRefresh"> 刷新项目数据 </a-button>
@@ -84,6 +84,7 @@
     exportApi,
     controlEndApplyApi,
     controlExtensionApplyApi,
+    refreshProjectApi,
   } from '/@/api/project/project';
   import ProjectModal from './ProjectModal.vue';
   import { columns, searchFormSchema } from './project.data';
@@ -98,7 +99,9 @@
 
   const router = useRouter();
   const showProjectModal = computed(() => {
-    return getSelectRows().length && getSelectRows()[0].controlStatus === 1;
+    return (
+      getSelectRows().length && getSelectRows()[0].controlStatus === +ControlStatusEnum.UNCONFIGURED
+    );
   });
 
   const [registerModal, { openModal }] = useModal();
@@ -148,7 +151,8 @@
       planDate,
     });
   };
-  const onRefresh = () => {
+  const onRefresh = async () => {
+    await refreshProjectApi();
     reload();
   };
   // 枚举转换
@@ -176,13 +180,6 @@
         id: record.id,
         isDefer: 0,
       },
-    });
-  };
-  // 编辑项目管理 Modal
-  const handleEditModal = (record: Recordable) => {
-    openModal(true, {
-      record,
-      isUpdate: true,
     });
   };
   // 管控项目确认

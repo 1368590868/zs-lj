@@ -22,6 +22,7 @@ enum Api {
   statisticsProjectByDept = `${prefix}/project/statisticsProjectByDept`,
   deptList = `${prefix}/project/deptList`,
   deptProjectStatistics = `${prefix}/project/deptProjectStatistics`,
+  refreshProject = `${prefix}/project/refreshProject`,
 }
 
 /**
@@ -123,4 +124,9 @@ export const deptListApi = () => {
 // 根据科室统计项目预算和成本
 export const deptProjectStatisticsApi = () => {
   return defHttp.get({ url: Api.deptProjectStatistics });
+};
+
+// 刷新项目
+export const refreshProjectApi = () => {
+  return defHttp.get({ url: Api.refreshProject });
 };
