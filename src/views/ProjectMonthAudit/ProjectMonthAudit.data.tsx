@@ -26,6 +26,9 @@ export const columns: BasicColumn[] = [
     title: '审核金额',
     dataIndex: 'monthBudget',
     width: 200,
+    customRender: ({ record }) => {
+      return useCurrencyFormatter(record.monthBudget);
+    },
   },
   {
     title: '成本明细',
@@ -33,7 +36,12 @@ export const columns: BasicColumn[] = [
     width: 200,
     slots: { customRender: 'costDetail' },
   },
-
+  {
+    title: '人力成本填写（元）',
+    dataIndex: 'personCost',
+    width: 200,
+    slots: { customRender: 'personCost' },
+  },
   {
     title: '成本负责人审核',
     dataIndex: 'costLeaderStatus',
@@ -164,6 +172,7 @@ export const formEditSchema: FormSchema[] = [
 import { BasicModal, useModal } from '/@/components/Modal';
 import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
 import { useUserStore } from '/@/store/modules/user';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
   props: {

@@ -27,24 +27,50 @@
           type="operation"
         />
       </template>
+      <template #personCost="{ record }">
+        <Space>
+          <span v-if="record.personCost">
+            {{ useCurrencyFormatter(record.personCost ?? 0) }}
+          </span>
+
+          <TableAction
+            :actions="[
+              {
+                icon: 'ant-design:edit-outlined',
+                ifShow: !!record.personCost,
+                onClick: onPersonCost.bind(null, record),
+              },
+              {
+                label: '填写',
+                ifShow: !record.personCost,
+                onClick: onPersonCost.bind(null, record),
+              },
+            ]"
+          />
+        </Space>
+      </template>
     </BasicTable>
     <MyPhaseCostModal @register="registerModal" />
     <MyPhaseEditModal @register="registerEditModal" @success="handleSuccess" />
+    <PersonCostModal @register="registerPersonCostModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
-  import { Modal, message } from 'ant-design-vue';
-  import { BasicTable, useTable } from '/@/components/Table';
+  import { Modal, Space, message } from 'ant-design-vue';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { auditApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import MyPhaseCostModal from './ProjectMonthAuditModal.vue';
   import { columns, searchFormSchema, ProjectLeaderStatus } from './ProjectMonthAudit.data';
   import { computed, reactive } from 'vue';
+  import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { useModal } from '/@/components/Modal';
   import MyPhaseEditModal from './ProjectMonthAuditEditModal.vue';
   import { pageApi } from '/@/api/projectMonthAudit/projectMonthAudit';
   import { useRouter } from 'vue-router';
+  import PersonCostModal from './personCostModal.vue';
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
+  const [registerPersonCostModal, { openModal: openPersonCost }] = useModal();
   const [registerTable, { reload, getSelectRowKeys, getSelectRows }] = useTable({
     api: pageApi,
     columns,
@@ -82,17 +108,10 @@
       isUpdate: true,
     });
   };
-  const handleEditModal = (record: Recordable) => {
-    openEditModal(true, {
+  const onPersonCost = (record: Recordable) => {
+    openPersonCost(true, {
       record,
     });
-  };
-  const handleDelete = async (record: Recordable) => {
-    try {
-      await removeApi(record.id);
-      message.success('删除成功');
-      reload();
-    } catch (error) {}
   };
   // 成功
   function handleSuccess() {

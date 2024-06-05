@@ -31,6 +31,7 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     componentProps: {
       precision: 2,
+      min: 0,
     },
     label: '成本金额',
     suffix: '元',

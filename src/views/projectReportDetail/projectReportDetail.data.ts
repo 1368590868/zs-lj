@@ -200,6 +200,9 @@ export const formSchema: FormSchema[] = [
   {
     field: 'equipmentLeaseAmount',
     component: 'InputNumber',
+    componentProps: {
+      min: 0,
+    },
     label: `租赁设备数量`,
     helpMessage: '租赁的检测设备数量',
     colProps: {

@@ -87,8 +87,7 @@ export const costSubjectEnum = {
 export const milestoneControlStatusEnum = {
   0: '待开始',
   1: '进行中',
-  2: '待审核',
-  3: '已完成',
+  2: '已结束',
 };
 
 // 项目类型

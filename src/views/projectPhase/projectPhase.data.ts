@@ -17,7 +17,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '项目编号',
-    dataIndex: 'projectId',
+    dataIndex: 'projectNumber',
     width: 200,
   },
   {
@@ -93,8 +93,8 @@ export const searchFormSchema: FormSchema[] = [
     label: '管控状态',
     component: 'Select',
     componentProps: {
-      options: Object.keys(controlStatusOptions).map((key) => ({
-        label: controlStatusOptions[key],
+      options: Object.keys(milestoneControlStatusEnum).map((key) => ({
+        label: milestoneControlStatusEnum[key],
         value: key,
       })),
       showSearch: true,
