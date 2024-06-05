@@ -8,6 +8,7 @@ import {
   warningStatusOptions,
 } from '/@/enums/projectControl';
 import { TypographyText } from 'ant-design-vue';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 
 export const columns: BasicColumn[] = [
   {
@@ -56,11 +57,6 @@ export const columns: BasicColumn[] = [
     dataIndex: 'deptName',
     width: 200,
   },
-  //   {
-  //     title: '业务类型编码',
-  //     dataIndex: 'businessTypeCode',
-  //     width: 200,
-  //   },
   {
     title: '业务类型',
     dataIndex: 'businessTypeName',
@@ -70,6 +66,9 @@ export const columns: BasicColumn[] = [
     title: '总预算（元）',
     dataIndex: 'generalBudget',
     width: 200,
+    customRender: ({ record }) => {
+      return useCurrencyFormatter(record.generalBudget);
+    },
   },
   {
     title: '工程计划时间',

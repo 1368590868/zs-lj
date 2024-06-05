@@ -20,6 +20,7 @@
   import { reactive } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useRouter } from 'vue-router';
+  import moment from 'moment';
   import { findYearAndMothApi } from '/@/api/projectOutputValue/projectOutputValue';
   const router = useRouter();
   const [registerTable, { reload }] = useTable({
@@ -53,7 +54,7 @@
     router.push({
       path: '/projectOutputReport',
       query: {
-        outputValueMonth: replacedString(`${record.year}-${record.month}-26`),
+        outputValueMonth: moment(`${record.year}-${record.month}`).format('YYYY-MM') + '-26',
       },
     });
   };
@@ -62,9 +63,5 @@
     e.rows.forEach((it) => {
       selectId.push(it.id);
     });
-  };
-  const replacedString = (day: string) => {
-    const month = day.split('-')[1];
-    return day.replace(month, month.length === 1 ? `0${month}` : month);
   };
 </script>
