@@ -54,6 +54,7 @@
   import { Card, Divider, message } from 'ant-design-vue';
   import { BasicForm, useForm, ApiSelect } from '/@/components/Form';
   import { Time } from '/@/components/Time';
+  import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';
 
   import { detail, getProjectNameAndId } from '/@/api/project/project';
   import { addApi } from '/@/api/projectPhaseCost/projectPhaseCost';
@@ -147,12 +148,19 @@
     return nickName;
   });
 
+  const chartData = ref({});
+  const getFindCurrent = async (id) => {
+    const res = await findNowPhasesByProjectIdApi(id);
+    chartData.value = res;
+  };
+
   /**修改项目 */
   async function handleProjectChange(id) {
     showBar.value = !!id;
     const data = await detail(id);
     Object.assign(projectDetail, data);
     console.log(projectDetail, data);
+    getFindCurrent(id);
   }
 
   async function handleSubmit() {

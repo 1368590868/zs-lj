@@ -1,7 +1,7 @@
 <template>
-  <PageWrapper>
-    <Card title="项目日志">
-      <BasicTable @register="registerTable" />
+  <PageWrapper title="项目日志">
+    <Card>
+      <BasicTable @register="registerTable" :canResize="true" />
     </Card>
   </PageWrapper>
 </template>

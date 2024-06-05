@@ -26,6 +26,7 @@ export const formSchema = (count): FormSchema[] => {
       label: `里程碑${count.value + 1}`,
       colProps: { span: 6 },
       slot: 'phaseTitle',
+      required: true,
     },
     {
       field: `field[${count.value}].date`,

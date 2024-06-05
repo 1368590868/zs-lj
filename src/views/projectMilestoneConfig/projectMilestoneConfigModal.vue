@@ -6,7 +6,9 @@
     width="70vw"
     @ok="handleSubmit"
   >
-    <div><BasicTable @register="registerTable" /> </div>
+    <div class="max-h-[60vh] flex flex-col"
+      ><BasicTable @register="registerTable" :canResize="false" />
+    </div>
   </BasicModal>
 </template>
 

@@ -246,7 +246,7 @@
     router.push('/projectPhase');
   };
   const onCancel = () => {
-    router.push('/project/projectList');
+    router.go(-1);
   };
 
   interface FormDataItem {
