@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
-import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import { costChargeEnum, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
   {
@@ -56,8 +56,8 @@ export const columns: BasicColumn[] = [
         TypographyText,
         { type: textType[idx] },
         idx === 1
-          ? myCostStatusEnum[idx]
-          : `${myCostStatusEnum[idx] ?? ''} ${record.projectLeaderTime ?? ''}`,
+          ? costChargeEnum[idx]
+          : `${costChargeEnum[idx] ?? ''} ${record.projectLeaderTime ?? ''}`,
       );
     },
   },
@@ -76,8 +76,8 @@ export const columns: BasicColumn[] = [
         TypographyText,
         { type: textType[idx] },
         idx === 1
-          ? myCostStatusEnum[idx]
-          : `${myCostStatusEnum[idx] ?? ''} ${record.costLeaderTime ?? ''}`,
+          ? costChargeEnum[idx]
+          : `${costChargeEnum[idx] ?? ''} ${record.costLeaderTime ?? ''}`,
       );
     },
   },
@@ -96,8 +96,8 @@ export const columns: BasicColumn[] = [
         TypographyText,
         { type: textType[idx] },
         idx === 1
-          ? myCostStatusEnum[idx]
-          : `${myCostStatusEnum[idx] ?? ''} ${record.operationDeptTime ?? ''}`,
+          ? costChargeEnum[idx]
+          : `${costChargeEnum[idx] ?? ''} ${record.operationDeptTime ?? ''}`,
       );
     },
   },
