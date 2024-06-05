@@ -12,7 +12,7 @@ export const basicColumns: BasicColumn[] = [
     width: 200,
   },
   {
-    title: '备注',
+    title: '操作记录',
     dataIndex: 'logText',
   },
 ];

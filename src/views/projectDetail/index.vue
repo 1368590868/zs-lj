@@ -7,6 +7,7 @@
       <template #headerTop>
         <div class="flex justify-between">
           <div>工程阶段：{{ getProgress }}</div>
+          <div>实际成本：{{ getTotleCost }}</div>
           <div class="flex"
             >项目预警状态：
             <div
@@ -69,6 +70,7 @@
   import { WarningStatusEnum, projectProgressOptions } from '/@/enums/projectControl';
   import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { pageApi as projectPhase } from '/@/api/projectPhase/projectPhase';
+  import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions, resize } = useECharts(chartRef as Ref<HTMLDivElement>);
@@ -109,6 +111,9 @@
     {
       field: 'generalBudget',
       label: '项目预算',
+      render: (value) => {
+        return `${useCurrencyFormatter(value)} 元`;
+      },
     },
     {
       field: 'date',
@@ -142,6 +147,9 @@
   });
   const getProgress = computed<string>(() => {
     return projectProgressOptions[Number(router.currentRoute.value.query?.projectProgress)];
+  });
+  const getTotleCost = computed(() => {
+    return useCurrencyFormatter(dataSource['totalCost']) + ' 元';
   });
 
   const badgeClass = () =>
