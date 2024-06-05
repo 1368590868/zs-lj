@@ -27,8 +27,8 @@
         <!-- Footer Slot  -->
         <template #formFooter>
           <div class="flex justify-center gap-6">
-            <a-button @click="resetFields">返回</a-button>
-            <a-button type="primary" @click="handleSubmit">提交</a-button>
+            <a-button class="w-[150px]" @click="resetFields">返回</a-button>
+            <a-button class="w-[150px]" type="primary" @click="handleSubmit">提交</a-button>
           </div>
         </template>
       </BasicForm>
@@ -37,7 +37,7 @@
         <h2>项目基础信息</h2>
         <div class="flex justify-between mb-4">
           <div>项目名称:{{ projectDetail.projectName }}</div>
-          <div>项目预算：{{ projectDetail.generalBudget }}</div>
+          <div>项目预算：{{ useCurrencyFormatter(projectDetail.generalBudget) }} 元</div>
           <div
             >工程计划时间：{{ projectDetail.planStartDate }} - {{ projectDetail.planEndDate }}</div
           >
@@ -45,9 +45,10 @@
           <div>项目负责人：{{ projectDetail.projectOwnerName }}</div>
           <div>成本负责人：{{ projectDetail.costLeader }}</div>
         </div>
-        <div ref="chartRef" class="w-full min-h-600px"></div>
+        <div ref="chartRef" class="w-full min-h-200px"></div>
       </div>
     </Card>
+    <TipsModal @register="tipsRegister" />
   </PageWrapper>
 </template>
 <script lang="ts" setup>
@@ -56,13 +57,15 @@
   import { BasicForm, useForm, ApiSelect } from '/@/components/Form';
   import { Time } from '/@/components/Time';
   import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';
-
   import { detail, getProjectNameAndId } from '/@/api/project/project';
   import { addApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { formSchema } from './projectPhaseCost.data';
-  import { Ref, computed, onMounted, reactive, ref } from 'vue';
+  import { Ref, computed, reactive, ref, watchEffect } from 'vue';
   import { useUserStore } from '/@/store/modules/user';
   import { useECharts } from '/@/hooks/web/useECharts';
+  import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+  import TipsModal from './tipsModal.vue';
+  import { useModal } from '/@/components/Modal';
 
   const now = new Date().getTime();
   const projectDetail = reactive({
@@ -76,10 +79,13 @@
   });
 
   const chartRef = ref<HTMLDivElement | null>(null);
-  const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
+  const chartData = ref({});
+  const { setOptions, getInstance } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   const showBar = ref<boolean>(false);
-  onMounted(() => {
+
+  watchEffect(() => {
+    console.log(chartData.value['phaseTitle']);
     setOptions({
       tooltip: {
         trigger: 'axis',
@@ -104,13 +110,13 @@
       yAxis: {
         type: 'category',
         boundaryGap: false,
-        data: ['第一阶段'],
+        data: [chartData.value['phaseTitle']],
       },
       series: [
         {
           name: '实际成本',
           type: 'bar',
-          data: [18203],
+          data: [chartData.value['phaseOutlayCost'] ?? 0],
           label: {
             show: true,
           },
@@ -121,7 +127,7 @@
         {
           name: '预估成本',
           type: 'bar',
-          data: [19325],
+          data: [chartData.value['phaseBudgetCost']],
           label: {
             show: true,
           },
@@ -131,9 +137,10 @@
         },
       ],
     });
+    getInstance()?.resize();
   });
 
-  const [register, { setProps, getFieldsValue, updateSchema, resetFields, validate }] = useForm({
+  const [register, { resetFields, validate }] = useForm({
     labelWidth: 100,
     schemas: formSchema,
     actionColOptions: { span: 24 },
@@ -141,6 +148,7 @@
     baseRowStyle: { flexFlow: 'column' },
     baseColProps: { span: 8 },
   });
+  const [tipsRegister, { openModal }] = useModal();
 
   const userStore = useUserStore();
 
@@ -149,7 +157,6 @@
     return nickName;
   });
 
-  const chartData = ref({});
   const getFindCurrent = async (id) => {
     const res = await findNowPhasesByProjectIdApi(id);
     chartData.value = res;
@@ -161,17 +168,17 @@
 
   /**修改项目 */
   async function handleProjectChange(id) {
-    showBar.value = !!id;
     const data = await detail(id);
+    showBar.value = !!id;
     Object.assign(projectDetail, data);
     console.log(projectDetail, data);
-    getFindCurrent(id);
+    await getFindCurrent(id);
   }
 
   async function handleSubmit() {
     const values = await validate();
     await addApi({ ...values, createByName: getUserInfo.value });
-    message.success('提交成功');
+    openModal(true);
     resetFields();
   }
 </script>
