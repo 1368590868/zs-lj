@@ -5,6 +5,12 @@ import { Tag } from 'ant-design-vue';
 import { controlStatusOptions, warningStatusOptions } from '/@/enums/projectControl';
 import { deptListApi } from '/@/api/project/project';
 
+export enum ActionType {
+  ADD = '0',
+  EDIT = '1',
+  VIEW = '2',
+}
+
 export const columns: BasicColumn[] = [
   {
     title: '项目基本信息',

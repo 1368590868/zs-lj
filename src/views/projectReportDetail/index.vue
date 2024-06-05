@@ -32,14 +32,30 @@
   import { editApi } from '/@/api/projectOutputValue/projectOutputValue';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+  import { ActionType } from '../projectOutputReport/projectOutputReport.data';
 
   const store = useProjectControl();
   const router = useRouter();
-  const [register, { setFieldsValue }] = useForm({
+  const [register, { setFieldsValue, updateSchema }] = useForm({
     schemas: formSchema,
     labelWidth: 200,
     actionColOptions: {
       span: 13,
+    },
+    resetButtonOptions: {
+      text: '返回',
+      // @ts-ignore
+      class: 'w-[150px]',
+    },
+    submitButtonOptions: {
+      text: '提交',
+      // @ts-ignore
+      class: 'w-[150px]',
+    },
+    showSubmitButton: router.currentRoute.value.query.type !== ActionType.VIEW,
+    resetFunc: () => {
+      router.go(-1);
+      return Promise.resolve();
     },
   });
 
@@ -173,13 +189,30 @@
   });
 
   onMounted(() => {
-    console.log(store.getReportData);
     if (Object.keys(store.getReportData).length === 0) {
       router.go(-1);
     } else {
       setFieldsValue({
         ...store.getReportData,
       });
+    }
+
+    if (router.currentRoute.value.query.type === ActionType.VIEW) {
+      const newSchema = formSchema.map((x) => {
+        x['componentProps'] = {
+          disabled: true,
+        };
+        return x;
+      });
+      updateSchema(newSchema);
+    } else {
+      const newSchema = formSchema.map((x) => {
+        x['componentProps'] = {
+          disabled: false,
+        };
+        return x;
+      });
+      updateSchema(newSchema);
     }
   });
   const handleSubmit = async (values) => {

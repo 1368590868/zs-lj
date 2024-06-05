@@ -8,8 +8,19 @@
         <TableAction
           :actions="[
             {
-              label: record.controlStatus === 1 ? '查看详情' : '编辑',
-              onClick: onHandleEdit.bind(null, record),
+              label: '修改',
+              onClick: onDetail.bind(null, record, ActionType.ADD),
+              ifShow: !!record.updateBy,
+            },
+            {
+              label: '未填写',
+              onClick: onDetail.bind(null, record, ActionType.EDIT),
+              ifShow: !record.updateBy,
+            },
+            {
+              label: '查看',
+              onClick: onDetail.bind(null, record, ActionType.VIEW),
+              // ifShow: 当前月份 - 上传时间
             },
           ]"
         />
@@ -22,7 +33,7 @@
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import ProjectPhaseModal from './projectOutputReportModal.vue';
-  import { columns, searchFormSchema } from './projectOutputReport.data';
+  import { columns, searchFormSchema, ActionType } from './projectOutputReport.data';
   import { reactive } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
@@ -66,9 +77,9 @@
   }
 
   const store = useProjectControl();
-  const onHandleEdit = (record) => {
+  const onDetail = (record, type) => {
     store.setReportData(record);
-    router.push({ path: '/projectReportDetail' });
+    router.push({ path: '/projectReportDetail', query: { type } });
   };
 
   // 导出

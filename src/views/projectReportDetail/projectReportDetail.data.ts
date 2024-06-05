@@ -92,6 +92,7 @@ export const formSchema: FormSchema[] = [
     field: 'divider-required',
     component: 'Divider',
     label: '必填信息',
+
     colProps: {
       span: 24,
     },
@@ -100,8 +101,9 @@ export const formSchema: FormSchema[] = [
     field: 'none',
     component: 'Input',
     label: '项目阶段',
+    required: true,
     componentProps: {
-      required: true,
+      disabled: false,
     },
     colProps: {
       span: 24,
@@ -112,8 +114,9 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     label: `${new Date().getMonth() + 1}完成比例`,
     componentProps: {
-      required: true,
+      disabled: false,
     },
+    required: true,
     suffix: '%',
     colProps: {
       span: 8,
@@ -124,8 +127,9 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     label: `预计未来3个月完成比例`,
     componentProps: {
-      required: true,
+      disabled: false,
     },
+    required: true,
     suffix: '%',
     colProps: {
       span: 8,
@@ -136,9 +140,9 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     label: `预计全年完成比例`,
     componentProps: {
-      required: true,
+      disabled: false,
     },
-
+    required: true,
     suffix: '%',
     colProps: {
       span: 8,
@@ -153,7 +157,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    field: 'cooperator',
+    field: 'cooperationModel',
     component: 'Input',
     label: `合作模式`,
     colProps: {
