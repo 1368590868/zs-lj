@@ -7,14 +7,19 @@
         <div class="flex justify-between">
           <div>设置项目阶段里程碑及预算</div>
           <div v-if="isDefer !== '1'">
-            <a-button type="primary" @click="onRemark">设置项目里程碑时间和标题</a-button>
+            <a-button type="primary" @click="onRemark">选择模板</a-button>
           </div>
         </div>
       </template>
       <BasicForm @register="registerGroup" @submit="handleSubmitGroup">
         <template #phaseTitle="{ model, field }">
           <!-- 需要使用field判断 -->
-          <Input required :disabled="phaseTitleDisabled(field)" v-model:value="model[field]" />
+          <Input
+            required
+            :disabled="phaseTitleDisabled(field)"
+            v-model:value="model[field]"
+            placeholder="请输入里程碑名称"
+          />
         </template>
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumber
@@ -66,16 +71,16 @@
   import { Card, InputNumber, Table, Space, message, Modal, Input } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
-  import { computed, createVNode, nextTick, onMounted, reactive, ref, unref } from 'vue';
+  import { computed, createVNode, onMounted, reactive, ref, unref } from 'vue';
   import { useDescription, Description } from '/@/components/Description';
   import { useRouter } from 'vue-router';
   import { formSchema, schema } from './projectMilestoneConfig.data';
   import ProjectDetailModal from './projectMilestoneConfigModal.vue';
   import { useModal } from '/@/components/Modal';
-  import { addApi, listApi, pageApi } from '/@/api/projectPhase/projectPhase';
+  import { addApi, pageApi } from '/@/api/projectPhase/projectPhase';
   import _ from 'lodash-es';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
-
+  import { pageApi as templatePageApi } from '/@/api/projectTemplate/projectTemplate';
   const router = useRouter();
   const templateData = ref<any[]>([]);
   const isDefer = computed(() => {
@@ -87,7 +92,6 @@
     { title: '1.管控时间为工程计划开始时间到结束时间；', key: '1' },
     { title: '2.里程碑阶段数和对应的预算比例是根据模板计数；', key: '1' },
     { title: '3.只需要设置里程碑标题和阶段时间，请谨慎设置，提交后不允许修改；', key: '1' },
-    { title: '4.系统上线前的项目默认拆分为一个阶段，不允许修改；', key: '1' },
   ];
   const tipsColumns = [{ title: 'tips', dataIndex: 'title', key: 'tips' }];
 
@@ -133,6 +137,9 @@
     await getDetail();
     if (isDefer.value === '1') {
       await getPhaseList();
+    } else {
+      // 获取通用模板
+      await getTemplate();
     }
   });
   const getPhaseList = async () => {
@@ -157,6 +164,11 @@
     const params = router.currentRoute.value.query;
     const data = await detail(params.id);
     Object.assign(dataSource, data);
+  };
+  const getTemplate = async () => {
+    const res = await templatePageApi({ current: 1, size: 1 });
+    templateData.value = res.records;
+    initForm();
   };
 
   const onRemark = () => {
