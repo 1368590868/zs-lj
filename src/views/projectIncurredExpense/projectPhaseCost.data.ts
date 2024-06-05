@@ -17,6 +17,10 @@ export const formSchema: FormSchema[] = [
         label: val,
         value: val,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     required: true,
   },

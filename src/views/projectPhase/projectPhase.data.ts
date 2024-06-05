@@ -7,6 +7,7 @@ import {
   milestoneControlStatusEnum,
   warningStatusOptions,
 } from '/@/enums/projectControl';
+import { deptListApi } from '/@/api/project/project';
 
 export const columns: BasicColumn[] = [
   {
@@ -75,7 +76,16 @@ export const searchFormSchema: FormSchema[] = [
   {
     field: 'deptName',
     label: '归属部门',
-    component: 'Select',
+    component: 'ApiSelect',
+    componentProps: {
+      api: deptListApi,
+      labelField: 'deptName',
+      valueField: 'deptNumber',
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
+    },
     colProps: { span: 6 },
   },
   {
@@ -87,6 +97,10 @@ export const searchFormSchema: FormSchema[] = [
         label: controlStatusOptions[key],
         value: key,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },
@@ -99,6 +113,10 @@ export const searchFormSchema: FormSchema[] = [
         label: warningStatusOptions[key],
         value: key,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },

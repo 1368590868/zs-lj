@@ -6,6 +6,7 @@
           <ApiSelect
             :api="getProjectNameAndId"
             showSearch
+            :filter-option="filterOption"
             placeholder="请选择项目名称"
             v-model:value="model[field]"
             resultField="data"
@@ -59,7 +60,7 @@
   import { detail, getProjectNameAndId } from '/@/api/project/project';
   import { addApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { formSchema } from './projectPhaseCost.data';
-  import { Ref, computed, onMounted, reactive, ref, unref } from 'vue';
+  import { Ref, computed, onMounted, reactive, ref } from 'vue';
   import { useUserStore } from '/@/store/modules/user';
   import { useECharts } from '/@/hooks/web/useECharts';
 
@@ -152,6 +153,10 @@
   const getFindCurrent = async (id) => {
     const res = await findNowPhasesByProjectIdApi(id);
     chartData.value = res;
+  };
+
+  const filterOption = (input, option) => {
+    return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
   };
 
   /**修改项目 */

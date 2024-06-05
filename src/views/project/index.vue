@@ -29,7 +29,11 @@
             {
               label: '查看详情',
               onClick: handleDetail.bind(null, record),
-              ifShow: record.controlStatus === +ControlStatusEnum.CONTROL,
+              ifShow: ![
+                +ControlStatusEnum.NONE,
+                +ControlStatusEnum.UNCONFIGURED,
+                +ControlStatusEnum.TO_BE_JUDGED,
+              ].includes(record.controlStatus),
             },
             {
               label: '不需要管控',
@@ -50,7 +54,7 @@
             {
               label: '延期配置',
               onClick: handleDeferConfig.bind(null, record),
-              ifShow: record.controlStatus === +ControlStatusEnum.DELAY_AUDIT,
+              ifShow: record.controlStatus === +ControlStatusEnum.DELAY_CONFIGURATION,
             },
             {
               label: '结束管控',

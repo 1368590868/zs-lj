@@ -54,6 +54,10 @@ export const searchFormSchema: FormSchema[] = [
     field: 'projectType',
     component: 'Select',
     componentProps: {
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       options: Object.values(projectTypeEnum).map((val) => ({ label: val, value: val })),
     },
     colProps: { span: 6 },
@@ -63,6 +67,10 @@ export const searchFormSchema: FormSchema[] = [
     field: 'professionType',
     component: 'Select',
     componentProps: {
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
       getPopupContainer: () => document.body,
     },
@@ -76,6 +84,10 @@ export const formSchema: FormSchema[] = [
     field: 'projectType',
     component: 'Select',
     componentProps: {
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       options: Object.values(projectTypeEnum).map((val) => ({ label: val, value: val })),
     },
   },
@@ -84,6 +96,10 @@ export const formSchema: FormSchema[] = [
     field: 'professionType',
     component: 'Select',
     componentProps: {
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
       getPopupContainer: () => document.body,
     },
@@ -97,6 +113,10 @@ export const formSchema: FormSchema[] = [
         label: val,
         value: val,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return (option.label + '').toLowerCase().indexOf((input + '').toLowerCase()) >= 0;
+      },
       defaultValue: 3,
       getPopupContainer: () => document.body,
     },

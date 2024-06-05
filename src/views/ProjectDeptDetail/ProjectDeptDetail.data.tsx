@@ -56,8 +56,7 @@ export const searchFormSchema: FormSchema[] = [
       valueField: 'deptNumber',
       showSearch: true,
       filterOption: (input: string, option: any) => {
-        console.log(input);
-        return option.value.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       },
     },
     colProps: { span: 6 },
