@@ -37,7 +37,11 @@
         <h2>项目基础信息</h2>
         <div class="flex justify-between mb-4">
           <div
-            >项目名称:<EllipsisText :maxWidth="200" :tooltipMaxWidth="200">
+            >项目名称:<EllipsisText
+              :maxWidth="200"
+              :tooltipMaxWidth="200"
+              :tooltip="projectDetail.projectName"
+            >
               {{ projectDetail.projectName }}
             </EllipsisText></div
           >

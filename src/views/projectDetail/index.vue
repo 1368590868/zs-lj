@@ -60,7 +60,7 @@
   import { Card, Space } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
-  import { Ref, computed, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue';
+  import { Ref, computed, h, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { DescItem, useDescription, Description } from '/@/components/Description';
   import { useRouter } from 'vue-router';
@@ -71,6 +71,7 @@
   import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { pageApi as projectPhase } from '/@/api/projectPhase/projectPhase';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+  import { EllipsisText } from '/@/components/EllipsisText';
   // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions, resize } = useECharts(chartRef as Ref<HTMLDivElement>);
@@ -107,6 +108,9 @@
     {
       field: 'projectName',
       label: '项目名称',
+      render: (value) => {
+        return h(EllipsisText, { tooltip: value }, () => value);
+      },
     },
     {
       field: 'generalBudget',

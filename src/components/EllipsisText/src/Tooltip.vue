@@ -1,19 +1,19 @@
 <script setup lang="ts">
   import { ref } from 'vue';
   import type { CSSProperties } from 'vue';
-  import { rafTimeout, cancelRaf } from './_utils';
+  import { Tooltip } from 'ant-design-vue';
 
   interface Props {
     maxWidth?: number; // 提示框内容最大宽度，单位px
     content?: string; // 展示的文本 string | slot
-    tooltip?: string; // 提示的文本 string | slot
+    tooltip: string; // 提示的文本 string | slot
     fontSize?: number; // 提示文本字体大小，单位px，优先级高于 overlayStyle
     color?: string; // 提示文本字体颜色，优先级高于 overlayStyle
     backgroundColor?: string; // 提示框背景颜色，优先级高于 overlayStyle
     overlayStyle?: CSSProperties; // 提示框内容区域样式
   }
   withDefaults(defineProps<Props>(), {
-    maxWidth: 120,
+    maxWidth: 200,
     content: '暂无内容',
     tooltip: '暂无提示',
     fontSize: 14,
@@ -21,55 +21,14 @@
     backgroundColor: 'rgba(0, 0, 0, .85)',
     overlayStyle: () => ({}),
   });
-  const visible = ref(false);
-  const hideTimer = ref();
-  const top = ref(0); // 提示框top定位
-  const left = ref(0); // 提示框left定位
   const contentRef = ref(); // 声明一个同名的模板引用
-  const tooltipRef = ref(); // 声明一个同名的模板引用
-  function getPosition() {
-    const contentWidth = contentRef.value && contentRef.value.offsetWidth; // 展示文本宽度
-    const tooltipWidth = tooltipRef.value && tooltipRef.value.offsetWidth; // 提示文本宽度
-    const tooltipHeight = tooltipRef.value && tooltipRef.value.offsetHeight; // 提示文本高度
-    top.value = tooltipHeight + 4;
-    left.value = (tooltipWidth - contentWidth) / 2;
-  }
-  const emit = defineEmits(['openChange']);
-  function onShow() {
-    getPosition();
-    cancelRaf(hideTimer.value);
-    visible.value = true;
-    emit('openChange', visible.value);
-  }
-  function onHide(): void {
-    hideTimer.value = rafTimeout(() => {
-      visible.value = false;
-      emit('openChange', visible.value);
-    }, 100);
-  }
 </script>
 <template>
-  <div class="m-tooltip" @mouseenter="onShow" @mouseleave="onHide">
-    <div
-      ref="tooltipRef"
-      class="m-tooltip-content"
-      :class="{ 'show-tip': visible }"
-      :style="`--tooltip-font-size: ${fontSize}px; --tooltip-color: ${color}; --tooltip-background-color: ${backgroundColor}; max-width: ${maxWidth}px; top: ${-top}px; left: ${-left}px;`"
-      @mouseenter="onShow"
-      @mouseleave="onHide"
-    >
-      <div class="u-tooltip" :style="overlayStyle">
-        <slot name="tooltip">{{ tooltip }}</slot>
-      </div>
-      <div class="m-tooltip-arrow">
-        <span class="u-tooltip-arrow"></span>
-      </div>
-    </div>
-
+  <Tooltip placement="top" :title="tooltip">
     <div ref="contentRef">
       <slot>{{ content }}</slot>
     </div>
-  </div>
+  </Tooltip>
 </template>
 
 <style lang="less" scoped>

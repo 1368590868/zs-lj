@@ -7,7 +7,7 @@
     maxWidth?: number | string; // 文本最大宽度
     line?: number; // 最大行数
     expand?: boolean; // 是否启用点击文本展开全部
-    tooltip?: boolean; // 是否启用文本提示框
+    tooltip?: string; // 是否启用文本提示框
     // 以下均为 tooltip 组件属性
     tooltipMaxWidth?: number; // 提示框内容最大宽度，单位px，默认不设置时，提示文本内容自动与展示文本宽度保持一致
     tooltipFontSize?: number; // 提示文本字体大小，单位px，优先级高于 overlayStyle
@@ -16,11 +16,11 @@
     tooltipOverlayStyle?: CSSProperties; // 提示框内容区域样式
   }
   const props = withDefaults(defineProps<Props>(), {
-    maxWidth: '100%',
+    maxWidth: 200,
     line: undefined,
     expand: false,
-    tooltip: true,
-    tooltipMaxWidth: undefined,
+    tooltip: '',
+    tooltipMaxWidth: 200,
     tooltipFontSize: 14,
     tooltipColor: '#FFF',
     tooltipBackgroundColor: 'rgba(0, 0, 0, .85)',
@@ -34,7 +34,7 @@
   });
   const showTooltip = ref();
   const ellipsis = ref();
-  const defaultTooltipMaxWidth = ref();
+  const defaultTooltipMaxWidth = ref(200);
   watchEffect(() => {
     showTooltip.value = props.tooltip;
   });
@@ -79,12 +79,8 @@
     :color="tooltipColor"
     :backgroundColor="tooltipBackgroundColor"
     :overlayStyle="tooltipOverlayStyle"
+    :tooltip="tooltip"
   >
-    <template #tooltip>
-      <slot name="tooltip">
-        <slot></slot>
-      </slot>
-    </template>
     <div
       ref="ellipsis"
       class="m-ellipsis"

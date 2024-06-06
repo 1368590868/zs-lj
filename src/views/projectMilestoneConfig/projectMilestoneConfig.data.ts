@@ -62,7 +62,7 @@ export const schema: DescItem[] = [
     field: 'projectName',
     label: '项目名称',
     render: (value) => {
-      return h(EllipsisText, { maxWidth: 200, tooltipMaxWidth: 200 }, () => value);
+      return h(EllipsisText, { maxWidth: 200, tooltipMaxWidth: 200, tooltip: value }, () => value);
     },
   },
   {

@@ -109,7 +109,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'remark',
     width: 200,
     customRender: ({ record }) => {
-      return h(EllipsisText, { maxWidth: 200, tooltipMaxWidth: 200 }, () => record.remark);
+      return h(
+        EllipsisText,
+        { maxWidth: 200, tooltipMaxWidth: 200, tooltip: record.remark },
+        () => record.remark,
+      );
     },
   },
 ];
