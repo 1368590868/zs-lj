@@ -29,6 +29,7 @@ export const formSchema: FormSchema[] = [
       rows: 12,
       placeholder: '请输入您对项目的管控意见',
     },
+    required: true,
     labelWidth: 80,
   },
   {

@@ -74,7 +74,7 @@ export const searchFormSchema: FormSchema[] = [
   { field: 'projectName', label: '项目名称', component: 'Input', colProps: { span: 6 } },
   { field: 'projectOwnerName', label: '项目负责人', component: 'Input', colProps: { span: 6 } },
   {
-    field: 'deptName',
+    field: 'deptNumber',
     label: '归属部门',
     component: 'ApiSelect',
     componentProps: {

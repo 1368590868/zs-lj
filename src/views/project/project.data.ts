@@ -2,6 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import {
+  ControlStatusEnum,
   controlStatusOptions,
   professionTypeEnum,
   projectProgressOptions,
@@ -9,7 +10,7 @@ import {
   provinceEnum,
   warningStatusOptions,
 } from '/@/enums/projectControl';
-import { Tooltip, TypographyText } from 'ant-design-vue';
+import { TypographyText } from 'ant-design-vue';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 import { EllipsisText } from '/@/components/EllipsisText';
 
@@ -38,11 +39,13 @@ export const columns: BasicColumn[] = [
       const status = record.warningStatus;
 
       const colorEnum = [{ success: '正常' }, { warning: '黄色警告' }, { danger: '红色警告' }];
-      return h(
-        TypographyText,
-        { type: Object.keys(colorEnum[status]) },
-        Object.values(colorEnum[status]),
-      );
+      return typeof status === 'number'
+        ? h(
+            TypographyText,
+            { type: Object.keys(colorEnum[status]) },
+            Object.values(colorEnum[status]),
+          )
+        : ' ';
     },
   },
   {

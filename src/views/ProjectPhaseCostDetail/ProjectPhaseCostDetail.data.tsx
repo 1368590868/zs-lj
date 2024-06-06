@@ -3,7 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
 import { Button, Popconfirm, Space, Textarea, TypographyText, message } from 'ant-design-vue';
 import {
-  costChargeEnum,
+  costChargeOptions,
   costSubjectEnum,
   myCostStatusEnum,
   singleCostStatusOptions,
@@ -73,10 +73,10 @@ export const columns: BasicColumn[] = [
       };
       return h(
         TypographyText,
-        { type: textType[idx] },
-        idx === 1
-          ? singleCostStatusOptions[idx]
-          : `${singleCostStatusOptions[idx]} ${record.costLeaderTime ?? ''}`,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? singleCostStatusOptions[+idx]
+          : `${singleCostStatusOptions[+idx]} ${record.costLeaderTime ?? ''}`,
       );
     },
   },
@@ -93,10 +93,10 @@ export const columns: BasicColumn[] = [
       };
       return h(
         TypographyText,
-        { type: textType[idx] },
-        idx === 1
-          ? myCostStatusEnum[idx]
-          : `${myCostStatusEnum[idx]} ${record.operationDeptTime ?? ''}`,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? myCostStatusEnum[+idx]
+          : `${myCostStatusEnum[+idx]} ${record.operationDeptTime ?? ''}`,
       );
     },
   },
@@ -302,9 +302,9 @@ export const ProjectLeaderStatus = defineComponent({
           </Space>
         ) : (
           <TypographyText type={textType[props.text]}>
-            {props.text === 1
+            {![1, 2].includes(+props.text)
               ? myCostStatusEnum[props.text]
-              : `${myCostStatusEnum[props.text]}/${props.time}`}
+              : `${myCostStatusEnum[props.text] ?? ''} ${props.time ?? ''}`}
           </TypographyText>
         )}
       </>

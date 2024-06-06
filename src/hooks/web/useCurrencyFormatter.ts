@@ -1,5 +1,6 @@
 // 定义货币格式化函数
 export function useCurrencyFormatter(value: number | string) {
+  if (value == 0) return '0.00';
   // 格式化货币的计算属性工厂函数
   if (!value || isNaN(+value)) return '';
 

@@ -68,7 +68,7 @@
       // 阶段预算比例相加等于100
       const sum = values.phaseBudgetRatio.reduce((prev, next) => prev + next, 0);
       if (sum !== 100) {
-        message.error('阶段预算比例相加必须等于100');
+        message.error('阶段预算比例相加必须等于100%');
         return;
       }
 

@@ -81,7 +81,6 @@
     const { nickName = '' } = userStore.getUserInfo || {};
     return nickName;
   });
-
   //   提交
   const handleSubmit = async () => {
     if (!isUpdate.value) return closeModal();
@@ -90,7 +89,7 @@
       setModalProps({ confirmLoading: true });
       await editApi({
         id: values.id,
-        remark: values.auditOpinion,
+        remark: `${getUserInfo.value} : ${values.auditOpinion}`,
       });
       // await addApi({
       //   ...values,

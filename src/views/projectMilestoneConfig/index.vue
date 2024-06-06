@@ -42,6 +42,13 @@
       </BasicForm>
     </Card>
     <div class="mt-6"></div>
+    <div class="flex justify-center">
+      <Space :size="50">
+        <a-button class="w-[150px]" @click="onCancel">返回</a-button>
+        <a-button class="w-[150px]" type="primary" @click="confirmDialog">提交</a-button>
+      </Space>
+    </div>
+    <div class="mt-6"></div>
     <Card title="提示">
       <Table
         :columns="tipsColumns"
@@ -56,13 +63,7 @@
         :rowClassName="(record, index) => (index % 2 === 1 ? null : 'table-striped')"
       />
     </Card>
-    <div class="mt-6"></div>
-    <div class="flex justify-center">
-      <Space>
-        <a-button @click="onCancel">返回</a-button>
-        <a-button type="primary" @click="confirmDialog">提交</a-button>
-      </Space>
-    </div>
+
     <ProjectDetailModal @register="registerModal" @success="onModalSuccess" />
   </PageWrapper>
 </template>

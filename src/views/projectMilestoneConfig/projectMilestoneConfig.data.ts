@@ -1,5 +1,7 @@
+import { h } from 'vue';
 import { DescItem } from '/@/components/Description';
 import { BasicColumn, FormSchema } from '/@/components/Table';
+import { EllipsisText } from '/@/components/EllipsisText';
 
 export const basicColumns: BasicColumn[] = [
   {
@@ -59,6 +61,9 @@ export const schema: DescItem[] = [
   {
     field: 'projectName',
     label: '项目名称',
+    render: (value) => {
+      return h(EllipsisText, { maxWidth: 200, tooltipMaxWidth: 200 }, () => value);
+    },
   },
   {
     field: 'generalBudget',

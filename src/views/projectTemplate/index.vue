@@ -2,7 +2,7 @@
   <div>
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleEditModal"> 管控模板 </a-button>
+        <a-button type="primary" @click="handleEditModal"> + 管控模板 </a-button>
       </template>
     </BasicTable>
     <ProjectTemplateModal @register="registerModal" @success="handleSuccess" />

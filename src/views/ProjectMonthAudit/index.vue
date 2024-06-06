@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" @selection-change="onSelectionChange">
+    <BasicTable @register="registerTable">
       <!-- Column slots -->
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">意见详情</a-button>
@@ -32,13 +32,14 @@
           <span v-if="record.personCost">
             {{ useCurrencyFormatter(record.personCost ?? 0) }}
           </span>
-          <span v-if="record.personCost === 0"> 0 </span>
+          <span v-if="record.personCost === 0"> 0.00 </span>
 
           <TableAction
             :actions="[
               {
                 icon: 'ant-design:edit-outlined',
-                ifShow: typeof record.personCost === 'number',
+                ifShow:
+                  typeof record.personCost === 'number' && [0, 3].includes(record.costLeaderStatus),
                 onClick: onPersonCost.bind(null, record),
               },
               {
@@ -52,27 +53,23 @@
       </template>
     </BasicTable>
     <MyPhaseCostModal @register="registerModal" />
-    <MyPhaseEditModal @register="registerEditModal" @success="handleSuccess" />
     <PersonCostModal @register="registerPersonCostModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
-  import { Modal, Space, message } from 'ant-design-vue';
+  import { Space } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { auditApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import MyPhaseCostModal from './ProjectMonthAuditModal.vue';
   import { columns, searchFormSchema, ProjectLeaderStatus } from './ProjectMonthAudit.data';
-  import { computed, reactive } from 'vue';
+
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { useModal } from '/@/components/Modal';
-  import MyPhaseEditModal from './ProjectMonthAuditEditModal.vue';
   import { pageApi } from '/@/api/projectMonthAudit/projectMonthAudit';
   import { useRouter } from 'vue-router';
   import PersonCostModal from './personCostModal.vue';
   const [registerModal, { openModal }] = useModal();
-  const [registerEditModal, { openModal: openEditModal }] = useModal();
   const [registerPersonCostModal, { openModal: openPersonCost }] = useModal();
-  const [registerTable, { reload, getSelectRowKeys, getSelectRows }] = useTable({
+  const [registerTable, { reload }] = useTable({
     api: pageApi,
     columns,
     rowKey: 'id',
@@ -97,11 +94,6 @@
     },
   });
 
-  let selectId = reactive<any[]>([]);
-  const isSelectRows = computed(() => {
-    return getSelectRows().length > 0;
-  });
-
   // 编辑项目阶段成本明细 Modal
   const handleDetailModal = (record: Recordable) => {
     openModal(true, {
@@ -118,12 +110,6 @@
   function handleSuccess() {
     reload();
   }
-  const onSelectionChange = async (e) => {
-    selectId = reactive<any[]>([]);
-    e.rows.forEach((it) => {
-      selectId.push(it.id);
-    });
-  };
 
   const router = useRouter();
   const handleCostDetail = (record: Recordable) => {

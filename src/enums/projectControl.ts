@@ -6,6 +6,7 @@ export enum WarningStatusEnum {
 }
 // 管控状态
 export enum ControlStatusEnum {
+  /**无 */
   NONE = '0',
   /**未配置 */
   UNCONFIGURED = '1',
@@ -29,6 +30,7 @@ export enum ProjectProgressEnum {
   IN_PROGRESS = 0,
   COMPLETED = 1,
   TO_BE_COMPLETED = 2,
+  TO_BE_STARTED = 3,
 }
 // 项目负责人审核状态
 export enum ProjectOwnerStatusEnum {
@@ -39,6 +41,7 @@ export enum ProjectOwnerStatusEnum {
   /**驳回 */
   REJECTED = 2,
 }
+
 //  预警状态
 export const warningStatusOptions = {
   0: '正常',
@@ -51,6 +54,7 @@ export const projectProgressOptions = {
   0: '进行中',
   1: '已完成',
   2: '待完成',
+  3: '待开始',
 };
 
 //   管控状态
@@ -131,6 +135,7 @@ export const myCostStatusEnum = {
   2: '已驳回',
   3: '失效作废',
 };
+
 // 单条记录审核状态
 export const singleCostStatusOptions = {
   0: '待审核',
@@ -140,7 +145,7 @@ export const singleCostStatusOptions = {
 };
 
 // 月度成本审核状态
-export const costChargeEnum = {
+export const costChargeOptions = {
   0: '待审核',
   1: '已通过',
   2: '已驳回',

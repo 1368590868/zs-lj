@@ -21,10 +21,11 @@
             {
               label: '里程碑配置',
               onClick: handleMilestoneConfig.bind(null, record),
-              ifShow: [
-                +ControlStatusEnum.UNCONFIGURED,
-                +ControlStatusEnum.DELAY_CONFIGURATION,
-              ].includes(record.controlStatus),
+              ifShow:
+                +record.projectProgress !== ProjectProgressEnum.COMPLETED &&
+                [+ControlStatusEnum.UNCONFIGURED, +ControlStatusEnum.DELAY_CONFIGURATION].includes(
+                  record.controlStatus,
+                ),
             },
             {
               label: '查看详情',
@@ -89,6 +90,7 @@
     controlEndApplyApi,
     controlExtensionApplyApi,
     refreshProjectApi,
+    editApi,
   } from '/@/api/project/project';
   import ProjectModal from './ProjectModal.vue';
   import { columns, searchFormSchema } from './project.data';
@@ -99,7 +101,9 @@
     controlStatusOptions,
     projectProgressOptions,
     ControlStatusEnum,
+    ProjectProgressEnum,
   } from '/@/enums/projectControl';
+  import { useUserStore } from '/@/store/modules/user';
 
   const router = useRouter();
   const showProjectModal = computed(() => {
@@ -186,10 +190,16 @@
       },
     });
   };
+  const store = useUserStore();
   // 管控项目确认
   const handleControl = async (record: Recordable, isControl: Boolean) => {
     const { id } = record;
     await controlDetermineApi({ id, determineStatus: isControl ? 1 : 0 });
+    // 填写管控意见
+    await editApi({
+      id: record.id,
+      remark: `${store.getUserInfo.nickName} : 无需管控`,
+    });
     message.success('操作成功');
     reload();
   };

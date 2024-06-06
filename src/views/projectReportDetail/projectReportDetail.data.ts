@@ -112,7 +112,7 @@ export const formSchema: FormSchema[] = [
   {
     field: 'monthRatio',
     component: 'InputNumber',
-    label: `${new Date().getMonth() + 1}完成比例`,
+    label: `${new Date().getMonth() + 1}月完成比例`,
     componentProps: {
       disabled: false,
     },

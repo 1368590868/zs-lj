@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, ref } from 'vue';
 import { Button, Space, Textarea, TypographyText, message } from 'ant-design-vue';
-import { costChargeEnum, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import { costChargeOptions, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 
 import { monthAuditApi } from '/@/api/projectMonthAudit/projectMonthAudit';
 
@@ -80,10 +80,12 @@ export const searchFormSchema: FormSchema[] = [
     label: '成本负责人状态',
     component: 'Select',
     componentProps: {
-      options: Object.keys(myCostStatusEnum).map((key) => ({
-        label: myCostStatusEnum[key],
-        value: key,
-      })),
+      options: Object.keys(myCostStatusEnum)
+        .filter((key) => key !== '3')
+        .map((key) => ({
+          label: myCostStatusEnum[key],
+          value: key,
+        })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -208,11 +210,11 @@ export const ProjectLeaderStatus = defineComponent({
       0: 'warning',
       1: 'success',
       2: 'danger',
+      3: 'warning',
     };
     const onConfirm = async () => {
       await monthAuditApi({ id: props.id, auditStatus: isPass.value }, props.type)
         .then(() => {
-          console.log(isPass.value === 1, 'isPass.value');
           return addApi({
             projectPhaseCostId: props.id,
             auditOpinion: remark.value || (isPass.value === 1 ? '通过' : '不通过'),
@@ -256,7 +258,7 @@ export const ProjectLeaderStatus = defineComponent({
           />
         </BasicModal>
         {props.type === 'cost' ? (
-          props.text === 0 || props.text === 3 ? (
+          props.text === 0 ? (
             <Space>
               <Button type="link" onClick={() => onOpenModal(1)}>
                 通过
@@ -268,9 +270,9 @@ export const ProjectLeaderStatus = defineComponent({
             </Space>
           ) : (
             <TypographyText type={textType[props.text]}>
-              {props.text === 1
-                ? costChargeEnum[props.text]
-                : `${costChargeEnum[props.text]} ${props.time ?? ''}`}
+              {![1, 2].includes(+props.text)
+                ? costChargeOptions[props.text]
+                : `${costChargeOptions[props.text]} ${props.time ?? ''}`}
             </TypographyText>
           )
         ) : // 运营部审核
@@ -286,9 +288,9 @@ export const ProjectLeaderStatus = defineComponent({
           </Space>
         ) : (
           <TypographyText type={textType[props.text]}>
-            {props.text === 1
-              ? costChargeEnum[props.text]
-              : `${costChargeEnum[props.text]} ${props.time ?? ''}`}
+            {![1, 2].includes(+props.text)
+              ? costChargeOptions[props.text]
+              : `${costChargeOptions[props.text]} ${props.time ?? ''}`}
           </TypographyText>
         )}
       </>
