@@ -21,7 +21,7 @@
               label: '查看',
               onClick: onDetail.bind(null, record, ActionType.VIEW),
               // ifShow: outputValueMonth< now() < outputValueMonth+1（产值填写判断） 判定展示详情按钮
-              ifShow: isBetween(record),
+              ifShow: isBetween(record) && !!record.updateBy,
             },
           ]"
         />
@@ -65,6 +65,9 @@
     showTableSetting: true,
     bordered: true,
     showIndexColumn: true,
+    indexColumnProps: {
+      fixed: 'left',
+    },
     pagination: {
       current: 1,
       pageSize: 10,

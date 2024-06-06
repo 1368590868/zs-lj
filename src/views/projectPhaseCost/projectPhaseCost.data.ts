@@ -96,13 +96,13 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    field: 'warningStatus',
+    field: 'costTypeName',
     label: '成本科目',
     component: 'Select',
     componentProps: {
-      options: Object.keys(costSubjectEnum).map((key) => ({
-        label: costSubjectEnum[key],
-        value: key,
+      options: Object.values(costSubjectEnum).map((val) => ({
+        label: val,
+        value: val,
       })),
       showSearch: true,
       filterOption: (input: string, option: any) => {

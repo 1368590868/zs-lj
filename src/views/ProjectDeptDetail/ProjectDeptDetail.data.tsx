@@ -17,12 +17,12 @@ export const columns: BasicColumn[] = [
     width: 200,
   },
   {
-    title: '总预算(万元)',
+    title: '总预算(元)',
     dataIndex: 'totalBudget',
     width: 200,
   },
   {
-    title: '实际成本(万元)',
+    title: '实际成本(元)',
     dataIndex: 'totalCost',
     width: 200,
   },

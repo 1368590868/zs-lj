@@ -1,6 +1,6 @@
 <template>
   <div>
-    <BasicTable @register="registerTable" @selection-change="onSelectionChange">
+    <BasicTable @register="registerTable" @selection-change="onSelectionChange" :can-resize="true">
       <!-- 顶部echarts -->
       <template #headerTop>
         <div ref="chartRef" class="w-full min-h-200px"></div>

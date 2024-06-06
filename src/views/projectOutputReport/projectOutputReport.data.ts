@@ -4,6 +4,8 @@ import { h } from 'vue';
 import { Tag, Tooltip } from 'ant-design-vue';
 import { controlStatusOptions, warningStatusOptions } from '/@/enums/projectControl';
 import { deptListApi } from '/@/api/project/project';
+import { EllipsisText } from '/@/components/EllipsisText';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 
 export enum ActionType {
   ADD = '0',
@@ -13,14 +15,18 @@ export enum ActionType {
 
 export const columns: BasicColumn[] = [
   {
+    title: '项目名称',
+    dataIndex: 'projectName',
+    width: 200,
+    fixed: 'left',
+    customRender: ({ record }) => {
+      return h(EllipsisText, { tooltip: record.projectName }, record.projectName);
+    },
+  },
+  {
     title: '项目基本信息',
     dataIndex: 'projectInfos',
     children: [
-      {
-        title: '项目名称',
-        dataIndex: 'projectName',
-        width: 200,
-      },
       {
         title: '项目编号',
         dataIndex: 'projectNumber',
@@ -30,6 +36,11 @@ export const columns: BasicColumn[] = [
         title: '合同额(元)',
         dataIndex: 'contractPrice',
         width: 200,
+        customRender: ({ record }) => {
+          return typeof record.contractPrice === 'number'
+            ? useCurrencyFormatter(record.contractPrice)
+            : '0.00';
+        },
       },
       {
         title: '项目区域',
@@ -78,6 +89,9 @@ export const columns: BasicColumn[] = [
         helpMessage: '已完成，正在做，后续准备做什么',
         dataIndex: 'planRemark',
         width: 200,
+        customRender: ({ record }) => {
+          return h(EllipsisText, { tooltip: record.planRemark }, record.planRemark);
+        },
       },
     ],
   },
@@ -89,71 +103,113 @@ export const columns: BasicColumn[] = [
         title: '截止上年底完成比例',
         dataIndex: 'lastYearRatio',
         width: 200,
+        customRender: ({ record }) => {
+          return h('div', `${record.lastYearRatio}%` || '0%');
+        },
       },
       {
         title: '截止目前累计完成比例',
         dataIndex: 'allYearRatio',
         width: 200,
+        customRender: ({ record }) => {
+          return h('div', `${record.allYearRatio}%` || '0%');
+        },
       },
       {
         title: '1月',
         dataIndex: 'janRatio',
         width: new Date().getMonth() + 1 >= 1 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.janRatio}%` || '0%');
+        },
       },
       {
         title: '2月',
         dataIndex: 'fedRatio',
         width: new Date().getMonth() + 1 >= 2 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.fedRatio}%` || '0%');
+        },
       },
       {
         title: '3月',
         dataIndex: 'marRatio',
         width: new Date().getMonth() + 1 >= 3 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.marRatio}%` || '0%');
+        },
       },
       {
         title: '4月',
         dataIndex: 'aprRatio',
         width: new Date().getMonth() + 1 >= 4 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.aprRatio}%` || '0%');
+        },
       },
       {
         title: '5月',
         dataIndex: 'mayRatio',
         width: new Date().getMonth() + 1 >= 5 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.mayRatio}%` || '0%');
+        },
       },
       {
         title: '6月',
         dataIndex: 'junRatio',
         width: new Date().getMonth() + 1 >= 6 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.junRatio}%` || '0%');
+        },
       },
       {
         title: '7月',
         dataIndex: 'julRatio',
         width: new Date().getMonth() + 1 >= 7 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.julRatio}%` || '0%');
+        },
       },
       {
         title: '8月',
         dataIndex: 'augRatio',
         width: new Date().getMonth() + 1 >= 8 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.augRatio}%` || '0%');
+        },
       },
       {
         title: '9月',
         dataIndex: 'sepRatio',
         width: new Date().getMonth() + 1 >= 9 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.sepRatio}%` || '0%');
+        },
       },
       {
         title: '10月',
         dataIndex: 'octRatio',
         width: new Date().getMonth() + 1 >= 10 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.octRatio}%` || '0%');
+        },
       },
       {
         title: '11月',
         dataIndex: 'novRatio',
         width: new Date().getMonth() + 1 >= 11 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.novRatio}%` || '0%');
+        },
       },
       {
         title: '12月',
         dataIndex: 'decRatio',
         width: new Date().getMonth() + 1 >= 12 ? 200 : 0,
+        customRender: ({ record }) => {
+          return h('div', `${record.decRatio}%` || '0%');
+        },
       },
     ],
   },
@@ -165,11 +221,17 @@ export const columns: BasicColumn[] = [
         title: '预计未来3个月完成比例',
         dataIndex: 'predictMonthRatio',
         width: 200,
+        customRender: ({ record }) => {
+          return h('div', `${record.predictMonthRatio}%` || '0%');
+        },
       },
       {
         title: '预计全年完成比例',
         dataIndex: 'predictYearRatio',
         width: 200,
+        customRender: ({ record }) => {
+          return h('div', `${record.predictYearRatio}%` || '0%');
+        },
       },
     ],
   },
@@ -181,81 +243,177 @@ export const columns: BasicColumn[] = [
         title: '截止上年度完成产值',
         dataIndex: 'lastYearOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.lastYearOutputValue === 'number'
+            ? useCurrencyFormatter(record.lastYearOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '截止目前累计完成产值',
         dataIndex: 'allYearOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.allYearOutputValue === 'number'
+            ? useCurrencyFormatter(record.allYearOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '1月完成产值',
         dataIndex: 'janOutputValue',
         width: new Date().getMonth() + 1 >= 1 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.janOutputValue === 'number'
+            ? useCurrencyFormatter(record.janOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '2月完成产值',
         dataIndex: 'fedOutputValue',
         width: new Date().getMonth() + 1 >= 2 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.fedOutputValue === 'number'
+            ? useCurrencyFormatter(record.fedOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '3月完成产值',
         dataIndex: 'marOutputValue',
         width: new Date().getMonth() + 1 >= 3 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.marOutputValue === 'number'
+            ? useCurrencyFormatter(record.marOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '4月完成产值',
         dataIndex: 'aprOutputValue',
         width: new Date().getMonth() + 1 >= 4 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.aprOutputValue === 'number'
+            ? useCurrencyFormatter(record.aprOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '5月完成产值',
         dataIndex: 'mayOutputValue',
         width: new Date().getMonth() + 1 >= 5 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.mayOutputValue === 'number'
+            ? useCurrencyFormatter(record.mayOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '6月完成产值',
         dataIndex: 'junOutputValue',
         width: new Date().getMonth() + 1 >= 6 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.junOutputValue === 'number'
+            ? useCurrencyFormatter(record.junOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '7月完成产值',
         dataIndex: 'julOutputValue',
         width: new Date().getMonth() + 1 >= 7 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.julOutputValue === 'number'
+            ? useCurrencyFormatter(record.julOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '8月完成产值',
         dataIndex: 'augOutputValue',
         width: new Date().getMonth() + 1 >= 8 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.augOutputValue === 'number'
+            ? useCurrencyFormatter(record.augOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '9月完成产值',
         dataIndex: 'sepOutputValue',
         width: new Date().getMonth() + 1 >= 9 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.sepOutputValue === 'number'
+            ? useCurrencyFormatter(record.sepOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '10月完成产值',
         dataIndex: 'octOutputValue',
         width: new Date().getMonth() + 1 >= 10 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.octOutputValue === 'number'
+            ? useCurrencyFormatter(record.octOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '11月完成产值',
         dataIndex: 'novOutputValue',
         width: new Date().getMonth() + 1 >= 11 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.novOutputValue === 'number'
+            ? useCurrencyFormatter(record.novOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '12月完成产值',
         dataIndex: 'decOutputValue',
         width: new Date().getMonth() + 1 >= 12 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.decOutputValue === 'number'
+            ? useCurrencyFormatter(record.decOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '截止目前本年度完成产值',
         dataIndex: 'thisYearOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.thisYearOutputValue === 'number'
+            ? useCurrencyFormatter(record.thisYearOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '剩余产值',
         dataIndex: 'surplusOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.surplusOutputValue === 'number'
+            ? useCurrencyFormatter(record.surplusOutputValue)
+            : '0.00';
+        },
       },
     ],
   },
@@ -267,11 +425,23 @@ export const columns: BasicColumn[] = [
         title: '预计未来3个月完成产值',
         dataIndex: 'predictMonthOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.predictMonthOutputValue === 'number'
+            ? useCurrencyFormatter(record.predictMonthOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '预计全年完成产值',
         dataIndex: 'predictYearOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.predictYearOutputValue === 'number'
+            ? useCurrencyFormatter(record.predictYearOutputValue)
+            : '0.00';
+        },
       },
     ],
   },
@@ -283,37 +453,69 @@ export const columns: BasicColumn[] = [
         title: '截止上年度已发生生产成本',
         dataIndex: 'lastYearCost',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.lastYearCost === 'number'
+            ? useCurrencyFormatter(record.lastYearCost)
+            : '0.00';
+        },
       },
       // 当前年份
       {
         title: `截止${new Date().getFullYear()}年已发生生产成本`,
         dataIndex: 'allYearCost',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.allYearCost === 'number'
+            ? useCurrencyFormatter(record.allYearCost)
+            : '0.00';
+        },
       },
       {
         title: '1月生产成本',
         dataIndex: 'janCost',
         width: new Date().getMonth() + 1 >= 1 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.janCost === 'number' ? useCurrencyFormatter(record.janCost) : '0.00';
+        },
       },
       {
         title: '2月生产成本',
         dataIndex: 'fedCost',
         width: new Date().getMonth() + 1 >= 2 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.fedCost === 'number' ? useCurrencyFormatter(record.fedCost) : '0.00';
+        },
       },
       {
         title: '3月生产成本',
         dataIndex: 'marCost',
         width: new Date().getMonth() + 1 >= 3 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.marCost === 'number' ? useCurrencyFormatter(record.marCost) : '0.00';
+        },
       },
       {
         title: '4月生产成本',
         dataIndex: 'aprCost',
         width: new Date().getMonth() + 1 >= 4 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.aprCost === 'number' ? useCurrencyFormatter(record.aprCost) : '0.00';
+        },
       },
       {
         title: '5月生产成本',
         dataIndex: 'mayCost',
         width: new Date().getMonth() + 1 >= 5 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.mayCost === 'number' ? useCurrencyFormatter(record.mayCost) : '0.00';
+        },
       },
       {
         title: '6月生产成本',
@@ -324,31 +526,55 @@ export const columns: BasicColumn[] = [
         title: '7月生产成本',
         dataIndex: 'julCost',
         width: new Date().getMonth() + 1 >= 7 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.julCost === 'number' ? useCurrencyFormatter(record.julCost) : '0.00';
+        },
       },
       {
         title: '8月生产成本',
         dataIndex: 'augCost',
         width: new Date().getMonth() + 1 >= 8 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.augCost === 'number' ? useCurrencyFormatter(record.augCost) : '0.00';
+        },
       },
       {
         title: '9月生产成本',
         dataIndex: 'sepCost',
         width: new Date().getMonth() + 1 >= 9 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.sepCost === 'number' ? useCurrencyFormatter(record.sepCost) : '0.00';
+        },
       },
       {
         title: '10月生产成本',
         dataIndex: 'octCost',
         width: new Date().getMonth() + 1 >= 10 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.octCost === 'number' ? useCurrencyFormatter(record.octCost) : '0.00';
+        },
       },
       {
         title: '11月生产成本',
         dataIndex: 'novCost',
         width: new Date().getMonth() + 1 >= 11 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.novCost === 'number' ? useCurrencyFormatter(record.novCost) : '0.00';
+        },
       },
       {
         title: '12月生产成本',
         dataIndex: 'decCost',
         width: new Date().getMonth() + 1 >= 12 ? 200 : 0,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.decCost === 'number' ? useCurrencyFormatter(record.decCost) : '0.00';
+        },
       },
     ],
   },
@@ -368,6 +594,9 @@ export const columns: BasicColumn[] = [
         title: '自有产值比例',
         dataIndex: 'selfOwnedRatio',
         width: 200,
+        customRender: ({ record }) => {
+          return h('div', `${record.selfOwnedRatio}%` || '0%');
+        },
       },
       {
         title: '合作模式',
@@ -474,26 +703,56 @@ export const columns: BasicColumn[] = [
         title: `${new Date().getMonth() + 1}月实际完成产值`,
         dataIndex: 'thisMonthValueMonth',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.thisMonthValueMonth === 'number'
+            ? useCurrencyFormatter(record.thisMonthValueMonth)
+            : '0.00';
+        },
       },
       {
         title: '累计实际完成产值',
         dataIndex: 'allValueMonth',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.allValueMonth === 'number'
+            ? useCurrencyFormatter(record.allValueMonth)
+            : '0.00';
+        },
       },
       {
         title: '剩余产值',
         dataIndex: 'selfSurplusOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.selfSurplusOutputValue === 'number'
+            ? useCurrencyFormatter(record.selfSurplusOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '未来三个月预测产值',
         dataIndex: 'selfPredictMonthOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.selfPredictMonthOutputValue === 'number'
+            ? useCurrencyFormatter(record.selfPredictMonthOutputValue)
+            : '0.00';
+        },
       },
       {
         title: '全年预测产值',
         dataIndex: 'predictYearOutputValue',
         width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.predictYearOutputValue === 'number'
+            ? useCurrencyFormatter(record.predictYearOutputValue)
+            : '0.00';
+        },
       },
     ],
   },
