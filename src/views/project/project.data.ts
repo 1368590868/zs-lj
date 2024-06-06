@@ -3,7 +3,9 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import {
   controlStatusOptions,
+  professionTypeEnum,
   projectProgressOptions,
+  projectTypeEnum,
   provinceEnum,
   warningStatusOptions,
 } from '/@/enums/projectControl';
@@ -149,9 +151,34 @@ export const searchFormSchema: FormSchema[] = [
     },
     colProps: { span: 6 },
   },
-  { field: 'projectTypeCode', label: '项目类型', component: 'Input', colProps: { span: 6 } },
+  {
+    label: '项目类型',
+    field: 'projectType',
+    component: 'Select',
+    componentProps: {
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
+      options: Object.values(projectTypeEnum).map((val) => ({ label: val, value: val })),
+    },
+    colProps: { span: 6 },
+  },
   { field: 'projectOwnerName', label: '项目负责人', component: 'Input', colProps: { span: 6 } },
-  { field: 'businessTypeCode', label: '业务类型', component: 'Input', colProps: { span: 6 } },
+  {
+    label: '业务类型',
+    field: 'professionType',
+    component: 'Select',
+    componentProps: {
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
+      options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
+      getPopupContainer: () => document.body,
+    },
+    colProps: { span: 6 },
+  },
   {
     field: 'warningStatus',
     label: '预警状态',

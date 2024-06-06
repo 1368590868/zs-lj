@@ -15,8 +15,7 @@
 <script setup lang="ts">
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { editApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import { formEditSchema } from './ProjectMonthAudit.data';
+  import { addAndUpdateHumanCostApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
@@ -57,7 +56,7 @@
   //   提交
   const handleSubmit = async () => {
     const values = await validate();
-    await editApi({ ...values, id: values.id });
+    await addAndUpdateHumanCostApi({ ...values, id: values.id });
     closeModal();
   };
 </script>

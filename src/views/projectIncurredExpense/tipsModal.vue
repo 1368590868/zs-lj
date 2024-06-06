@@ -14,7 +14,7 @@
       <Space :size="100">
         <a-button type="primary" @click="onBack">返回上一页</a-button>
         <a-button type="primary" @click="onContinue">继续提交</a-button>
-        <a-button type="primary" @click="onDetail">跳转详情</a-button>
+        <a-button type="primary" @click="onDetail">提交记录</a-button>
       </Space>
     </div>
   </BasicModal>

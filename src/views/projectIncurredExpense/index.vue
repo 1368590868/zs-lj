@@ -36,7 +36,11 @@
       <div v-show="showBar">
         <h2>项目基础信息</h2>
         <div class="flex justify-between mb-4">
-          <div>项目名称:{{ projectDetail.projectName }}</div>
+          <div
+            >项目名称:<EllipsisText :maxWidth="200" :tooltipMaxWidth="200">
+              {{ projectDetail.projectName }}
+            </EllipsisText></div
+          >
           <div>项目预算：{{ useCurrencyFormatter(projectDetail.generalBudget) }} 元</div>
           <div
             >工程计划时间：{{ projectDetail.planStartDate }} - {{ projectDetail.planEndDate }}</div
@@ -65,6 +69,7 @@
   import { useECharts } from '/@/hooks/web/useECharts';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import TipsModal from './tipsModal.vue';
+  import { EllipsisText } from '/@/components/EllipsisText';
   import { useModal } from '/@/components/Modal';
 
   const now = new Date().getTime();
