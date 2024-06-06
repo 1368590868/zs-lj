@@ -80,7 +80,7 @@ export const schema: DescItem[] = [
     label: '项目负责人',
   },
   {
-    field: 'costLeader',
+    field: 'costOwnerName',
     label: '成本负责人',
   },
 ];

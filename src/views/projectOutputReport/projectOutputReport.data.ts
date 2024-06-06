@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
-import { Tag } from 'ant-design-vue';
+import { Tag, Tooltip } from 'ant-design-vue';
 import { controlStatusOptions, warningStatusOptions } from '/@/enums/projectControl';
 import { deptListApi } from '/@/api/project/project';
 
@@ -380,7 +380,11 @@ export const columns: BasicColumn[] = [
         width: 200,
       },
       {
-        title: '是否有因本项目而产生的租赁设备',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '是否有因本项目而产生的租赁设备' },
+          '是否有因本项目而产生的租赁设备',
+        ),
         dataIndex: 'equipmentLeaseStatus',
         width: 200,
         customRender: ({ record }) => {
@@ -395,7 +399,11 @@ export const columns: BasicColumn[] = [
         editable: true,
       },
       {
-        title: '因本项目而产生的租赁设备是否全部有已签订的租赁合同',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '因本项目而产生的租赁设备是否全部有已签订的租赁合同' },
+          '因本项目而产生的租赁设备是否全部有已签订的租赁合同',
+        ),
         dataIndex: 'equipmentLeaseContractStatus',
         width: 200,
         customRender: ({ record }) => {
@@ -403,12 +411,20 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '涉及的全部租赁设备合同编号',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '涉及的全部租赁设备合同编号' },
+          '涉及的全部租赁设备合同编号',
+        ),
         dataIndex: 'equipmentLeaseContractNumber',
         width: 200,
       },
       {
-        title: '租赁设备的计量证书是否全部在有效期内',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '租赁设备的计量证书是否全部在有效期内' },
+          '租赁设备的计量证书是否全部在有效期内',
+        ),
         dataIndex: 'equipmentLeaseCredentialStatus',
         width: 200,
         customRender: ({ record }) => {
@@ -416,12 +432,20 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '合作单位现场负责人及电话',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '合作单位现场负责人及电话' },
+          '合作单位现场负责人及电话',
+        ),
         dataIndex: 'cooperatorPhone',
         width: 200,
       },
       {
-        title: '进度描述+项目生产自身问题原因分析',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '进度描述+项目生产自身问题原因分析' },
+          '进度描述+项目生产自身问题原因分析',
+        ),
         dataIndex: 'planRemark',
         width: 200,
       },
@@ -431,7 +455,11 @@ export const columns: BasicColumn[] = [
         width: 200,
       },
       {
-        title: '下一步计划+是否需要公司支持',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '下一步计划+是否需要公司支持' },
+          '下一步计划+是否需要公司支持',
+        ),
         dataIndex: 'nextPlan',
         width: 200,
       },
@@ -474,7 +502,7 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   { field: 'projectName', label: '项目名称', component: 'Input', colProps: { span: 6 } },
   { field: 'projectNumber', label: '项目编号', component: 'Input', colProps: { span: 6 } },
-  { field: 'costLeader', label: '成本负责人', component: 'Input', colProps: { span: 6 } },
+  { field: 'costOwnerName', label: '成本负责人', component: 'Input', colProps: { span: 6 } },
   { field: 'projectOwnerName', label: '项目负责人', component: 'Input', colProps: { span: 6 } },
   {
     field: 'deptName',

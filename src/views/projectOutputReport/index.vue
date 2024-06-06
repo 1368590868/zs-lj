@@ -20,7 +20,8 @@
             {
               label: '查看',
               onClick: onDetail.bind(null, record, ActionType.VIEW),
-              // ifShow: 当前月份 - 上传时间
+              // ifShow: outputValueMonth< now() < outputValueMonth+1（产值填写判断） 判定展示详情按钮
+              ifShow: isBetween(record),
             },
           ]"
         />
@@ -40,6 +41,7 @@
   import { useRouter } from 'vue-router';
   import { exportApi, pageApi } from '/@/api/projectOutputValue/projectOutputValue';
   import { useProjectControl } from '/@/store/modules/projectControl';
+  import moment from 'moment';
   const router = useRouter();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
@@ -81,7 +83,18 @@
     store.setReportData(record);
     router.push({ path: '/projectReportDetail', query: { type } });
   };
-
+  const isBetween = (record) => {
+    if (!record.outputValueMonth) return false;
+    const backendDate = record.outputValueMonth;
+    // 将后端返回的日期转换为 Moment 对象
+    const outputDate = moment(backendDate, 'YYYY-MM-DD');
+    // 获取当前日期
+    const currentDate = moment();
+    // 计算返回日期加一个月的日期
+    const nextMonthDate = outputDate.clone().add(1, 'month');
+    // 判断当前日期是否在返回日期和返回日期加一个月之间
+    return currentDate.isBetween(outputDate, nextMonthDate, null, '[)');
+  };
   // 导出
   const exportExcel = async () => {
     try {

@@ -83,7 +83,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '成本负责人',
-    dataIndex: 'costLeader',
+    dataIndex: 'costOwnerName',
     width: 200,
   },
   {

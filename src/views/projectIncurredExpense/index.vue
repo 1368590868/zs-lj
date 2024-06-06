@@ -43,7 +43,7 @@
           >
           <div>归属部门：{{ projectDetail.deptName }}</div>
           <div>项目负责人：{{ projectDetail.projectOwnerName }}</div>
-          <div>成本负责人：{{ projectDetail.costLeader }}</div>
+          <div>成本负责人：{{ projectDetail.costOwnerName }}</div>
         </div>
         <div ref="chartRef" class="w-full min-h-200px"></div>
       </div>
@@ -75,7 +75,7 @@
     planEndDate: '',
     deptName: '',
     projectOwnerName: '',
-    costLeader: '',
+    costOwnerName: '',
   });
 
   const chartRef = ref<HTMLDivElement | null>(null);
