@@ -15,7 +15,7 @@ enum Api {
   export = `${prefix}/project_phase_cost/export?ids=`,
   costLeaderAudit = `${prefix}/project_phase_cost/costLeaderAudit`,
   operationDeptAudit = `${prefix}/project_phase_cost/operationDeptAudit`,
-  addAndUpdateHumanCost = `${prefix}/project_phase_cost/addAndUpdateHumanCost`,
+  addAndUpdatePersonCost = `${prefix}/project_phase_cost/addAndUpdatePersonCost`,
 }
 
 /**
@@ -95,6 +95,6 @@ export const exportApi = (params) => {
   return defHttpFile.get({ url: Api.export + params, responseType: 'blob' });
 };
 /**新增人力成本 */
-export const addAndUpdateHumanCostApi = (params) => {
-  return defHttp.post({ url: Api.addAndUpdateHumanCost, params });
+export const addAndUpdatePersonCostApi = (params) => {
+  return defHttp.post({ url: Api.addAndUpdatePersonCost, params });
 };

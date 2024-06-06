@@ -15,14 +15,14 @@
 <script setup lang="ts">
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
-  import { addAndUpdateHumanCostApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { addAndUpdatePersonCostApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
     schemas: [
       {
         label: '人力成本',
-        field: 'personCost',
+        field: 'phaseBudget',
         component: 'InputNumber',
         labelWidth: 80,
         componentProps: {
@@ -33,8 +33,8 @@
         required: true,
       },
       {
-        label: 'id',
-        field: 'id',
+        label: 'monthAuditId',
+        field: 'monthAuditId',
         component: 'Input',
         show: false,
       },
@@ -50,13 +50,14 @@
 
     setFieldsValue({
       ...data.record,
+      monthAuditId: data.record.id,
     });
   });
 
   //   提交
   const handleSubmit = async () => {
     const values = await validate();
-    await addAndUpdateHumanCostApi({ ...values, id: values.id });
+    await addAndUpdatePersonCostApi({ ...values, id: values.id });
     closeModal();
   };
 </script>
