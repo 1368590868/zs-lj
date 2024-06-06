@@ -212,9 +212,10 @@ export const ProjectLeaderStatus = defineComponent({
     const onConfirm = async () => {
       await monthAuditApi({ id: props.id, auditStatus: isPass.value }, props.type)
         .then(() => {
+          console.log(isPass.value === 1, 'isPass.value');
           return addApi({
             projectPhaseCostId: props.id,
-            auditOpinion: remark.value,
+            auditOpinion: remark.value || (isPass.value === 1 ? '通过' : '不通过'),
             auditOpinionFlag: props.type === 'cost' ? 2 : 3,
             createByName: store.getUserInfo.nickName,
           });
@@ -254,7 +255,26 @@ export const ProjectLeaderStatus = defineComponent({
             onInput={handleInput}
           />
         </BasicModal>
-        {props.text === 0 && props.costStatus === 1 ? (
+        {props.type === 'cost' ? (
+          props.text === 0 || props.text === 3 ? (
+            <Space>
+              <Button type="link" onClick={() => onOpenModal(1)}>
+                通过
+              </Button>
+
+              <Button type="link" onClick={() => onOpenModal(2)}>
+                驳回
+              </Button>
+            </Space>
+          ) : (
+            <TypographyText type={textType[props.text]}>
+              {props.text === 1
+                ? costChargeEnum[props.text]
+                : `${costChargeEnum[props.text]} ${props.time ?? ''}`}
+            </TypographyText>
+          )
+        ) : // 运营部审核
+        props.text === 0 && props.costStatus === 1 ? (
           <Space>
             <Button type="link" onClick={() => onOpenModal(1)}>
               通过

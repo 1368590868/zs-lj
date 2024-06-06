@@ -131,6 +131,13 @@ export const myCostStatusEnum = {
   2: '已驳回',
   3: '失效作废',
 };
+// 单条记录审核状态
+export const singleCostStatusOptions = {
+  0: '待审核',
+  1: '已通过',
+  2: '已驳回',
+  3: '待审核',
+};
 
 // 月度成本审核状态
 export const costChargeEnum = {

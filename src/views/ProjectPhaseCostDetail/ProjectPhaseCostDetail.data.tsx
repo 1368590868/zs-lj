@@ -2,7 +2,12 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
 import { Button, Popconfirm, Space, Textarea, TypographyText, message } from 'ant-design-vue';
-import { costChargeEnum, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import {
+  costChargeEnum,
+  costSubjectEnum,
+  myCostStatusEnum,
+  singleCostStatusOptions,
+} from '/@/enums/projectControl';
 import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
 export const columns: BasicColumn[] = [
@@ -64,11 +69,14 @@ export const columns: BasicColumn[] = [
         0: 'warning',
         1: 'success',
         2: 'danger',
+        3: 'warning',
       };
       return h(
         TypographyText,
         { type: textType[idx] },
-        idx === 1 ? costChargeEnum[idx] : `${costChargeEnum[idx]} ${record.costLeaderTime ?? ''}`,
+        idx === 1
+          ? singleCostStatusOptions[idx]
+          : `${singleCostStatusOptions[idx]} ${record.costLeaderTime ?? ''}`,
       );
     },
   },
@@ -243,7 +251,7 @@ export const ProjectLeaderStatus = defineComponent({
         .then(() => {
           return addApi({
             projectPhaseCostId: props.id,
-            auditOpinion: remark.value ?? isPass.value ? '通过' : '不通过',
+            auditOpinion: remark.value || (isPass.value === 1 ? '通过' : '不通过'),
             auditOpinionFlag: 1,
             createByName: store.getUserInfo.nickName,
           });

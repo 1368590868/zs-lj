@@ -2,7 +2,12 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
-import { costChargeEnum, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import {
+  costChargeEnum,
+  costSubjectEnum,
+  myCostStatusEnum,
+  singleCostStatusOptions,
+} from '/@/enums/projectControl';
 
 export const columns: BasicColumn[] = [
   {
@@ -71,13 +76,14 @@ export const columns: BasicColumn[] = [
         0: 'warning',
         1: 'success',
         2: 'danger',
+        3: 'warning',
       };
       return h(
         TypographyText,
         { type: textType[idx] },
         idx === 1
-          ? costChargeEnum[idx]
-          : `${costChargeEnum[idx] ?? ''} ${record.costLeaderTime ?? ''}`,
+          ? singleCostStatusOptions[idx]
+          : `${singleCostStatusOptions[idx] ?? ''} ${record.costLeaderTime ?? ''}`,
       );
     },
   },
