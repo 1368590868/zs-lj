@@ -76,18 +76,6 @@
       isUpdate: true,
     });
   };
-  const handleEditModal = (record: Recordable) => {
-    openEditModal(true, {
-      record,
-    });
-  };
-  const handleDelete = async (record: Recordable) => {
-    try {
-      await removeApi(record.id);
-      message.success('删除成功');
-      reload();
-    } catch (error) {}
-  };
   // 成功
   function handleSuccess() {
     reload();

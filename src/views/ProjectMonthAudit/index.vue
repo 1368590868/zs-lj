@@ -32,17 +32,18 @@
           <span v-if="record.personCost">
             {{ useCurrencyFormatter(record.personCost ?? 0) }}
           </span>
+          <span v-if="record.personCost === 0"> 0 </span>
 
           <TableAction
             :actions="[
               {
                 icon: 'ant-design:edit-outlined',
-                ifShow: !!record.personCost,
+                ifShow: typeof record.personCost === 'number',
                 onClick: onPersonCost.bind(null, record),
               },
               {
                 label: '填写',
-                ifShow: !record.personCost,
+                ifShow: typeof record.personCost !== 'number',
                 onClick: onPersonCost.bind(null, record),
               },
             ]"

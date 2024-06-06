@@ -243,7 +243,7 @@ export const ProjectLeaderStatus = defineComponent({
         .then(() => {
           return addApi({
             projectPhaseCostId: props.id,
-            auditOpinion: remark.value,
+            auditOpinion: remark.value ?? isPass.value ? '通过' : '不通过',
             auditOpinionFlag: 1,
             createByName: store.getUserInfo.nickName,
           });

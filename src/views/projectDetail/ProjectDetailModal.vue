@@ -28,6 +28,7 @@
   import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
   import { useUserStore } from '/@/store/modules/user';
   import { pageApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
+  import { editApi } from '/@/api/project/project';
   const isUpdate = ref(true);
   const [registerFrom, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 120,
@@ -87,12 +88,16 @@
     try {
       const values = await validate();
       setModalProps({ confirmLoading: true });
-      await addApi({
-        ...values,
-        createByName: getUserInfo.value,
-        auditOpinionFlag: 0,
-        projectId: values.id,
+      await editApi({
+        id: values.id,
+        remark: values.auditOpinion,
       });
+      // await addApi({
+      //   ...values,
+      //   createByName: getUserInfo.value,
+      //   auditOpinionFlag: 0,
+      //   projectId: values.id,
+      // });
       message.success('添加成功');
 
       closeModal();

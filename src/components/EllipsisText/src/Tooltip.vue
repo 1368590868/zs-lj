@@ -65,6 +65,7 @@
         <span class="u-tooltip-arrow"></span>
       </div>
     </div>
+
     <div ref="contentRef">
       <slot>{{ content }}</slot>
     </div>
@@ -78,7 +79,7 @@
 
     .m-tooltip-content {
       position: absolute;
-      z-index: 9999;
+      z-index: 999999999999;
       width: max-content;
       padding-bottom: 12px;
       transform: scale(0.8); // 缩放变换

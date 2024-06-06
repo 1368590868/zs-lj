@@ -9,8 +9,9 @@ import {
   provinceEnum,
   warningStatusOptions,
 } from '/@/enums/projectControl';
-import { TypographyText } from 'ant-design-vue';
+import { Tooltip, TypographyText } from 'ant-design-vue';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+import { EllipsisText } from '/@/components/EllipsisText';
 
 export const columns: BasicColumn[] = [
   {
@@ -102,8 +103,11 @@ export const columns: BasicColumn[] = [
 
   {
     title: '管控意见',
-    dataIndex: 'controlOpinion',
+    dataIndex: 'remark',
     width: 200,
+    customRender: ({ record }) => {
+      return h(EllipsisText, { maxWidth: 200, tooltipMaxWidth: 200 }, () => record.remark);
+    },
   },
 ];
 

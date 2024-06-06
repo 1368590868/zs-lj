@@ -16,6 +16,8 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { addAndUpdatePersonCostApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { useUserStore } from '/@/store/modules/user';
+  import { message } from 'ant-design-vue';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
@@ -44,12 +46,15 @@
       span: 24,
     },
   });
+  const emit = defineEmits(['success']);
+  const store = useUserStore();
   const [register, { setModalProps, closeModal }] = useModalInner((data) => {
     resetFields();
     setModalProps({ confirmLoading: false });
 
     setFieldsValue({
       ...data.record,
+      phaseBudget: data.record.personCost,
       monthAuditId: data.record.id,
     });
   });
@@ -57,7 +62,13 @@
   //   提交
   const handleSubmit = async () => {
     const values = await validate();
-    await addAndUpdatePersonCostApi({ ...values, id: values.id });
+    await addAndUpdatePersonCostApi({
+      ...values,
+      id: values.id,
+      createByName: store.getUserInfo.nickName,
+    });
+    message.success('操作成功');
+    emit('success');
     closeModal();
   };
 </script>
