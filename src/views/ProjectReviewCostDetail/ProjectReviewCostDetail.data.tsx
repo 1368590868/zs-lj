@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
-import { Button, Popconfirm, Space, Textarea, TypographyText, message } from 'ant-design-vue';
+import { Button, Popconfirm, Space, Input, TypographyText, message } from 'ant-design-vue';
 import { costChargeOptions, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 import { BasicModal } from '/@/components/Modal';
@@ -259,7 +259,7 @@ export const ProjectLeaderStatus = defineComponent({
           onOk={onConfirm}
           title={`确认审核${isPass.value === 1 ? '通过' : '驳回'}`}
         >
-          <Textarea
+          <Input.Textarea
             rows={4}
             showCount
             maxlength={15}
