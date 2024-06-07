@@ -13,7 +13,7 @@
               ifShow: !!record.updateBy,
             },
             {
-              label: '未填写',
+              label: '填写',
               onClick: onDetail.bind(null, record, ActionType.EDIT),
               ifShow: !record.updateBy,
             },

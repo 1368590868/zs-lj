@@ -1,10 +1,13 @@
+import { h } from 'vue';
 import { FormSchema } from '/@/components/Table';
 import { costSubjectEnum } from '/@/enums/projectControl';
+import { EllipsisText } from '/@/components/EllipsisText';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 export const formSchema: FormSchema[] = [
   {
     field: 'id',
     component: 'Select',
-    label: '项目名称',
+    label: 'id',
     show: false,
   },
   {
@@ -15,7 +18,7 @@ export const formSchema: FormSchema[] = [
       span: 6,
     },
     render: ({ model, field }) => {
-      return model[field];
+      return h(EllipsisText, { tooltip: model[field] }, () => model[field]);
     },
   },
   {
@@ -48,7 +51,7 @@ export const formSchema: FormSchema[] = [
       span: 6,
     },
     render: ({ model, field }) => {
-      return model[field];
+      return useCurrencyFormatter(model[field]) + '元';
     },
   },
   {
@@ -59,7 +62,6 @@ export const formSchema: FormSchema[] = [
       span: 6,
     },
     render: ({ model }) => {
-      console.log(model);
       return (
         (model['planEndDate'] || model['planStartDate']) &&
         `${model['planStartDate'] ?? ''} - ${model['planEndDate'] ?? ''}`
@@ -105,19 +107,20 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       disabled: false,
     },
-    colProps: {
-      span: 24,
-    },
+    span: 12,
   },
+
   {
     field: 'monthRatio',
     component: 'InputNumber',
     label: `${new Date().getMonth() + 1}月完成比例`,
     componentProps: {
       disabled: false,
+      min: 0,
+      formatter: (value) => `${value}%`,
+      parser: (value) => value.replace('%', ''),
     },
     required: true,
-    suffix: '%',
     colProps: {
       span: 8,
     },
@@ -128,9 +131,11 @@ export const formSchema: FormSchema[] = [
     label: `预计未来3个月完成比例`,
     componentProps: {
       disabled: false,
+      min: 0,
+      formatter: (value) => `${value}%`,
+      parser: (value) => value.replace('%', ''),
     },
     required: true,
-    suffix: '%',
     colProps: {
       span: 8,
     },
@@ -141,9 +146,11 @@ export const formSchema: FormSchema[] = [
     label: `预计全年完成比例`,
     componentProps: {
       disabled: false,
+      min: 0,
+      formatter: (value) => `${value}%`,
+      parser: (value) => value.replace('%', ''),
     },
     required: true,
-    suffix: '%',
     colProps: {
       span: 8,
     },

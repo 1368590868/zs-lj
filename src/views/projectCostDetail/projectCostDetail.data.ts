@@ -3,12 +3,16 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { Tag, TypographyText } from 'ant-design-vue';
 import { costSubjectEnum } from '/@/enums/projectControl';
+import { EllipsisText } from '/@/components/EllipsisText';
 
 export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    customRender: ({ record }) => {
+      return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
+    },
   },
   {
     title: '阶段标题',

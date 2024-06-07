@@ -2,7 +2,6 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import {
-  ControlStatusEnum,
   controlStatusOptions,
   professionTypeEnum,
   projectProgressOptions,
@@ -19,6 +18,9 @@ export const columns: BasicColumn[] = [
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    customRender: ({ record }) => {
+      return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
+    },
   },
   {
     title: '项目编号',
@@ -215,7 +217,11 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     labelWidth: 120,
     render: ({ model, field }) => {
-      return h('div', model[field]);
+      return h(
+        EllipsisText,
+        { tooltip: model[field], maxWidth: 500, tooltipMaxWidth: 500 },
+        () => model[field],
+      );
     },
   },
   {
@@ -245,9 +251,14 @@ export const formSchema: FormSchema[] = [
   {
     label: '项目预算',
     field: 'generalBudget',
-    component: 'Input',
+    component: 'InputNumber',
+    componentProps: {
+      min: 1,
+      precision: 2,
+      formatter: (value) => `${value}元`,
+      parser: (value) => value.replace('元', ''),
+    },
     required: true,
-    suffix: '元',
   },
   {
     label: '项目区域',
@@ -313,8 +324,9 @@ export const formSchema: FormSchema[] = [
     required: true,
     componentProps: {
       min: 0,
-      max: 100,
+      precision: 2,
+      formatter: (value) => `${value}%`,
+      parser: (value) => value.replace('%', ''),
     },
-    suffix: '%',
   },
 ];

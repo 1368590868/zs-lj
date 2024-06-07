@@ -81,10 +81,12 @@
       {
         field: 'lastYearRatio',
         label: '截止上年底完成比例',
+        render: (val) => `${val}%`,
       },
       {
         field: 'allYearRatio',
         label: '截止目前累计完成比例',
+        render: (val) => `${val}%`,
       },
     ],
   });
@@ -197,23 +199,14 @@
       });
     }
 
-    if (router.currentRoute.value.query.type === ActionType.VIEW) {
-      const newSchema = formSchema.map((x) => {
-        x['componentProps'] = {
-          disabled: true,
-        };
-        return x;
-      });
-      updateSchema(newSchema);
-    } else {
-      const newSchema = formSchema.map((x) => {
-        x['componentProps'] = {
-          disabled: false,
-        };
-        return x;
-      });
-      updateSchema(newSchema);
-    }
+    const newSchema = formSchema.map((x) => {
+      x['componentProps'] = {
+        ...x['componentProps'],
+        disabled: router.currentRoute.value.query.type === ActionType.VIEW,
+      };
+      return x;
+    });
+    updateSchema(newSchema);
   });
   const handleSubmit = async (values) => {
     await editApi(values).catch(() => {

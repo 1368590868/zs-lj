@@ -23,17 +23,14 @@
         />
       </template>
     </BasicTable>
-    <ProjectModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { pageApi, exportApi } from '/@/api/project/project';
-  import ProjectModal from './projectControlModal.vue';
   import { columns, searchFormSchema } from './projectControl.data';
   import { onMounted, ref, unref } from 'vue';
-  import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import {
     controlStatusOptions,
@@ -43,7 +40,6 @@
 
   const router = useRouter();
 
-  const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, clearSelectedRowKeys, getForm }] = useTable({
     title: '项目管理列表',
     api: pageApi,

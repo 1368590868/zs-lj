@@ -1,19 +1,19 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
-import { Tag } from 'ant-design-vue';
-import {
-  controlStatusOptions,
-  milestoneControlStatusEnum,
-  warningStatusOptions,
-} from '/@/enums/projectControl';
+import { TypographyText } from 'ant-design-vue';
+import { milestoneControlStatusEnum, warningStatusOptions } from '/@/enums/projectControl';
 import { deptListApi } from '/@/api/project/project';
+import { EllipsisText } from '/@/components/EllipsisText';
 
 export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    customRender: ({ record }) => {
+      return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
+    },
   },
   {
     title: '项目编号',
@@ -64,7 +64,16 @@ export const columns: BasicColumn[] = [
     dataIndex: 'warningStatus',
     width: 200,
     customRender: ({ record }) => {
-      return h('span', warningStatusOptions[record?.warningStatus]);
+      const status = record.warningStatus;
+
+      const colorEnum = [{ success: '正常' }, { warning: '黄色警告' }, { danger: '红色警告' }];
+      return typeof status === 'number'
+        ? h(
+            TypographyText,
+            { type: Object.keys(colorEnum[status]) },
+            Object.values(colorEnum[status]),
+          )
+        : ' ';
     },
   },
 ];

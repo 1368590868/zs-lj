@@ -16,6 +16,9 @@ export const columns: BasicColumn[] = [
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    customRender: ({ record }) => {
+      return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
+    },
   },
   {
     title: '阶段标题',
@@ -189,6 +192,7 @@ export const formEditSchema: FormSchema[] = [
 import { useModal } from '/@/components/Modal';
 import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
 import { useUserStore } from '/@/store/modules/user';
+import { EllipsisText } from '/@/components/EllipsisText';
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
   props: {

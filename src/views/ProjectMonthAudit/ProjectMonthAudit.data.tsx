@@ -1,6 +1,6 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { defineComponent, ref } from 'vue';
+import { defineComponent, h, ref } from 'vue';
 import { Button, Space, Input, TypographyText, message } from 'ant-design-vue';
 import { costChargeOptions, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 
@@ -16,6 +16,9 @@ export const columns: BasicColumn[] = [
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    customRender: ({ record }) => {
+      return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
+    },
   },
   {
     title: '项目编号',
@@ -175,6 +178,7 @@ import { BasicModal, useModal } from '/@/components/Modal';
 import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
 import { useUserStore } from '/@/store/modules/user';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+import { EllipsisText } from '/@/components/EllipsisText';
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
   props: {

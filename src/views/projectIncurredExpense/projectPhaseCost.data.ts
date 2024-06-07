@@ -30,11 +30,12 @@ export const formSchema: FormSchema[] = [
     field: 'phaseBudget',
     component: 'InputNumber',
     componentProps: {
-      precision: 2,
       min: 0,
+      precision: 2,
+      formatter: (value) => `${value}元`,
+      parser: (value) => value.replace('元', ''),
     },
     label: '成本金额',
-    suffix: '元',
     required: true,
   },
   {
