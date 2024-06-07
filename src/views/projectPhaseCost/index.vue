@@ -23,19 +23,25 @@
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import ProjectPhaseCostModal from './ProjectPhaseCostModal.vue';
   import { columns, searchFormSchema } from './projectPhaseCost.data';
-  import { Ref, onMounted, reactive, ref, unref, watchEffect } from 'vue';
+  import { Ref, onMounted, reactive, ref, watchEffect } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';
   import { useRouter } from 'vue-router';
+
+  const router = useRouter();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     title: '项目阶段成本明细列表',
     api: pageApi,
+    // 额外参数
+    searchInfo: {
+      projectPhaseId: router.currentRoute.value.query.id,
+    },
     columns,
     formConfig: {
       labelWidth: 120,
@@ -62,7 +68,6 @@
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
-  const router = useRouter();
   const detail = ref({});
   const getFindCurrent = async () => {
     const res = await findNowPhasesByProjectIdApi(router.currentRoute.value.query.projectId);

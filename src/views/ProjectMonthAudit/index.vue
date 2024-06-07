@@ -14,6 +14,7 @@
           :id="record.id"
           @reload="reload"
           :time="record.costLeaderTime"
+          :personCost="record.personCost"
           type="cost"
         />
       </template>

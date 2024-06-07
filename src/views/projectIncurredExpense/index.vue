@@ -35,7 +35,7 @@
       <Divider />
       <div v-show="showBar">
         <h2>项目基础信息</h2>
-        <div class="flex justify-between mb-4">
+        <div class="flex justify-between flex-wrap mb-4">
           <div
             >项目名称:<EllipsisText
               :maxWidth="200"

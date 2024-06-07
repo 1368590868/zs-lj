@@ -182,6 +182,9 @@
     });
   };
   const handleMilestoneConfig = (record: Recordable) => {
+    if (!record.generalBudget) {
+      return message.error('请先完善项目信息');
+    }
     router.push({
       path: '/projectMilestoneConfig',
       query: {
@@ -195,11 +198,14 @@
   const handleControl = async (record: Recordable, isControl: Boolean) => {
     const { id } = record;
     await controlDetermineApi({ id, determineStatus: isControl ? 1 : 0 });
+
     // 填写管控意见
-    await editApi({
-      id: record.id,
-      remark: `${store.getUserInfo.nickName} : 无需管控`,
-    });
+    if (!isControl) {
+      await editApi({
+        id: record.id,
+        remark: `${store.getUserInfo.nickName} : 无需管控`,
+      });
+    }
     message.success('操作成功');
     reload();
   };

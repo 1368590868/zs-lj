@@ -28,6 +28,7 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       rows: 12,
       placeholder: '请输入您对项目的管控意见',
+      maxlength: 500,
     },
     required: true,
     labelWidth: 80,

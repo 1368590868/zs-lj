@@ -80,6 +80,7 @@
   const [registerTable, { reload }] = useTable({
     api: pageApi,
     columns,
+    canResize: false,
     searchInfo: {
       projectId: router.currentRoute.value.query?.id,
     },

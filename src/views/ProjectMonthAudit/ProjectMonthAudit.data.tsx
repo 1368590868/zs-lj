@@ -201,6 +201,10 @@ export const ProjectLeaderStatus = defineComponent({
       type: Number,
       default: () => 0,
     },
+    personCost: {
+      type: Number,
+      default: null,
+    },
   },
   setup(props, { emit }) {
     const [register, { openModal, closeModal }] = useModal();
@@ -233,6 +237,12 @@ export const ProjectLeaderStatus = defineComponent({
 
     const remark = ref<string>('');
     const onOpenModal = (state: number) => {
+      if (props.type === 'cost') {
+        if (typeof props.personCost !== 'number') {
+          message.error('请填写项目当月人力成本后再审核');
+          return;
+        }
+      }
       isPass.value = state;
       openModal(true);
     };

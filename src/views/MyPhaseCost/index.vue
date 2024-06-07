@@ -38,11 +38,16 @@
   import { useModal } from '/@/components/Modal';
   import MyPhaseEditModal from './MyPhaseEditModal.vue';
   import { ProjectOwnerStatusEnum } from '/@/enums/projectControl';
+  import { useUserStore } from '/@/store/modules/user';
 
+  const store = useUserStore();
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     api: pageApi,
+    searchInfo: {
+      createBy: store.getUserInfo.account,
+    },
     columns,
     formConfig: {
       labelWidth: 120,
