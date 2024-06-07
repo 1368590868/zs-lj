@@ -60,8 +60,8 @@
 <script lang="ts" setup>
   import { Space } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import MyPhaseCostModal from './ProjectMonthAuditModal.vue';
-  import { columns, searchFormSchema, ProjectLeaderStatus } from './ProjectMonthAudit.data';
+  import MyPhaseCostModal from './projectMonthAuditModal.vue';
+  import { columns, searchFormSchema, ProjectLeaderStatus } from './projectMonthAudit.data';
 
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { useModal } from '/@/components/Modal';
