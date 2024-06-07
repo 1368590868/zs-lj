@@ -32,11 +32,11 @@
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { pageApi, exportApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import MyPhaseCostModal from './MyPhaseCostModal.vue';
-  import { columns, searchFormSchema } from './MyPhaseCost.data';
+  import MyPhaseCostModal from './myPhaseCostModal.vue';
+  import { columns, searchFormSchema } from './myPhaseCost.data';
   import { reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
-  import MyPhaseEditModal from './MyPhaseEditModal.vue';
+  import MyPhaseEditModal from './myPhaseEditModal.vue';
   import { ProjectOwnerStatusEnum } from '/@/enums/projectControl';
   import { useUserStore } from '/@/store/modules/user';
 

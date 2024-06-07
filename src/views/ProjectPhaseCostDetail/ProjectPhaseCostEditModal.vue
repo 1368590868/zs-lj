@@ -10,7 +10,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { editApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import { formEditSchema } from './ProjectPhaseCostDetail.data';
+  import { formEditSchema } from './projectPhaseCostDetail.data';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,

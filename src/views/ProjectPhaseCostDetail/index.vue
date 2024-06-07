@@ -30,11 +30,11 @@
   import { Modal, message } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { pageApi, auditApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import MyPhaseCostModal from './ProjectPhaseCostDetailModal.vue';
-  import { columns, searchFormSchema, ProjectLeaderStatus } from './ProjectPhaseCostDetail.data';
+  import MyPhaseCostModal from './projectPhaseCostDetailModal.vue';
+  import { columns, searchFormSchema, ProjectLeaderStatus } from './projectPhaseCostDetail.data';
   import { computed, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
-  import MyPhaseEditModal from './ProjectPhaseCostEditModal.vue';
+  import MyPhaseEditModal from './projectPhaseCostEditModal.vue';
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
   const [registerTable, { reload, getSelectRowKeys, getSelectRows }] = useTable({
@@ -66,6 +66,7 @@
 
   let selectId = reactive<any[]>([]);
   const isSelectRows = computed(() => {
+    // 遍历选中的行，状态为待审核的才能操作
     return getSelectRows().length > 0;
   });
 

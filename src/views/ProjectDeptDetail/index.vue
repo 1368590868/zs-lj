@@ -23,7 +23,7 @@
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
   import { TypographyText } from 'ant-design-vue';
-  import { columns, searchFormSchema } from './ProjectDeptDetail.data';
+  import { columns, searchFormSchema } from './projectDeptDetail.data';
   import { deptProjectStatisticsApi } from '/@/api/project/project';
   import { useRouter } from 'vue-router';
   import { WarningStatusEnum } from '/@/enums/projectControl';

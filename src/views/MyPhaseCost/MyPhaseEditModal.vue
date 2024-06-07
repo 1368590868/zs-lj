@@ -10,7 +10,7 @@
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { BasicForm, useForm } from '/@/components/Form';
   import { editApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import { formEditSchema } from './MyPhaseCost.data';
+  import { formEditSchema } from './myPhaseCost.data';
 
   const emit = defineEmits(['success', 'register']);
 

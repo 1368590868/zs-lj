@@ -30,11 +30,11 @@
   import { Modal, message } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
   import { pageApi, auditApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import ProjectReviewCostDetailModal from './ProjectReviewCostDetailModal.vue';
-  import { columns, searchFormSchema, ProjectLeaderStatus } from './ProjectReviewCostDetail.data';
+  import ProjectReviewCostDetailModal from './projectReviewCostDetailModal.vue';
+  import { columns, searchFormSchema, ProjectLeaderStatus } from './projectReviewCostDetail.data';
   import { computed, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
-  import ProjectReviewCostEditModal from './ProjectReviewCostEditModal.vue';
+  import ProjectReviewCostEditModal from './projectReviewCostEditModal.vue';
   import { useRouter } from 'vue-router';
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
