@@ -33,10 +33,6 @@
     showTableSetting: true,
     bordered: true,
     showIndexColumn: true,
-    indexColumnProps: {
-      title: '模板编号',
-      width: 100,
-    },
     pagination: {
       current: 1,
       pageSize: 10,

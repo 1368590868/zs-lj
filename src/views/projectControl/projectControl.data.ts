@@ -20,6 +20,7 @@ export const columns: BasicColumn[] = [
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },

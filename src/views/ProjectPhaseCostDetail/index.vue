@@ -63,6 +63,19 @@
       pageSize: 10,
     },
   });
+  function handleSummary(tableData: Recordable[]) {
+    const totalPhaseBudget = tableData.reduce((prev, next) => {
+      prev += next.phaseBudget;
+      return prev;
+    }, 0);
+    console.log(totalPhaseBudget);
+    return [
+      {
+        _row: '合计',
+        phaseBudget: totalPhaseBudget,
+      },
+    ];
+  }
 
   let selectId = reactive<any[]>([]);
   const isSelectRows = computed(() => {

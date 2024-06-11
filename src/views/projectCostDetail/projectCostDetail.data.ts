@@ -4,18 +4,20 @@ import { h } from 'vue';
 import { Tag, TypographyText } from 'ant-design-vue';
 import { costSubjectEnum } from '/@/enums/projectControl';
 import { EllipsisText } from '/@/components/EllipsisText';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 
 export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },
   },
   {
-    title: '阶段标题',
+    title: '阶段',
     dataIndex: 'phaseTitle',
     width: 200,
   },
@@ -30,9 +32,13 @@ export const columns: BasicColumn[] = [
     width: 200,
   },
   {
-    title: '金额',
+    title: '金额（元）',
     dataIndex: 'phaseBudget',
     width: 200,
+    align: 'right',
+    customRender: ({ record }) => {
+      return useCurrencyFormatter(record.phaseBudget ?? 0);
+    },
   },
   {
     title: '提交时间',

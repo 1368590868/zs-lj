@@ -1,5 +1,5 @@
 import { defineComponent, ref } from 'vue';
-import { InputNumber, Space } from 'ant-design-vue';
+import { InputNumber } from 'ant-design-vue';
 
 export default defineComponent({
   props: {
@@ -23,20 +23,23 @@ export default defineComponent({
       });
     };
 
-    return () => (
-      <Space wrap>
-        {Array.from({ length: props?.getFieldsValue?.().phaseNum ?? 3 }).map((_, i) => (
+    return () =>
+      Array.from({ length: props?.getFieldsValue?.().phaseNum ?? 3 }).map((_, i) => (
+        <>
           <InputNumber
-            value={props?.value?.[i] ?? 0}
+            value={props?.value?.[i]}
+            placeholder={`请输入第${i + 1}阶段预算比例`}
             key={i}
+            required
             min={props.min}
             max={props.max}
-            formatter={(value: number) => `${value}%`}
-            parser={(value) => value.replace('%', '')}
+            precision={2}
             onChange={(inputValue: number) => handleInput(i, inputValue)}
           />
-        ))}
-      </Space>
-    );
+          &nbsp;&nbsp;
+          <span>%</span>
+          <div class={'h-1'}></div>
+        </>
+      ));
   },
 });

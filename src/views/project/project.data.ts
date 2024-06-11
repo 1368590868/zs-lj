@@ -17,7 +17,8 @@ export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
+    fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },
@@ -30,13 +31,13 @@ export const columns: BasicColumn[] = [
   {
     title: '管控状态',
     dataIndex: 'controlStatus',
-    width: 200,
+    width: 100,
     slots: { customRender: 'controlStatus' },
   },
   {
     title: '预警状态',
     dataIndex: 'warningStatus',
-    width: 200,
+    width: 100,
     customRender: ({ record }) => {
       const status = record.warningStatus;
 
@@ -53,12 +54,12 @@ export const columns: BasicColumn[] = [
   {
     title: '项目类型',
     dataIndex: 'projectTypeName',
-    width: 200,
+    width: 100,
   },
   {
     title: '项目区域',
     dataIndex: 'projectArea',
-    width: 200,
+    width: 150,
   },
   {
     title: '归属部门',
@@ -68,12 +69,13 @@ export const columns: BasicColumn[] = [
   {
     title: '业务类型',
     dataIndex: 'businessTypeName',
-    width: 200,
+    width: 110,
   },
   {
     title: '总预算（元）',
     dataIndex: 'generalBudget',
-    width: 200,
+    width: 120,
+    align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.generalBudget);
     },
@@ -85,31 +87,32 @@ export const columns: BasicColumn[] = [
     slots: { customRender: 'planDate' },
   },
   {
-    title: '项目负责人名称',
+    title: '项目负责人',
     dataIndex: 'projectOwnerName',
     width: 200,
   },
   {
     title: '成本负责人',
     dataIndex: 'costOwnerName',
-    width: 200,
+    width: 100,
   },
   {
     title: '工程进度',
     dataIndex: 'projectProgress',
-    width: 200,
+    width: 100,
     slots: { customRender: 'projectProgress' },
   },
   {
     title: '创建时间',
     dataIndex: 'createTime',
     width: 200,
+    defaultHidden: true,
   },
 
   {
     title: '管控意见',
     dataIndex: 'remark',
-    width: 200,
+    width: 250,
     customRender: ({ record }) => {
       return h(
         EllipsisText,

@@ -16,14 +16,10 @@ export const columns: BasicColumn[] = [
     title: '项目名称',
     dataIndex: 'projectName',
     width: 200,
+    fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },
-  },
-  {
-    title: '项目编号',
-    dataIndex: 'projectNumber',
-    width: 200,
   },
   {
     title: '审核金额',
@@ -66,12 +62,6 @@ export const columns: BasicColumn[] = [
 ];
 
 export const searchFormSchema: FormSchema[] = [
-  {
-    field: 'projectNumber',
-    label: '项目编号',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
   {
     field: 'projectName',
     label: '项目名称',
@@ -148,7 +138,7 @@ export const formEditSchema: FormSchema[] = [
     required: true,
   },
   {
-    label: '金额',
+    label: '金额（元）',
     field: 'phaseBudget',
     component: 'InputNumber',
     labelWidth: 80,

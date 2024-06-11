@@ -9,30 +9,30 @@ export const columns: BasicColumn[] = [
   {
     title: '项目类型',
     dataIndex: 'projectType',
-    width: 200,
+    width: 100,
   },
   {
     title: '专业类型',
     dataIndex: 'professionType',
-    width: 200,
+    width: 100,
   },
   {
     title: '里程碑阶段数',
     dataIndex: 'phaseNum',
-    width: 200,
+    width: 120,
   },
   //   阶段预算比例（JSON格式字符串存储）
   {
     title: '阶段预算比例',
     dataIndex: 'phaseBudgetRatio',
-    width: 200,
+    width: 500,
     customRender: ({ record }) => {
       return h(
         'span',
         JSON.parse(record.phaseBudgetRatio ?? [])
           .map((v) => v + '%')
           .join()
-          .replace(/,/g, '/'),
+          .replace(/,/g, '；'),
       );
     },
   },
@@ -83,6 +83,7 @@ export const formSchema: FormSchema[] = [
     label: '项目类型',
     field: 'projectType',
     component: 'Select',
+    required: true,
     componentProps: {
       showSearch: true,
       filterOption: (input: string, option: any) => {
@@ -95,6 +96,7 @@ export const formSchema: FormSchema[] = [
     label: '专业类型',
     field: 'professionType',
     component: 'Select',
+    required: true,
     componentProps: {
       showSearch: true,
       filterOption: (input: string, option: any) => {
@@ -108,6 +110,7 @@ export const formSchema: FormSchema[] = [
     label: '管控阶段数',
     field: 'phaseNum',
     component: 'Select',
+    required: true,
     componentProps: {
       options: Array.from({ length: 18 }, (v, k) => k + 3).map((val) => ({
         label: val,
@@ -125,6 +128,7 @@ export const formSchema: FormSchema[] = [
     label: '阶段预算比例',
     field: 'phaseBudgetRatio',
     component: 'Input',
+    required: true,
     slot: 'phaseBudgetRatio',
   },
 ];

@@ -13,14 +13,13 @@
               ifShow: !!record.updateBy,
             },
             {
-              label: '填写',
+              label: '编辑',
               onClick: onDetail.bind(null, record, ActionType.EDIT),
               ifShow: !record.updateBy,
             },
             {
               label: '查看',
               onClick: onDetail.bind(null, record, ActionType.VIEW),
-              // ifShow: outputValueMonth< now() < outputValueMonth+1（产值填写判断） 判定展示详情按钮
               ifShow: isBetween(record) && !!record.updateBy,
             },
           ]"

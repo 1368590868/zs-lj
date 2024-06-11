@@ -4,18 +4,20 @@ import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
 import { costSubjectEnum } from '/@/enums/projectControl';
 import { EllipsisText } from '/@/components/EllipsisText';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 
 export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
+    fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },
   },
   {
-    title: '阶段标题',
+    title: '阶段',
     dataIndex: 'phaseTitle',
     width: 200,
   },
@@ -27,12 +29,16 @@ export const columns: BasicColumn[] = [
   {
     title: '成本科目',
     dataIndex: 'costTypeName',
-    width: 200,
+    width: 150,
   },
   {
-    title: '金额',
+    title: '金额（元）',
     dataIndex: 'phaseBudget',
-    width: 200,
+    width: 120,
+    align: 'right',
+    customRender: ({ record }) => {
+      return useCurrencyFormatter(record.phaseBudget ?? 0);
+    },
   },
   {
     title: '提交时间',
@@ -48,13 +54,9 @@ export const columns: BasicColumn[] = [
   {
     title: '项目负责人审核',
     dataIndex: 'projectOwnerName',
-    width: 200,
+    width: 100,
     customRender: ({ record }) => {
-      return h(
-        TypographyText,
-        { type: 'success' },
-        `${record.projectOwnerName ?? ''} ${record.project ?? ''}`,
-      );
+      return h(TypographyText, `${record.projectOwnerName ?? ''} ${record.project ?? ''}`);
     },
   },
   {
@@ -63,11 +65,7 @@ export const columns: BasicColumn[] = [
     width: 200,
     slots: { customRender: 'costLeaderStatus' },
     customRender: ({ record }) => {
-      return h(
-        TypographyText,
-        { type: 'success' },
-        `${record.costOwnerName ?? ''} ${record.costLeaderTime ?? ''}`,
-      );
+      return h(TypographyText, `${record.costOwnerName ?? ''} ${record.costLeaderTime ?? ''}`);
     },
   },
   {
@@ -77,7 +75,6 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }) => {
       return h(
         TypographyText,
-        { type: 'success' },
         `${record?.operationOwnerName ?? ''} ${record.operationDeptTime ?? ''}`,
       );
     },

@@ -87,4 +87,8 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  :global(.ant-input-number) {
+    width: 96%;
+  }
+</style>

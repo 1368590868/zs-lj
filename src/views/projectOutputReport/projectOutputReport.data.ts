@@ -17,7 +17,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
     fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, record.projectName);
@@ -36,6 +36,7 @@ export const columns: BasicColumn[] = [
         title: '合同额(元)',
         dataIndex: 'contractPrice',
         width: 200,
+        align: 'right',
         customRender: ({ record }) => {
           return typeof record.contractPrice === 'number'
             ? useCurrencyFormatter(record.contractPrice)
@@ -520,7 +521,11 @@ export const columns: BasicColumn[] = [
       {
         title: '6月生产成本',
         dataIndex: 'junCost',
+        align: 'right',
         width: new Date().getMonth() + 1 >= 6 ? 200 : 0,
+        customRender: ({ record }) => {
+          return typeof record.junCost === 'number' ? useCurrencyFormatter(record.junCost) : '0.00';
+        },
       },
       {
         title: '7月生产成本',
@@ -804,7 +809,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
   },
   {
-    label: '阶段标题',
+    label: '阶段',
     field: 'phaseTitle',
     component: 'Input',
   },

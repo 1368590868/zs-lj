@@ -59,7 +59,7 @@ export const projectProgressOptions = {
 
 //   管控状态
 export const controlStatusOptions = {
-  0: '无',
+  0: '不管控',
   1: '未配置',
   2: '管控中',
   3: '待完成',
@@ -104,11 +104,11 @@ export const milestoneControlStatusEnum = {
 
 // 项目类型
 export const projectTypeEnum = {
-  0: '小型项目',
-  1: '一般项目',
-  2: '大型项目',
-  3: '特大型项目',
-  4: '重大型项目',
+  0: '小型',
+  1: '一般',
+  2: '大型',
+  3: '特大型',
+  4: '重大型',
 };
 
 // 专业类型

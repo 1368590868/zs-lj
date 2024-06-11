@@ -10,7 +10,8 @@ export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
+    fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },
@@ -62,7 +63,7 @@ export const columns: BasicColumn[] = [
   {
     title: '预警状态',
     dataIndex: 'warningStatus',
-    width: 200,
+    width: 100,
     customRender: ({ record }) => {
       const status = record.warningStatus;
 
@@ -168,7 +169,7 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
   },
   {
-    label: '阶段标题',
+    label: '阶段',
     field: 'phaseTitle',
     component: 'Input',
   },

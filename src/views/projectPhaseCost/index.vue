@@ -5,36 +5,20 @@
       <template #headerTop>
         <div ref="chartRef" class="w-full min-h-200px"></div>
       </template>
-
-      <template #action="{ record }">
-        <TableAction
-          :actions="[
-            {
-              label: '详情',
-              onClick: handleEditModal.bind(null, record),
-            },
-          ]"
-        />
-      </template>
     </BasicTable>
-    <ProjectPhaseCostModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
-  import { message } from 'ant-design-vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table';
+  import { BasicTable, useTable } from '/@/components/Table';
   import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
-  import ProjectPhaseCostModal from './ProjectPhaseCostModal.vue';
   import { columns, searchFormSchema } from './projectPhaseCost.data';
   import { Ref, onMounted, reactive, ref, watchEffect } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
-  import { useModal } from '/@/components/Modal';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';
   import { useRouter } from 'vue-router';
 
   const router = useRouter();
-  const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     title: '项目阶段成本明细列表',
     api: pageApi,
@@ -55,12 +39,6 @@
     pagination: {
       current: 1,
       pageSize: 10,
-    },
-    actionColumn: {
-      width: 120,
-      title: '审批意见',
-      dataIndex: 'action',
-      slots: { customRender: 'action' },
     },
   });
   const { hasPermission } = usePermission();
@@ -131,13 +109,6 @@
   });
   let selectId = reactive<any[]>([]);
 
-  // 编辑项目阶段成本明细 Modal
-  const handleEditModal = (record: Recordable) => {
-    openModal(true, {
-      record,
-      isUpdate: true,
-    });
-  };
   // 成功
   function handleSuccess() {
     reload();

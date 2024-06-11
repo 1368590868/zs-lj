@@ -12,20 +12,15 @@ import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 
 export const columns: BasicColumn[] = [
   {
-    title: '项目编号',
-    dataIndex: 'projectNumber',
-    width: 200,
-  },
-  {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },
   },
   {
-    title: '阶段标题',
+    title: '阶段',
     dataIndex: 'phaseTitle',
     width: 200,
   },
@@ -40,9 +35,13 @@ export const columns: BasicColumn[] = [
     width: 200,
   },
   {
-    title: '金额',
+    title: '金额（元）',
     dataIndex: 'phaseBudget',
     width: 200,
+    align: 'right',
+    customRender: ({ record }) => {
+      return useCurrencyFormatter(record.phaseBudget ?? 0);
+    },
   },
   {
     title: '提交时间',
@@ -112,12 +111,6 @@ export const columns: BasicColumn[] = [
 ];
 
 export const searchFormSchema: FormSchema[] = [
-  {
-    field: 'projectNumber',
-    label: '项目编号',
-    component: 'Input',
-    colProps: { span: 6 },
-  },
   {
     field: 'projectName',
     label: '项目名称',
@@ -219,6 +212,7 @@ import { BasicModal, useModal } from '/@/components/Modal';
 import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
 import { useUserStore } from '/@/store/modules/user';
 import { EllipsisText } from '/@/components/EllipsisText';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
   props: {
