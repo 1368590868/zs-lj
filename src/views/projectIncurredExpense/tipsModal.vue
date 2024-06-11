@@ -33,7 +33,7 @@
     closeModal();
   };
   const onDetail = () => {
-    router.push('/MyPhaseCost');
+    router.push('/myPhaseCost');
   };
   //   提交
   const handleSubmit = async () => {};

@@ -115,7 +115,7 @@
   const router = useRouter();
   const handleCostDetail = (record: Recordable) => {
     router.push({
-      path: '/ProjectReviewCostDetail',
+      path: '/projectReviewCostDetail',
       query: {
         projectId: record.projectId,
       },

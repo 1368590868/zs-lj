@@ -100,7 +100,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    field: 'none',
+    field: 'planRemark',
     component: 'Input',
     label: '项目阶段',
     required: true,

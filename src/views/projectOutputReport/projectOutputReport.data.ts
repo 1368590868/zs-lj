@@ -85,7 +85,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '工程进度简要说明',
+        title: '项目阶段',
         helpMessage: '已完成，正在做，后续准备做什么',
         dataIndex: 'planRemark',
         width: 200,
