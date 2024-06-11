@@ -19,7 +19,7 @@
 <script lang="ts" setup>
   import { onMounted } from 'vue';
   import { Card, message } from 'ant-design-vue';
-  import { BasicForm, type FormSchema, useForm, type FormProps } from '/@/components/Form';
+  import { BasicForm, useForm } from '/@/components/Form';
   import { PageWrapper } from '/@/components/Page';
   import {
     costOptions,
@@ -41,6 +41,8 @@
     labelWidth: 200,
     actionColOptions: {
       span: 13,
+      // @ts-ignore
+      class: 'mt-15',
     },
     resetButtonOptions: {
       text: '返回',
@@ -77,6 +79,7 @@
     column: 4,
     bordered: false,
     data: store.getReportData,
+    class: 'pl-[50px]',
     schema: [
       {
         field: 'lastYearRatio',
@@ -94,6 +97,7 @@
     title: '本年月度完成比例',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,
+    class: 'pl-[50px]',
     schema: coverSchema(ratioOptions, (val) => {
       return val ? `${val}%` : '';
     }),
@@ -104,6 +108,7 @@
     title: '完成产值数据查看',
     column: 4,
     bordered: false,
+    class: 'pl-[50px]',
     data: store.getReportData,
     schema: [
       {
@@ -122,6 +127,7 @@
     title: '本年月度完成产值（元）',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,
+    class: 'pl-[50px]',
     schema: coverSchema(outputValueOptions, (val) => {
       return val ? useCurrencyFormatter(val) : '';
     }),
@@ -133,6 +139,7 @@
     column: 5,
     bordered: false,
     data: store.getReportData,
+    class: 'pl-[50px]',
     schema: [
       {
         field: 'thisMonthValueMonth',
@@ -166,6 +173,7 @@
     title: '项目直接生成成本数据查看（元）',
     column: 4,
     bordered: false,
+    class: 'pl-[50px]',
     data: store.getReportData,
     schema: [
       {
@@ -184,6 +192,7 @@
     title: '本年月度生成成本（元）',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,
+    class: 'pl-[50px]',
     schema: coverSchema(costOptions, (val) => {
       return val ? useCurrencyFormatter(val) : '';
     }),

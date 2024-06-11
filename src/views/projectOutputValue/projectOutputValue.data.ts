@@ -5,7 +5,7 @@ import { h } from 'vue';
 export const columns: BasicColumn[] = [
   {
     title: '标题',
-    dataIndex: 'projectName',
+    dataIndex: 'title',
     customRender: ({ record }) => {
       return h('div', `${record.year}年${record.month}月项目产值`);
     },
