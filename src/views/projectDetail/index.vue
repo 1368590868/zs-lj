@@ -176,12 +176,11 @@
     echartsData.yAxis = records.map((item) => item.phaseTitle);
     echartsData.actualCost = records.map((item) => item.phaseOutlayCost ?? 0);
     echartsData.estimatedCost = records.map((item) => item.phaseBudgetCost);
-    console.log(echartsData, '************');
   })();
 
   watchEffect(async () => {
     const barWidth = 30; // 柱状图的宽度
-    const chartHeight = 2 * (echartsData.yAxis.length * barWidth + 50); // 计算图表的宽度，+100 是为了留出左右的边距
+    const chartHeight = 2 * (echartsData.yAxis.length * barWidth + 50);
     setOptions({
       tooltip: {
         trigger: 'axis',
@@ -190,7 +189,12 @@
         },
       },
       legend: {},
-      grid: {},
+      grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '5%',
+        containLabel: true,
+      },
       xAxis: {
         type: 'value',
         boundaryGap: [0, 0.01],
@@ -202,6 +206,7 @@
         axisLabel: {
           formatter: '{value} 元',
         },
+        zlevel: 1, // 提高x轴标签的层级
       },
       yAxis: {
         type: 'category',
@@ -219,6 +224,8 @@
           itemStyle: {
             color: '#DBD8FF',
           },
+          barWidth: barWidth, // 设置柱子的宽度
+          barGap: '0%', // 不同系列的柱子之间不留空隙
         },
         {
           name: '预估成本',
@@ -230,6 +237,8 @@
           itemStyle: {
             color: '#8DD0FF',
           },
+          barWidth: barWidth, // 设置柱子的宽度
+          barGap: '0%', // 不同系列的柱子之间不留空隙
         },
       ],
     });
