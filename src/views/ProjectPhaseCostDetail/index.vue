@@ -67,7 +67,9 @@
   let selectId = reactive<any[]>([]);
   const isSelectRows = computed(() => {
     // 遍历选中的行，状态为待审核的才能操作
-    return getSelectRows().length > 0;
+    return (
+      getSelectRows().length > 0 && getSelectRows().every((it) => it.projectLeaderStatus === 0)
+    );
   });
 
   // 编辑项目阶段成本明细 Modal
