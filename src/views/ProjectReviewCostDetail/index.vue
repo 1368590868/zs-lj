@@ -1,14 +1,14 @@
 <template>
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
-      <template #toolbar>
+      <!-- <template #toolbar>
         <a-button type="primary" @click="onBatchReject" :disabled="!isSelectRows">
           批量驳回
         </a-button>
         <a-button type="primary" @click="onBatchPass" :disabled="!isSelectRows">
           批量通过
         </a-button>
-      </template>
+      </template> -->
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">详情</a-button>
       </template>
@@ -60,9 +60,6 @@
     bordered: true,
     showIndexColumn: true,
     clickToRowSelect: false,
-    rowSelection: {
-      type: 'checkbox',
-    },
     pagination: {
       current: 1,
       pageSize: 10,
