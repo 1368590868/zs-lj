@@ -53,7 +53,7 @@
 
   const getData = (data, type) => {
     const innerData = data.find((x) => x.warningStatus === type);
-    if (!innerData) return [];
+    if (!innerData) return unref(deptList).map(() => 0);
 
     const number = unref(deptList).map((dep) => {
       let obj = innerData.statisticsProjectDtoList.find((x) => x.deptName === dep);
@@ -80,7 +80,6 @@
     ];
     const res = await Promise.all(apiArr.map((api) => api()));
     deptList.value = res[2].map((x) => x.deptName);
-    console.log(res);
     chartData1.value = getChartData(res[0] ?? []);
     chartData2.value = getChartData(res[3] ?? []);
     Object.assign(chartData3, {
@@ -241,7 +240,12 @@
           type: 'shadow',
         },
       },
-      legend: {},
+      legend: {
+        selected: {
+          红色预警: false,
+          黄色预警: true,
+        },
+      },
       grid: {},
       yAxis: {
         type: 'value',
