@@ -192,7 +192,7 @@
       grid: {
         left: '3%',
         right: '4%',
-        bottom: '5%',
+        bottom: '3%',
         containLabel: true,
       },
       xAxis: {
@@ -210,7 +210,7 @@
       },
       yAxis: {
         type: 'category',
-        boundaryGap: false,
+        boundaryGap: true,
         data: echartsData.yAxis,
       },
       series: [
