@@ -74,7 +74,7 @@ export const schema: DescItem[] = [
   },
   {
     field: 'date',
-    label: '合同时间',
+    label: '工程计划时间',
     render: (_, data) => {
       return `${data.planStartDate} - ${data.planEndDate}`;
     },

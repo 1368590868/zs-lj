@@ -30,7 +30,8 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       rows: 12,
       placeholder: '请输入您对项目的管控意见',
-      maxlength: 500,
+      maxlength: 450,
+      showCount: true,
     },
     required: true,
     labelWidth: 80,
@@ -47,7 +48,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
     fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);

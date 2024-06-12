@@ -29,7 +29,7 @@
         <!-- Footer Slot  -->
         <template #formFooter>
           <div class="flex justify-center gap-6">
-            <a-button class="w-[150px]" @click="resetFields">返回</a-button>
+            <a-button class="w-[150px]" @click="onBack">返回</a-button>
             <a-button class="w-[150px]" type="primary" @click="handleSubmit">提交</a-button>
           </div>
         </template>
@@ -37,8 +37,8 @@
       <Divider />
       <div v-show="showBar">
         <h2>项目基础信息</h2>
-        <div class="flex justify-between flex-wrap mb-4">
-          <div
+        <div class="flex justify-between flex-wrap mb-4 gap-4">
+          <div class="flex"
             >项目名称:<EllipsisText
               :maxWidth="200"
               :tooltipMaxWidth="200"
@@ -77,6 +77,7 @@
   import TipsModal from './tipsModal.vue';
   import { EllipsisText } from '/@/components/EllipsisText';
   import { useModal } from '/@/components/Modal';
+  import { useRouter } from 'vue-router';
 
   const now = new Date().getTime();
   const projectDetail = reactive({
@@ -190,6 +191,11 @@
     const values = await validate();
     await addApi({ ...values, createByName: getUserInfo.value });
     openModal(true);
+    resetFields();
+  }
+  const router = useRouter();
+  function onBack() {
+    router.go(-1);
     resetFields();
   }
 </script>

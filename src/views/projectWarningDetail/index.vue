@@ -12,6 +12,10 @@
     </Card>
     <Card title="数据总览">
       <Row>
+        <Col :span="12">执行中项目预警情况</Col>
+        <Col :span="12">执行中项目阶段预警情况</Col>
+      </Row>
+      <Row>
         <Col :span="12">
           <div ref="chartControlRef" class="min-h-400px"></div>
           <div class="mt-6"></div>
@@ -134,14 +138,14 @@
           },
           label: {
             alignTo: 'labelLine',
-            formatter: '{name|{b}}\n{time|{c} }',
+            formatter: '{name|{b}}\n{time|{c} }\n{percent|{d}%}',
             minMargin: 5,
             edgeDistance: 10,
             lineHeight: 15,
             distance: 10,
             rich: {
               time: {
-                fontSize: 10,
+                // fontSize: 14,
                 color: '#999',
               },
             },
@@ -205,14 +209,13 @@
           },
           label: {
             alignTo: 'labelLine',
-            formatter: '{name|{b}}\n{time|{c} }',
+            formatter: '{name|{b}}\n{time|{c} }\n{percent|{d}%}',
             minMargin: 5,
             edgeDistance: 10,
             lineHeight: 15,
             distance: 10,
             rich: {
               time: {
-                fontSize: 10,
                 color: '#999',
               },
             },

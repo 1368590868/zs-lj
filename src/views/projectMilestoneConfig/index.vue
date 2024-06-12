@@ -16,15 +16,16 @@
           <!-- 需要使用field判断 -->
           <Input
             required
+            :maxlength="50"
             :disabled="phaseTitleDisabled(field)"
-            v-model:value="model[field]"
+            v-model.trim="model[field]"
             placeholder="请输入里程碑名称"
           />
         </template>
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumber
-            class="w-[calc(100% - 1rem)]]"
-            :min="0"
+            class="w-[calc(100% - 30px)]]"
+            :min="0.01"
             :max="100"
             :disabled="isDefer !== '1'"
             v-model:value="model[field]"

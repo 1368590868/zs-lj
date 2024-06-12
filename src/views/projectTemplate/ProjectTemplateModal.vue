@@ -66,6 +66,11 @@
     try {
       const values = await validate();
       setModalProps({ confirmLoading: true });
+      // 阶段预算不能为0
+      if (values.phaseBudgetRatio.some((item) => item === 0)) {
+        message.error('阶段预算比例不能为0');
+        return;
+      }
       // 阶段预算比例相加等于100
       const sum = values.phaseBudgetRatio.reduce((prev, next) => prev + next, 0);
       if (sum !== 100) {

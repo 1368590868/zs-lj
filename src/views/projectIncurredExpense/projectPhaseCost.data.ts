@@ -31,7 +31,7 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     componentProps: {
       min: 0,
-      max: 100,
+      max: 999999999.99,
       precision: 2,
     },
     suffix: '元',

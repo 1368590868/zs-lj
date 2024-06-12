@@ -230,6 +230,9 @@
       message.error('修改失败');
     });
     message.success('修改成功');
+    setTimeout(() => {
+      router.go(-1);
+    }, 500);
   };
 </script>
 <style lang="less" scoped>
