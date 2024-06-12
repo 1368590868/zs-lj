@@ -21,6 +21,7 @@
   import { message } from 'ant-design-vue';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
+    colon: true,
     labelWidth: 120,
     schemas: formSchema,
     showActionButtonGroup: false,

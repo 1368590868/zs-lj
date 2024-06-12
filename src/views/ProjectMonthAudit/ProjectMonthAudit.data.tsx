@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
-import { Button, Space, Input, TypographyText, message } from 'ant-design-vue';
+import { Button, Space, TypographyText, message } from 'ant-design-vue';
 import { costChargeOptions, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 
 import { monthAuditApi } from '/@/api/projectMonthAudit/projectMonthAudit';
@@ -10,12 +10,12 @@ export const columns: BasicColumn[] = [
   {
     title: '成本月度',
     dataIndex: 'auditMonthDate',
-    width: 200,
+    width: 100,
   },
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
     fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
@@ -24,7 +24,7 @@ export const columns: BasicColumn[] = [
   {
     title: '审核金额',
     dataIndex: 'monthBudget',
-    width: 200,
+    width: 120,
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.monthBudget);
     },
@@ -32,32 +32,32 @@ export const columns: BasicColumn[] = [
   {
     title: '成本明细',
     dataIndex: 'costDetail',
-    width: 200,
+    width: 120,
     slots: { customRender: 'costDetail' },
   },
   {
     title: '人力成本填写（元）',
     dataIndex: 'personCost',
-    width: 200,
+    width: 150,
     slots: { customRender: 'personCost' },
   },
   {
     title: '成本负责人审核',
     dataIndex: 'costLeaderStatus',
-    width: 200,
+    width: 150,
     slots: { customRender: 'costLeaderStatus' },
   },
   {
     title: '运营管理部审核',
     dataIndex: 'operationDeptStatus',
-    width: 200,
+    width: 150,
     slots: { customRender: 'operationDeptStatus' },
   },
   {
     title: '审批意见',
     dataIndex: 'auditOpinion',
     slots: { customRender: 'auditOpinion' },
-    width: 200,
+    width: 100,
   },
 ];
 
@@ -252,7 +252,7 @@ export const ProjectLeaderStatus = defineComponent({
           onOk={onConfirm}
           title={`确认审核${isPass.value === 1 ? '通过' : '驳回'}`}
         >
-          <Input.Textarea
+          <a-textarea
             rows={4}
             showCount
             maxlength={15}

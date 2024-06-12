@@ -3,10 +3,10 @@
     <BasicTable @register="registerTable">
       <!-- Column slots -->
       <template #auditOpinion="{ record }">
-        <a-button type="link" @click="handleDetailModal(record)">意见详情</a-button>
+        <a-button type="link" @click="handleDetailModal(record)">详情</a-button>
       </template>
       <template #costDetail="{ record }">
-        <a-button type="link" @click="handleCostDetail(record)">查看详情</a-button>
+        <a-button type="link" @click="handleCostDetail(record)">详情</a-button>
       </template>
       <template #costLeaderStatus="{ record }">
         <ProjectLeaderStatus
@@ -76,6 +76,7 @@
     rowKey: 'id',
     formConfig: {
       labelWidth: 120,
+      colon: true,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
       fieldMapToTime: [

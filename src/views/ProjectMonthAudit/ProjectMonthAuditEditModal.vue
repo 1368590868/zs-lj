@@ -13,6 +13,7 @@
   import { formEditSchema } from './projectMonthAudit.data';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
+    colon: true,
     labelWidth: 120,
     schemas: formEditSchema,
     showActionButtonGroup: false,

@@ -15,7 +15,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
     fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
@@ -29,12 +29,12 @@ export const columns: BasicColumn[] = [
   {
     title: '成本科目',
     dataIndex: 'costTypeName',
-    width: 200,
+    width: 120,
   },
   {
     title: '金额（元）',
     dataIndex: 'phaseBudget',
-    width: 200,
+    width: 120,
     align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.phaseBudget ?? 0);

@@ -55,7 +55,7 @@ export const columns: BasicColumn[] = [
   {
     title: '管控状态',
     dataIndex: 'controlStatus',
-    width: 200,
+    width: 100,
     customRender: ({ record }) => {
       return h('span', milestoneControlStatusEnum[record?.controlStatus]);
     },

@@ -46,6 +46,7 @@
     columns,
     formConfig: {
       labelWidth: 120,
+      colon: true,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],

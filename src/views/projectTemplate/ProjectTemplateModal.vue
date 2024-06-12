@@ -33,6 +33,7 @@
   import { useUserStore } from '/@/store/modules/user';
 
   const [registerFrom, { resetFields, setFieldsValue, validate, getFieldsValue }] = useForm({
+    colon: true,
     labelWidth: 120,
     schemas: formSchema,
     showActionButtonGroup: false,

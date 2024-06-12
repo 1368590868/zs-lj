@@ -109,6 +109,7 @@
     },
   ] = useForm({
     schemas: [],
+    colon: true,
     labelWidth: 100,
     baseColProps: { span: 8 },
     showActionButtonGroup: false,

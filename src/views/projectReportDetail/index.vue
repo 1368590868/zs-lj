@@ -37,6 +37,7 @@
   const store = useProjectControl();
   const router = useRouter();
   const [register, { setFieldsValue, updateSchema }] = useForm({
+    colon: true,
     schemas: formSchema,
     labelWidth: 200,
     actionColOptions: {
@@ -75,6 +76,7 @@
   };
 
   const [registerRatio] = useDescription({
+    colon: true,
     title: '完成比例数据查看',
     column: 4,
     bordered: false,
@@ -94,6 +96,7 @@
     ],
   });
   const [registerDesc] = useDescription({
+    colon: true,
     title: '本年月度完成比例',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,
@@ -105,6 +108,7 @@
   });
 
   const [registerOutput] = useDescription({
+    colon: true,
     title: '完成产值数据查看',
     column: 4,
     bordered: false,
@@ -124,6 +128,7 @@
     ],
   });
   const [registerOutputDesc] = useDescription({
+    colon: true,
     title: '本年月度完成产值（元）',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,
@@ -135,6 +140,7 @@
   });
 
   const [registerSelfOutput] = useDescription({
+    colon: true,
     title: '自有产值查看（元）',
     column: 5,
     bordered: false,
@@ -170,6 +176,7 @@
   });
 
   const [registerCost] = useDescription({
+    colon: true,
     title: '项目直接生成成本数据查看（元）',
     column: 4,
     bordered: false,
@@ -189,6 +196,7 @@
     ],
   });
   const [registerCostDesc] = useDescription({
+    colon: true,
     title: '本年月度生成成本（元）',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,

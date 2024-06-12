@@ -22,6 +22,7 @@
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
+    colon: true,
     schemas: formSchema,
     showActionButtonGroup: false,
     actionColOptions: {

@@ -21,6 +21,7 @@
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
+    colon: true,
     schemas: [
       {
         label: '人力成本',

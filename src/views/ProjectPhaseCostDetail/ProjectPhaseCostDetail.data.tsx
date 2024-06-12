@@ -15,6 +15,7 @@ export const columns: BasicColumn[] = [
     title: '项目名称',
     dataIndex: 'projectName',
     width: 220,
+    fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
     },
@@ -279,7 +280,7 @@ export const ProjectLeaderStatus = defineComponent({
           onOk={onConfirm}
           title={`确认审核${isPass.value === 1 ? '通过' : '驳回'}`}
         >
-          <Input.Textarea
+          <a-textarea
             rows={10}
             showCount
             maxlength={15}

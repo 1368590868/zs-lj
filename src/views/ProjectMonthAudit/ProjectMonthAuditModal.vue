@@ -20,7 +20,6 @@
   import { ref } from 'vue';
   const detail = ref<Recordable[]>([]);
   const [register, { setModalProps, closeModal }] = useModalInner(async (data) => {
-    console.log(data, 'data');
     const projectPhaseCostId = data.record.id;
     // 获取审批意见详情
     const res = await pageApi({ projectPhaseCostId });

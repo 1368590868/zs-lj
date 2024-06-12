@@ -43,6 +43,7 @@
     rowKey: 'id',
     formConfig: {
       labelWidth: 120,
+      colon: true,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
       fieldMapToTime: [

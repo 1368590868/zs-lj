@@ -10,7 +10,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目名称',
     dataIndex: 'projectName',
-    width: 200,
+    width: 220,
     fixed: 'left',
     customRender: ({ record }) => {
       return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
@@ -29,12 +29,12 @@ export const columns: BasicColumn[] = [
   {
     title: '成本科目',
     dataIndex: 'costTypeName',
-    width: 200,
+    width: 150,
   },
   {
     title: '金额',
     dataIndex: 'phaseBudget',
-    width: 200,
+    width: 150,
     align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.phaseBudget ?? 0);
@@ -102,7 +102,7 @@ export const columns: BasicColumn[] = [
     title: '审批意见',
     dataIndex: 'auditOpinion',
     slots: { customRender: 'auditOpinion' },
-    width: 200,
+    width: 100,
   },
 ];
 
@@ -258,7 +258,7 @@ export const ProjectLeaderStatus = defineComponent({
           onOk={onConfirm}
           title={`确认审核${isPass.value === 1 ? '通过' : '驳回'}`}
         >
-          <Input.Textarea
+          <a-textarea
             rows={4}
             showCount
             maxlength={15}

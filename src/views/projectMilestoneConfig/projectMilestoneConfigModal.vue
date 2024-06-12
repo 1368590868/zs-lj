@@ -28,6 +28,7 @@
     columns,
     formConfig: {
       labelWidth: 80,
+      colon: true,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
     },

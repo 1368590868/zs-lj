@@ -94,7 +94,6 @@
   const showBar = ref<boolean>(false);
 
   watchEffect(() => {
-    console.log(chartData.value['phaseTitle']);
     setOptions({
       tooltip: {
         trigger: 'axis',
@@ -151,6 +150,7 @@
 
   const [register, { resetFields, validate }] = useForm({
     labelWidth: 100,
+    colon: true,
     schemas: formSchema,
     actionColOptions: { span: 24 },
     showActionButtonGroup: false,

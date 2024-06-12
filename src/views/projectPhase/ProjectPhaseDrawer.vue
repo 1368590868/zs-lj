@@ -25,6 +25,7 @@
   const treeData = ref<TreeItem[]>([]);
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
+    colon: true,
     labelWidth: 90,
     schemas: formSchema,
     showActionButtonGroup: false,

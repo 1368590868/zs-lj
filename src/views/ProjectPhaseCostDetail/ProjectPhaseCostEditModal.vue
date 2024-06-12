@@ -13,6 +13,7 @@
   import { formEditSchema } from './projectPhaseCostDetail.data';
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
+    colon: true,
     labelWidth: 120,
     schemas: formEditSchema,
     showActionButtonGroup: false,
