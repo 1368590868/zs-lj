@@ -101,9 +101,9 @@
     refreshProjectApi,
     editApi,
   } from '/@/api/project/project';
-  import ProjectModal from './ProjectModal.vue';
+  import ProjectModal from './projectModal.vue';
   import { columns, searchFormSchema } from './project.data';
-  import { computed, h, ref, unref } from 'vue';
+  import { computed, ref, unref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import {
