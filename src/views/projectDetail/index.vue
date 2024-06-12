@@ -57,7 +57,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { Card, Space } from 'ant-design-vue';
+  import { Card, Space, message } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
   import { Ref, computed, h, nextTick, onMounted, reactive, ref, watch, watchEffect } from 'vue';
@@ -74,7 +74,7 @@
   import { EllipsisText } from '/@/components/EllipsisText';
   // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
-  const { setOptions, resize } = useECharts(chartRef as Ref<HTMLDivElement>);
+  const { setOptions, resize, getInstance } = useECharts(chartRef as Ref<HTMLDivElement>);
   const router = useRouter();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
@@ -161,14 +161,29 @@
   const badgeClass = () =>
     `w-6 h-6 rounded-[1.5rem] text-[12px] leading-[24px] text-center text-white`;
 
-  onMounted(() => {
-    getDetail();
-  });
-
   const echartsData = reactive({
     yAxis: ['第一阶段'],
     actualCost: [0],
     estimatedCost: [0],
+    datasource: [{ phaseTitle: '', id: '' }],
+  });
+
+  onMounted(() => {
+    getDetail();
+
+    getInstance()?.on('click', function (params) {
+      try {
+        router.push({
+          path: 'projectPhaseCost',
+          query: {
+            id: echartsData.datasource.find((x: any) => x.phaseTitle === params.name)?.id,
+            projectId: router.currentRoute.value.query.id,
+          },
+        });
+      } catch (error) {
+        message.error('暂无数据');
+      }
+    });
   });
 
   (async () => {
@@ -177,6 +192,7 @@
     echartsData.yAxis = records.map((item) => item.phaseTitle);
     echartsData.actualCost = records.map((item) => item.phaseOutlayCost ?? 0);
     echartsData.estimatedCost = records.map((item) => item.phaseBudgetCost);
+    echartsData.datasource = records;
   })();
 
   watchEffect(async () => {
@@ -221,6 +237,7 @@
           data: echartsData.actualCost,
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#DBD8FF',
@@ -234,6 +251,7 @@
           data: echartsData.estimatedCost,
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#8DD0FF',

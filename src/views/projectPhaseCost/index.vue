@@ -86,6 +86,7 @@
           data: [detail.value['phaseOutlayCost'] ?? 0],
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#DBD8FF',
@@ -97,6 +98,7 @@
           data: [detail.value['phaseBudgetCost'] ?? 0],
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#8DD0FF',

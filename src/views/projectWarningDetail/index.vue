@@ -292,6 +292,7 @@
           data: chartData3.redStatus,
           label: {
             show: true,
+            position: 'top',
           },
           itemStyle: {
             color: '#FF7455',
@@ -303,6 +304,7 @@
           data: chartData3.yellowStatus,
           label: {
             show: true,
+            position: 'top',
           },
           itemStyle: {
             color: '#EFAD03',

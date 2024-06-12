@@ -130,6 +130,7 @@
           data: [chartData.value['phaseOutlayCost'] ?? 0],
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#DBD8FF',
@@ -141,6 +142,7 @@
           data: [chartData.value['phaseBudgetCost']],
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#8DD0FF',

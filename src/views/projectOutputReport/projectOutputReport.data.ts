@@ -423,7 +423,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'jhwccz',
     children: [
       {
-        title: '预计未来3个月完成产值（元）',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '预计未来3个月完成产值（元）' },
+          '预计未来3个月完成产值（元）',
+        ),
         dataIndex: 'predictMonthOutputValue',
         width: 200,
         align: 'right',
@@ -434,7 +438,11 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '预计全年完成产值（元）',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '预计全年完成产值（元）' },
+          '预计全年完成产值（元）',
+        ),
         dataIndex: 'predictYearOutputValue',
         width: 200,
         align: 'right',
@@ -447,11 +455,19 @@ export const columns: BasicColumn[] = [
     ],
   },
   {
-    title: '项目生产直接成本(元)',
+    title: h(
+      Tooltip,
+      { placement: 'top', title: '项目生产直接成本（元）' },
+      '项目生产直接成本（元）',
+    ),
     dataIndex: 'xmsczjcb',
     children: [
       {
-        title: '截止上年度已发生生产成本（元）',
+        title: h(
+          Tooltip,
+          { placement: 'top', title: '截止上年度已发生生产成本（元）' },
+          '截止上年度已发生生产成本（元）',
+        ),
         dataIndex: 'lastYearCost',
         width: 200,
         align: 'right',

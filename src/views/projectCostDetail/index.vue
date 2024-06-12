@@ -99,6 +99,7 @@
           data: [router.currentRoute.value.query?.totalCost ?? 0],
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#DBD8FF',
@@ -110,6 +111,7 @@
           data: [router.currentRoute.value.query?.generalBudget ?? 0],
           label: {
             show: true,
+            position: 'right',
           },
           itemStyle: {
             color: '#8DD0FF',
