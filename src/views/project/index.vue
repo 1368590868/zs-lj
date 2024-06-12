@@ -9,7 +9,16 @@
         <a-button type="primary" @click="exportExcel"> 下载 </a-button>
       </template>
       <!-- bodycell slot-->
-      <template #controlStatus="{ record }">{{ controlStatus(record) }} </template>
+      <template #controlStatus="{ record }"
+        ><TypographyText
+          :type="
+            [+ControlStatusEnum.NONE, +ControlStatusEnum.END].includes(record.controlStatus)
+              ? 'secondary'
+              : undefined
+          "
+          >{{ controlStatusOptions[record.controlStatus ?? 0] }}</TypographyText
+        >
+      </template>
       <template #planDate="{ record }">
         {{ record.planStartDate }} - {{ record.planEndDate }}
       </template>
@@ -81,7 +90,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { message } from 'ant-design-vue';
+  import { TypographyText, message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import {
     pageApi,
@@ -94,7 +103,7 @@
   } from '/@/api/project/project';
   import ProjectModal from './ProjectModal.vue';
   import { columns, searchFormSchema } from './project.data';
-  import { computed, ref, unref } from 'vue';
+  import { computed, h, ref, unref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import {
@@ -168,9 +177,7 @@
   const projectProgress = (record) => {
     return projectProgressOptions[record.projectProgress ?? 0];
   };
-  const controlStatus = (record) => {
-    return controlStatusOptions[record.controlStatus ?? 0];
-  };
+
   // 跳转详情
   const handleDetail = (record: Recordable) => {
     router.push({

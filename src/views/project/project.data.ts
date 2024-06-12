@@ -29,6 +29,12 @@ export const columns: BasicColumn[] = [
     width: 200,
   },
   {
+    title: '工程进度',
+    dataIndex: 'projectProgress',
+    width: 100,
+    slots: { customRender: 'projectProgress' },
+  },
+  {
     title: '管控状态',
     dataIndex: 'controlStatus',
     width: 100,
@@ -96,12 +102,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'costOwnerName',
     width: 100,
   },
-  {
-    title: '工程进度',
-    dataIndex: 'projectProgress',
-    width: 100,
-    slots: { customRender: 'projectProgress' },
-  },
+
   {
     title: '创建时间',
     dataIndex: 'createTime',
