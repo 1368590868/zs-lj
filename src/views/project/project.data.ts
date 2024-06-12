@@ -266,9 +266,8 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       min: 1,
       precision: 2,
-      formatter: (value) => `${value}元`,
-      parser: (value) => value.replace('元', ''),
     },
+    suffix: '元',
     required: true,
   },
   {
@@ -335,9 +334,9 @@ export const formSchema: FormSchema[] = [
     required: true,
     componentProps: {
       min: 0,
+      max: 100,
       precision: 2,
-      formatter: (value) => `${value}%`,
-      parser: (value) => value.replace('%', ''),
     },
+    suffix: '元',
   },
 ];

@@ -23,11 +23,10 @@
         </template>
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumber
+            class="w-[calc(100% - 1rem)]]"
             :min="0"
             :max="100"
             :disabled="isDefer !== '1'"
-            :formatter="(value) => `${value}%`"
-            :parser="(value) => value.replace('%', '')"
             v-model:value="model[field]"
             @change="
               () => {
@@ -38,6 +37,7 @@
               }
             "
           />
+          <span>&nbsp;&nbsp;%</span>
         </template>
       </BasicForm>
     </Card>

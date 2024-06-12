@@ -16,9 +16,11 @@
           />
         </template>
         <template #tips
-          ><div class="text-xl"
-            >提示：提交后项目负责人审核，驳回后5天内可重新提交，否则过期失效作废。</div
-          ></template
+          ><div class="text-xl">
+            <TypographyText type="danger">
+              提示：提交后项目负责人审核，驳回后5天内可重新提交，否则过期失效作废。
+            </TypographyText>
+          </div></template
         >
         <template #user>
           {{ getUserInfo }}
@@ -61,7 +63,7 @@
 </template>
 <script lang="ts" setup>
   import { PageWrapper } from '/@/components/Page';
-  import { Card, Divider, message } from 'ant-design-vue';
+  import { Card, Divider, TypographyText, message } from 'ant-design-vue';
   import { BasicForm, useForm, ApiSelect } from '/@/components/Form';
   import { Time } from '/@/components/Time';
   import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';

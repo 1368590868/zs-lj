@@ -31,10 +31,10 @@ export const formSchema: FormSchema[] = [
     component: 'InputNumber',
     componentProps: {
       min: 0,
+      max: 100,
       precision: 2,
-      formatter: (value) => `${value}元`,
-      parser: (value) => value.replace('元', ''),
     },
+    suffix: '元',
     label: '成本金额',
     required: true,
   },

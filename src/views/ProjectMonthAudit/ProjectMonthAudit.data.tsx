@@ -144,7 +144,9 @@ export const formEditSchema: FormSchema[] = [
     labelWidth: 80,
     componentProps: {
       precision: 2,
+      min: 0,
     },
+    suffix: '元',
     required: true,
   },
   {

@@ -35,6 +35,9 @@ export const formSchema = (count): FormSchema[] => {
       colProps: { span: 6 },
       component: 'RangePicker',
       label: ' ',
+      itemProps: {
+        colon: false,
+      },
       required: true,
     },
     {
@@ -49,9 +52,9 @@ export const formSchema = (count): FormSchema[] => {
       field: `field[${count.value}].phaseBudgetCost`,
       component: 'Input',
       componentProps: {
-        suffix: '元',
         disabled: true,
       },
+      suffix: '元',
       colProps: { span: 6 },
     },
   ];

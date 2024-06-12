@@ -54,6 +54,19 @@ export const formSchema: FormSchema[] = [
       return useCurrencyFormatter(model[field]) + '元';
     },
   },
+  // 仅接受值，提供rangepicker
+  {
+    field: 'planStartDate',
+    component: 'Input',
+    label: '工程计划开始时间',
+    ifShow: false,
+  },
+  {
+    field: 'planEndDate',
+    component: 'Input',
+    label: '工程计划结束时间',
+    ifShow: false,
+  },
   {
     field: 'date',
     component: 'Input',
@@ -117,9 +130,9 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       disabled: false,
       min: 0,
-      formatter: (value) => `${value}%`,
-      parser: (value) => value.replace('%', ''),
+      max: 100,
     },
+    suffix: '%',
     required: true,
     colProps: {
       span: 8,
@@ -132,9 +145,9 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       disabled: false,
       min: 0,
-      formatter: (value) => `${value}%`,
-      parser: (value) => value.replace('%', ''),
+      max: 100,
     },
+    suffix: '%',
     required: true,
     colProps: {
       span: 8,
@@ -147,9 +160,9 @@ export const formSchema: FormSchema[] = [
     componentProps: {
       disabled: false,
       min: 0,
-      formatter: (value) => `${value}%`,
-      parser: (value) => value.replace('%', ''),
+      max: 100,
     },
+    suffix: '%',
     required: true,
     colProps: {
       span: 8,

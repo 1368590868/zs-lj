@@ -241,7 +241,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'cztj',
     children: [
       {
-        title: '截止上年度完成产值',
+        title: '截止上年度完成产值（元）',
         dataIndex: 'lastYearOutputValue',
         width: 200,
         align: 'right',
@@ -252,7 +252,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '截止目前累计完成产值',
+        title: '截止目前累计完成产值（元）',
         dataIndex: 'allYearOutputValue',
         width: 200,
         align: 'right',
@@ -263,7 +263,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '1月完成产值',
+        title: '1月完成产值（元）',
         dataIndex: 'janOutputValue',
         width: new Date().getMonth() + 1 >= 1 ? 200 : 0,
         align: 'right',
@@ -274,7 +274,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '2月完成产值',
+        title: '2月完成产值（元）',
         dataIndex: 'fedOutputValue',
         width: new Date().getMonth() + 1 >= 2 ? 200 : 0,
         align: 'right',
@@ -285,7 +285,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '3月完成产值',
+        title: '3月完成产值（元）',
         dataIndex: 'marOutputValue',
         width: new Date().getMonth() + 1 >= 3 ? 200 : 0,
         align: 'right',
@@ -296,7 +296,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '4月完成产值',
+        title: '4月完成产值（元）',
         dataIndex: 'aprOutputValue',
         width: new Date().getMonth() + 1 >= 4 ? 200 : 0,
         align: 'right',
@@ -307,7 +307,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '5月完成产值',
+        title: '5月完成产值（元）',
         dataIndex: 'mayOutputValue',
         width: new Date().getMonth() + 1 >= 5 ? 200 : 0,
         align: 'right',
@@ -318,7 +318,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '6月完成产值',
+        title: '6月完成产值（元）',
         dataIndex: 'junOutputValue',
         width: new Date().getMonth() + 1 >= 6 ? 200 : 0,
         align: 'right',
@@ -329,7 +329,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '7月完成产值',
+        title: '7月完成产值（元）',
         dataIndex: 'julOutputValue',
         width: new Date().getMonth() + 1 >= 7 ? 200 : 0,
         align: 'right',
@@ -340,7 +340,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '8月完成产值',
+        title: '8月完成产值（元）',
         dataIndex: 'augOutputValue',
         width: new Date().getMonth() + 1 >= 8 ? 200 : 0,
         align: 'right',
@@ -351,7 +351,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '9月完成产值',
+        title: '9月完成产值（元）',
         dataIndex: 'sepOutputValue',
         width: new Date().getMonth() + 1 >= 9 ? 200 : 0,
         align: 'right',
@@ -362,7 +362,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '10月完成产值',
+        title: '10月完成产值（元）',
         dataIndex: 'octOutputValue',
         width: new Date().getMonth() + 1 >= 10 ? 200 : 0,
         align: 'right',
@@ -373,7 +373,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '11月完成产值',
+        title: '11月完成产值（元）',
         dataIndex: 'novOutputValue',
         width: new Date().getMonth() + 1 >= 11 ? 200 : 0,
         align: 'right',
@@ -384,7 +384,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '12月完成产值',
+        title: '12月完成产值（元）',
         dataIndex: 'decOutputValue',
         width: new Date().getMonth() + 1 >= 12 ? 200 : 0,
         align: 'right',
@@ -395,7 +395,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '截止目前本年度完成产值',
+        title: '截止目前本年度完成产值（元）',
         dataIndex: 'thisYearOutputValue',
         width: 200,
         align: 'right',
@@ -406,7 +406,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '剩余产值',
+        title: '剩余产值（元）',
         dataIndex: 'surplusOutputValue',
         width: 200,
         align: 'right',
@@ -419,11 +419,11 @@ export const columns: BasicColumn[] = [
     ],
   },
   {
-    title: '计划完成产值',
+    title: '计划完成产值（元）',
     dataIndex: 'jhwccz',
     children: [
       {
-        title: '预计未来3个月完成产值',
+        title: '预计未来3个月完成产值（元）',
         dataIndex: 'predictMonthOutputValue',
         width: 200,
         align: 'right',
@@ -434,7 +434,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '预计全年完成产值',
+        title: '预计全年完成产值（元）',
         dataIndex: 'predictYearOutputValue',
         width: 200,
         align: 'right',
@@ -451,7 +451,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'xmsczjcb',
     children: [
       {
-        title: '截止上年度已发生生产成本',
+        title: '截止上年度已发生生产成本（元）',
         dataIndex: 'lastYearCost',
         width: 200,
         align: 'right',
@@ -463,7 +463,7 @@ export const columns: BasicColumn[] = [
       },
       // 当前年份
       {
-        title: `截止${new Date().getFullYear()}年已发生生产成本`,
+        title: `截止${new Date().getFullYear()}年已发生生产成本（元）`,
         dataIndex: 'allYearCost',
         width: 200,
         align: 'right',
@@ -474,7 +474,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '1月生产成本',
+        title: '1月生产成本（元）',
         dataIndex: 'janCost',
         width: new Date().getMonth() + 1 >= 1 ? 200 : 0,
         align: 'right',
@@ -483,7 +483,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '2月生产成本',
+        title: '2月生产成本（元）',
         dataIndex: 'fedCost',
         width: new Date().getMonth() + 1 >= 2 ? 200 : 0,
         align: 'right',
@@ -492,7 +492,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '3月生产成本',
+        title: '3月生产成本（元）',
         dataIndex: 'marCost',
         width: new Date().getMonth() + 1 >= 3 ? 200 : 0,
         align: 'right',
@@ -501,7 +501,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '4月生产成本',
+        title: '4月生产成本（元）',
         dataIndex: 'aprCost',
         width: new Date().getMonth() + 1 >= 4 ? 200 : 0,
         align: 'right',
@@ -510,7 +510,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '5月生产成本',
+        title: '5月生产成本（元）',
         dataIndex: 'mayCost',
         width: new Date().getMonth() + 1 >= 5 ? 200 : 0,
         align: 'right',
@@ -519,7 +519,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '6月生产成本',
+        title: '6月生产成本（元）',
         dataIndex: 'junCost',
         align: 'right',
         width: new Date().getMonth() + 1 >= 6 ? 200 : 0,
@@ -528,7 +528,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '7月生产成本',
+        title: '7月生产成本（元）',
         dataIndex: 'julCost',
         width: new Date().getMonth() + 1 >= 7 ? 200 : 0,
         align: 'right',
@@ -537,7 +537,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '8月生产成本',
+        title: '8月生产成本（元）',
         dataIndex: 'augCost',
         width: new Date().getMonth() + 1 >= 8 ? 200 : 0,
         align: 'right',
@@ -546,7 +546,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '9月生产成本',
+        title: '9月生产成本（元）',
         dataIndex: 'sepCost',
         width: new Date().getMonth() + 1 >= 9 ? 200 : 0,
         align: 'right',
@@ -555,7 +555,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '10月生产成本',
+        title: '10月生产成本（元）',
         dataIndex: 'octCost',
         width: new Date().getMonth() + 1 >= 10 ? 200 : 0,
         align: 'right',
@@ -564,7 +564,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '11月生产成本',
+        title: '11月生产成本（元）',
         dataIndex: 'novCost',
         width: new Date().getMonth() + 1 >= 11 ? 200 : 0,
         align: 'right',
@@ -573,7 +573,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '12月生产成本',
+        title: '12月生产成本（元）',
         dataIndex: 'decCost',
         width: new Date().getMonth() + 1 >= 12 ? 200 : 0,
         align: 'right',
@@ -700,12 +700,12 @@ export const columns: BasicColumn[] = [
     ],
   },
   {
-    title: `${new Date().getMonth() + 1}月自有产值`,
+    title: `${new Date().getMonth() + 1}月自有产值（元）`,
     dataIndex: 'eyzycz',
     children: [
       // 自有当月产值
       {
-        title: `${new Date().getMonth() + 1}月实际完成产值`,
+        title: `${new Date().getMonth() + 1}月实际完成产值（元）`,
         dataIndex: 'thisMonthValueMonth',
         width: 200,
         align: 'right',
@@ -716,7 +716,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '累计实际完成产值',
+        title: '累计实际完成产值（元）',
         dataIndex: 'allValueMonth',
         width: 200,
         align: 'right',
@@ -727,7 +727,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '剩余产值',
+        title: '剩余产值（元）',
         dataIndex: 'selfSurplusOutputValue',
         width: 200,
         align: 'right',
@@ -738,7 +738,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '未来三个月预测产值',
+        title: '未来三个月预测产值（元）',
         dataIndex: 'selfPredictMonthOutputValue',
         width: 200,
         align: 'right',
@@ -749,7 +749,7 @@ export const columns: BasicColumn[] = [
         },
       },
       {
-        title: '全年预测产值',
+        title: '全年预测产值（元）',
         dataIndex: 'predictYearOutputValue',
         width: 200,
         align: 'right',
@@ -776,6 +776,10 @@ export const searchFormSchema: FormSchema[] = [
       api: deptListApi,
       labelField: 'deptName',
       valueField: 'deptNumber',
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },

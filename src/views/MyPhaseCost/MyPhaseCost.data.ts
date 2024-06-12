@@ -204,6 +204,7 @@ export const formEditSchema: FormSchema[] = [
     componentProps: {
       precision: 2,
     },
+    suffix: '元',
     required: true,
   },
   {

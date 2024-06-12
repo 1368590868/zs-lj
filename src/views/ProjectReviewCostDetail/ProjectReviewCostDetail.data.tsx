@@ -157,13 +157,15 @@ export const formEditSchema: FormSchema[] = [
     required: true,
   },
   {
-    label: '金额',
+    label: '金额（元）',
     field: 'phaseBudget',
     component: 'InputNumber',
     labelWidth: 80,
     componentProps: {
       precision: 2,
+      min: 0,
     },
+    suffix: '元',
     required: true,
   },
   {
