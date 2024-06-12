@@ -1,5 +1,15 @@
 <template>
   <PageWrapper>
+    <Card title="执行中项目预警总览">
+      <div class="flex flex-wrap">
+        <div class="mr-auto">正在管控项目：{{ count1 }}</div>
+        <div class="mr-auto">黄色预警项目：{{ getWarningCount('黄色预警') }}</div>
+        <div class="mr-auto">红色预警项目：{{ getWarningCount('红色预警') }}</div>
+        <div class="mr-auto">正在管控阶段：{{ count2 }}</div>
+        <div class="mr-auto">黄色预警阶段：{{ getPhaseWarningCount('黄色预警') }}</div>
+        <div class="mr-auto">红色预警阶段：{{ getPhaseWarningCount('红色预警') }}</div>
+      </div>
+    </Card>
     <Card title="数据总览">
       <Row>
         <Col :span="12">
@@ -18,7 +28,7 @@
   </PageWrapper>
 </template>
 <script lang="ts" setup>
-  import { Ref, onMounted, reactive, ref, unref, watch, watchEffect } from 'vue';
+  import { Ref, computed, onMounted, reactive, ref, unref, watchEffect } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { useRouter } from 'vue-router';
@@ -50,6 +60,15 @@
     redStatus: [],
     yellowStatus: [],
   });
+
+  const count1 = computed(() => chartData1.value.reduce((prev, cur) => prev + cur.value, 0));
+  const count2 = computed(() => chartData2.value.reduce((prev, cur) => prev + cur.value, 0));
+  const getWarningCount = (status: string) => {
+    return unref(chartData1.value).find((x) => x.name === status)?.value ?? 0;
+  };
+  const getPhaseWarningCount = (status: string) => {
+    return unref(chartData2.value).find((x) => x.name === status)?.value ?? 0;
+  };
 
   const getData = (data, type) => {
     const innerData = data.find((x) => x.warningStatus === type);
@@ -86,7 +105,6 @@
       redStatus: getData(res[1], '2'),
       yellowStatus: getData(res[1], '1'),
     });
-    console.log(chartData1.value);
   })();
 
   watchEffect(() => {
@@ -154,7 +172,7 @@
           left: 'center',
           top: 'center',
           style: {
-            text: `管控项目:${chartData1.value.reduce((prev, cur) => prev + cur.value, 0)}个`,
+            text: `管控项目:${count1.value}个`,
             fill: '#999',
             fontSize: 16,
           },
@@ -225,7 +243,7 @@
           left: 'center',
           top: 'center',
           style: {
-            text: `管控阶段:${chartData2.value.reduce((prev, cur) => prev + cur.value, 0)}个`,
+            text: `管控阶段:${count2.value}个`,
             fill: '#999',
             fontSize: 16,
           },
@@ -256,7 +274,7 @@
           },
         },
         axisLabel: {
-          formatter: '{value} 元',
+          formatter: '{value} 个',
         },
       },
       xAxis: {

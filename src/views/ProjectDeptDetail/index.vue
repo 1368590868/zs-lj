@@ -5,7 +5,7 @@
         <TypographyText
           class="cursor-pointer"
           @click="onGoDetail(record, WarningStatusEnum.RED)"
-          type="success"
+          type="danger"
           >{{ record.redWarning ?? 0 }}</TypographyText
         >
       </template>
@@ -13,7 +13,7 @@
         <TypographyText
           class="cursor-pointer"
           @click="onGoDetail(record, WarningStatusEnum.YELLOW)"
-          type="success"
+          type="warning"
           >{{ record.yellowWarning ?? 0 }}</TypographyText
         >
       </template>

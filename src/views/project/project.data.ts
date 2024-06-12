@@ -12,6 +12,7 @@ import {
 import { TypographyText } from 'ant-design-vue';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 import { EllipsisText } from '/@/components/EllipsisText';
+import { deptListApi } from '/@/api/project/project';
 
 export const columns: BasicColumn[] = [
   {
@@ -128,11 +129,17 @@ export const searchFormSchema: FormSchema[] = [
   { field: 'projectNumber', label: '项目编号', component: 'Input', colProps: { span: 6 } },
   { field: 'projectName', label: '项目名称', component: 'Input', colProps: { span: 6 } },
   {
-    field: 'date',
-    label: '创建时间',
-    component: 'RangePicker',
+    field: 'deptNumber',
+    label: '归属部门',
+    component: 'ApiSelect',
     componentProps: {
-      placeholder: ['开始日期', '结束日期'],
+      api: deptListApi,
+      labelField: 'deptName',
+      valueField: 'deptNumber',
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },

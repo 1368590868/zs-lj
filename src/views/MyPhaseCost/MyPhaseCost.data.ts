@@ -121,7 +121,7 @@ export const columns: BasicColumn[] = [
     title: '审批意见',
     dataIndex: 'auditOpinion',
     slots: { customRender: 'auditOpinion' },
-    width: 200,
+    width: 100,
   },
 ];
 
