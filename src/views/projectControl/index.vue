@@ -15,7 +15,7 @@
         <TableAction
           :actions="[
             {
-              label: '查看详情',
+              label: '详情',
               onClick: handleDetail.bind(null, record),
               ifShow: record.controlStatus === +ControlStatusEnum.CONTROL,
             },
@@ -64,7 +64,7 @@
     },
     actionColumn: {
       width: 120,
-      title: '查看详情',
+      title: '详情',
       dataIndex: 'action',
       slots: { customRender: 'action' },
     },
