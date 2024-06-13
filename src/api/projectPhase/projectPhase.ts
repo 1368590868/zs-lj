@@ -49,7 +49,7 @@ export const removeApi = (id) => {
  * @description: 详情项目阶段
  */
 
-export const detail = (id) => {
+export const detailApi = (id) => {
   return defHttp.get({ url: Api.detail + id });
 };
 

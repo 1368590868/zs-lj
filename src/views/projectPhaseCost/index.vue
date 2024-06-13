@@ -11,6 +11,7 @@
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
   import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { detailApi } from '/@/api/projectPhase/projectPhase';
   import { columns, searchFormSchema } from './projectPhaseCost.data';
   import { Ref, onMounted, reactive, ref, watchEffect } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
@@ -49,7 +50,7 @@
 
   const detail = ref({});
   const getFindCurrent = async () => {
-    const res = await findNowPhasesByProjectIdApi(router.currentRoute.value.query.projectId);
+    const res = await detailApi(router.currentRoute.value.query.id);
     detail.value = res;
   };
   watchEffect(() => {
