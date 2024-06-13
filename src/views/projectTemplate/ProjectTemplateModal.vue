@@ -10,6 +10,7 @@
       <BasicForm @register="registerFrom">
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumbers
+            v-if="getVisible"
             :min="0"
             :max="100"
             :getFieldsValue="getFieldsValue"
@@ -43,7 +44,7 @@
   });
   const isUpdate = ref(true);
   const emits = defineEmits(['success', 'register']);
-  const [register, { setModalProps, closeModal }] = useModalInner((data) => {
+  const [register, { setModalProps, closeModal, getVisible }] = useModalInner((data) => {
     resetFields();
     setModalProps({ confirmLoading: false });
     if (unref(isUpdate)) {
@@ -86,6 +87,7 @@
       message.success('添加成功');
 
       closeModal();
+      resetFields();
       emits('success');
     } finally {
       setModalProps({ confirmLoading: false });
