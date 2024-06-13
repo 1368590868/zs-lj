@@ -33,7 +33,7 @@ export default defineComponent({
             required
             min={props.min}
             max={props.max}
-            precision={2}
+            precision={0}
             onChange={(inputValue: number) => handleInput(i, inputValue)}
           />
           &nbsp;&nbsp;
