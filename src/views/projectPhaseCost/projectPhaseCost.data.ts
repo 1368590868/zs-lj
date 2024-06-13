@@ -2,9 +2,15 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
-import { costSubjectEnum } from '/@/enums/projectControl';
+import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 import { EllipsisText } from '/@/components/EllipsisText';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+
+const textType = {
+  0: 'warning',
+  1: 'success',
+  2: 'danger',
+};
 
 export const columns: BasicColumn[] = [
   {
@@ -54,9 +60,13 @@ export const columns: BasicColumn[] = [
   {
     title: '项目负责人审核',
     dataIndex: 'projectOwnerName',
-    width: 100,
+    width: 200,
     customRender: ({ record }) => {
-      return h(TypographyText, `${record.projectOwnerName ?? ''} ${record.project ?? ''}`);
+      return h(
+        TypographyText,
+        { type: textType[record.projectLeaderStatus] },
+        `${myCostStatusEnum[record.projectLeaderStatus] ?? ''} ${record.projectLeaderTime ?? ''}`,
+      );
     },
   },
   {
@@ -65,7 +75,11 @@ export const columns: BasicColumn[] = [
     width: 200,
     slots: { customRender: 'costLeaderStatus' },
     customRender: ({ record }) => {
-      return h(TypographyText, `${record.costOwnerName ?? ''} ${record.costLeaderTime ?? ''}`);
+      return h(
+        TypographyText,
+        { type: textType[record.costLeaderStatus] },
+        `${myCostStatusEnum[record.costLeaderStatus] ?? ''} ${record.costLeaderTime ?? ''}`,
+      );
     },
   },
   {
@@ -75,7 +89,8 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }) => {
       return h(
         TypographyText,
-        `${record?.operationOwnerName ?? ''} ${record.operationDeptTime ?? ''}`,
+        { type: textType[record.operationDeptStatus] },
+        `${myCostStatusEnum[record.operationDeptStatus] ?? ''} ${record.operationDeptTime ?? ''}`,
       );
     },
   },
