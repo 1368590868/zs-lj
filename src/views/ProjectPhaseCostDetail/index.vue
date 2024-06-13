@@ -17,13 +17,12 @@
         <ProjectLeaderStatus
           :text="record.projectLeaderStatus"
           :id="record.id"
-          @reload="reload"
+          @reload="handleSuccess"
           :time="record.projectLeaderTime"
         />
       </template>
     </BasicTable>
     <MyPhaseCostModal @register="registerModal" />
-    <MyPhaseEditModal @register="registerEditModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
@@ -34,36 +33,35 @@
   import { columns, searchFormSchema, ProjectLeaderStatus } from './projectPhaseCostDetail.data';
   import { computed, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
-  import MyPhaseEditModal from './projectPhaseCostEditModal.vue';
   const [registerModal, { openModal }] = useModal();
-  const [registerEditModal, { openModal: openEditModal }] = useModal();
-  const [registerTable, { reload, getSelectRowKeys, getSelectRows }] = useTable({
-    api: pageApi,
-    columns,
-    rowKey: 'id',
-    formConfig: {
-      labelWidth: 120,
-      colon: true,
-      schemas: searchFormSchema,
-      autoSubmitOnEnter: true,
-      fieldMapToTime: [
-        ['date', ['startDate', 'endDate'], 'YYYY-MM-DD'],
-        ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
-      ],
-    },
-    useSearchForm: true,
-    showTableSetting: true,
-    bordered: true,
-    showIndexColumn: true,
-    clickToRowSelect: false,
-    rowSelection: {
-      type: 'checkbox',
-    },
-    pagination: {
-      current: 1,
-      pageSize: 10,
-    },
-  });
+  const [registerTable, { reload, getSelectRowKeys, getSelectRows, clearSelectedRowKeys }] =
+    useTable({
+      api: pageApi,
+      columns,
+      rowKey: 'id',
+      formConfig: {
+        labelWidth: 120,
+        colon: true,
+        schemas: searchFormSchema,
+        autoSubmitOnEnter: true,
+        fieldMapToTime: [
+          ['date', ['startDate', 'endDate'], 'YYYY-MM-DD'],
+          ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
+        ],
+      },
+      useSearchForm: true,
+      showTableSetting: true,
+      bordered: true,
+      showIndexColumn: true,
+      clickToRowSelect: false,
+      rowSelection: {
+        type: 'checkbox',
+      },
+      pagination: {
+        current: 1,
+        pageSize: 10,
+      },
+    });
   function handleSummary(tableData: Recordable[]) {
     const totalPhaseBudget = tableData.reduce((prev, next) => {
       prev += next.phaseBudget;
@@ -95,6 +93,10 @@
   };
   // 成功
   function handleSuccess() {
+    // 如果驳回成功后，判断当前数据是否勾选，如果勾选则清除
+    if (selectId.length > 0) {
+      clearSelectedRowKeys();
+    }
     reload();
   }
   const onSelectionChange = async (e) => {
@@ -115,7 +117,7 @@
           projectLeaderStatus: 2,
         });
         message.success('批量驳回成功');
-        reload();
+        handleSuccess();
       },
     });
   };
@@ -129,7 +131,7 @@
           projectLeaderStatus: 1,
         });
         message.success('批量通过成功');
-        reload();
+        handleSuccess();
       },
     });
   };

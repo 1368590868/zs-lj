@@ -6,7 +6,7 @@
           完善项目信息
         </a-button>
         <a-button type="primary" @click="onRefresh"> 刷新项目数据 </a-button>
-        <a-button type="primary" @click="exportExcel"> 下载 </a-button>
+        <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
       </template>
       <!-- bodycell slot-->
       <template #controlStatus="{ record }"
@@ -109,6 +109,7 @@
     ProjectProgressEnum,
   } from '/@/enums/projectControl';
   import { useUserStore } from '/@/store/modules/user';
+  import { debounce } from 'lodash-es';
 
   const router = useRouter();
   const showProjectModal = computed(() => {
@@ -245,7 +246,13 @@
   const onSelectionChange = async (e) => {
     selectId.value = e.rows[0].id;
   };
-
+  const debounceExportExcel = debounce(
+    () => {
+      exportExcel();
+    },
+    1000,
+    { leading: true, trailing: false },
+  );
   // 导出
   const exportExcel = async () => {
     try {
