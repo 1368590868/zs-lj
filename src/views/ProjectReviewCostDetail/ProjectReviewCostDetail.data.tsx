@@ -148,9 +148,9 @@ export const formEditSchema: FormSchema[] = [
     component: 'Select',
     labelWidth: 80,
     componentProps: {
-      options: Object.keys(costSubjectEnum).map((key) => ({
-        label: costSubjectEnum[key],
-        value: key,
+      options: Object.values(costSubjectEnum).map((val) => ({
+        label: val,
+        value: val,
       })),
       getPopupContainer: () => document.body,
     },

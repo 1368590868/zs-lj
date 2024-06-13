@@ -125,9 +125,9 @@ export const formEditSchema: FormSchema[] = [
     component: 'Select',
     labelWidth: 80,
     componentProps: {
-      options: Object.keys(costSubjectEnum).map((key) => ({
-        label: costSubjectEnum[key],
-        value: key,
+      options: Object.values(costSubjectEnum).map((val) => ({
+        label: costSubjectEnum[val],
+        value: val,
       })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
