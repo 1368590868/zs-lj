@@ -2,7 +2,11 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
-import { costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import {
+  costSubjectEnum,
+  myCostStatusEnum,
+  singleCostStatusOptions,
+} from '/@/enums/projectControl';
 import { EllipsisText } from '/@/components/EllipsisText';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 
@@ -10,6 +14,7 @@ const textType = {
   0: 'warning',
   1: 'success',
   2: 'danger',
+  3: 'warning',
 };
 
 export const columns: BasicColumn[] = [
@@ -77,8 +82,8 @@ export const columns: BasicColumn[] = [
     customRender: ({ record }) => {
       return h(
         TypographyText,
-        { type: textType[record.costLeaderStatus] },
-        `${myCostStatusEnum[record.costLeaderStatus] ?? ''} ${record.costLeaderTime ?? ''}`,
+        { type: textType[+record.costLeaderStatus] },
+        `${singleCostStatusOptions[record.costLeaderStatus] ?? ''} ${record.costLeaderTime ?? ''}`,
       );
     },
   },
@@ -90,7 +95,9 @@ export const columns: BasicColumn[] = [
       return h(
         TypographyText,
         { type: textType[record.operationDeptStatus] },
-        `${myCostStatusEnum[record.operationDeptStatus] ?? ''} ${record.operationDeptTime ?? ''}`,
+        `${singleCostStatusOptions[record.operationDeptStatus] ?? ''} ${
+          record.operationDeptTime ?? ''
+        }`,
       );
     },
   },
