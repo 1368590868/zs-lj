@@ -47,7 +47,7 @@ export const columns: BasicColumn[] = [
 
 export const searchFormSchema: FormSchema[] = [
   {
-    field: 'deptName',
+    field: 'deptNumber',
     label: '归属部门',
     component: 'ApiSelect',
     componentProps: {
