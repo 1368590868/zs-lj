@@ -337,6 +337,6 @@ export const formSchema: FormSchema[] = [
       max: 100,
       precision: 2,
     },
-    suffix: '元',
+    suffix: '%',
   },
 ];

@@ -15,10 +15,9 @@
         <template #phaseTitle="{ model, field }">
           <!-- 需要使用field判断 -->
           <Input
-            required
             :maxlength="50"
             :disabled="phaseTitleDisabled(field)"
-            v-model.trim="model[field]"
+            v-model:value="model[field]"
             placeholder="请输入里程碑名称"
           />
         </template>
@@ -39,6 +38,21 @@
             "
           />
           <span>&nbsp;&nbsp;%</span>
+        </template>
+        <template #date="{ model, field }">
+          <!-- 日期范围显示，如果是第一项就显示起始日期和手动选择日期，如果是最后一项就显示手动选择日期和结束日期-->
+          <Space>
+            <DatePicker :value="model[field][0]" disabled />
+            -
+            <!-- 当选择日期后，重新组装日期格式-->
+            <DatePicker
+              v-if="fieldArr.length !== +field.match(/\d+/)[0] + 1"
+              v-model:value="model[field + 'date']"
+              :disabled="fieldArr.length === +field.match(/\d+/)[0] + 1 ? model[field][1] : null"
+              @change="(date) => dateChange(date, model, field)"
+            />
+            <DatePicker v-else v-model:value="dataSource['planEndDate']" disabled />
+          </Space>
         </template>
       </BasicForm>
     </Card>
@@ -70,7 +84,16 @@
 </template>
 <script lang="ts" setup>
   import { BasicForm, useForm } from '/@/components/Form';
-  import { Card, InputNumber, Table, Space, message, Modal, Input } from 'ant-design-vue';
+  import {
+    Card,
+    InputNumber,
+    Table,
+    Space,
+    message,
+    Modal,
+    Input,
+    DatePicker,
+  } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
   import { computed, createVNode, onMounted, reactive, ref, unref } from 'vue';
@@ -83,8 +106,11 @@
   import _ from 'lodash-es';
   import { ExclamationCircleOutlined } from '@ant-design/icons-vue';
   import { pageApi as templatePageApi } from '/@/api/projectTemplate/projectTemplate';
+  import moment from 'moment';
+
   const router = useRouter();
   const templateData = ref<any[]>([]);
+  const fieldArr = ref<any[]>([]);
   const isDefer = computed(() => {
     return router.currentRoute.value.query.isDefer;
   });
@@ -116,6 +142,22 @@
     showActionButtonGroup: false,
     fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
   });
+
+  const dateChange = (date, model, field) => {
+    console.log(model[`field[${field.match(/\d+/)[0] - 1}].date`]);
+
+    model[`field[${+field.match(/\d+/)[0] + 1}].date`] = [
+      moment(date).add(1, 'days').format('YYYY-MM-DD'),
+      model[`field[${+field.match(/\d+/)[0] + 1}].date`][1],
+    ];
+
+    model[`field[${+field.match(/\d+/)[0]}].date`] = [
+      model[`field[${+field.match(/\d+/)[0]}].date`][0],
+      moment(date).format('YYYY-MM-DD'),
+    ];
+
+    model[field + 'date'] = moment(date).format('YYYY-MM-DD');
+  };
 
   const dataSource = reactive({});
   const [register] = useDescription({
@@ -195,12 +237,15 @@
     JSON.parse(unref(templateData)[0]['phaseBudgetRatio']).map((x) => {
       addGroup();
     });
+    fieldArr.value = JSON.parse(unref(templateData)[0]['phaseBudgetRatio']);
+
     if (isDefer.value === '1') {
       addGroup();
     }
 
     initValue();
   };
+
   const initValue = () => {
     const rowData = unref(templateData)[0];
     let field: any[] = [];
@@ -218,6 +263,7 @@
           dataSource['generalBudget'] * (x.phaseBudgetRatio / 100),
           2,
         ).toFixed(2),
+        [`field[${i}].datedate`]: i === field.length - 1 ? dataSource['planEndDate'] : null,
       });
     });
   };
@@ -256,7 +302,6 @@
         phaseEndDate: x.date[1],
       })),
     );
-    console.log(convertObjectToArray(values), 'values');
     message.success('添加成功');
     router.push('/projectPhase');
   };

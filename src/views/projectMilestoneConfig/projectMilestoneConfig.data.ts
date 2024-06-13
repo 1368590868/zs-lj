@@ -38,6 +38,7 @@ export const formSchema = (count): FormSchema[] => {
       itemProps: {
         colon: false,
       },
+      slot: 'date',
       required: true,
     },
     {
