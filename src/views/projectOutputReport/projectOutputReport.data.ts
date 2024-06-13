@@ -455,11 +455,7 @@ export const columns: BasicColumn[] = [
     ],
   },
   {
-    title: h(
-      Tooltip,
-      { placement: 'top', title: '项目生产直接成本（元）' },
-      '项目生产直接成本（元）',
-    ),
+    title: '项目生产直接成本（元）',
     dataIndex: 'xmsczjcb',
     children: [
       {

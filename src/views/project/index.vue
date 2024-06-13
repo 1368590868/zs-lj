@@ -37,7 +37,7 @@
                 ),
             },
             {
-              label: '查看详情',
+              label: '详情',
               onClick: handleDetail.bind(null, record),
               ifShow: ![
                 +ControlStatusEnum.NONE,
@@ -46,7 +46,7 @@
               ].includes(record.controlStatus),
             },
             {
-              label: '不需要管控',
+              label: '不管控',
               popConfirm: {
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, false),
@@ -54,7 +54,7 @@
               ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED,
             },
             {
-              label: '需要管控',
+              label: '管控',
               popConfirm: {
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, true),
