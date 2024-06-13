@@ -30,11 +30,7 @@
             {
               label: '里程碑配置',
               onClick: handleMilestoneConfig.bind(null, record),
-              ifShow:
-                +record.projectProgress !== ProjectProgressEnum.COMPLETED &&
-                [+ControlStatusEnum.UNCONFIGURED, +ControlStatusEnum.DELAY_CONFIGURATION].includes(
-                  record.controlStatus,
-                ),
+              ifShow: [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus),
             },
             {
               label: '详情',

@@ -27,9 +27,13 @@ export enum ControlStatusEnum {
 }
 // 工程进度
 export enum ProjectProgressEnum {
+  /**进行中 */
   IN_PROGRESS = 0,
+  /**已完成 */
   COMPLETED = 1,
+  /**待完成 */
   TO_BE_COMPLETED = 2,
+  /**待开始 */
   TO_BE_STARTED = 3,
 }
 // 项目负责人审核状态
