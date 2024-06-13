@@ -11,7 +11,7 @@
           </div>
         </div>
       </template>
-      <BasicForm @register="registerGroup" @submit="handleSubmitGroup">
+      <BasicForm @register="registerGroup">
         <template #phaseTitle="{ model, field }">
           <!-- 需要使用field判断 -->
           <Input
@@ -24,8 +24,9 @@
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumber
             class="w-[calc(100% - 30px)]]"
-            :min="0.01"
+            :min="1"
             :max="100"
+            :precision="0"
             :disabled="isDefer !== '1'"
             v-model:value="model[field]"
             @change="
@@ -40,15 +41,22 @@
           <span>&nbsp;&nbsp;%</span>
         </template>
         <template #date="{ model, field }">
-          <!-- 日期范围显示，如果是第一项就显示起始日期和手动选择日期，如果是最后一项就显示手动选择日期和结束日期-->
           <Space>
-            <DatePicker :value="model[field][0]" disabled />
+            <DatePicker :value="model[field]?.[0]" disabled />
             -
             <!-- 当选择日期后，重新组装日期格式-->
             <DatePicker
               v-if="fieldArr.length !== +field.match(/\d+/)[0] + 1"
               v-model:value="model[field + 'date']"
-              :disabled="fieldArr.length === +field.match(/\d+/)[0] + 1 ? model[field][1] : null"
+              :disabled="
+                isDefer !== '1'
+                  ? fieldArr.length === +field.match(/\d+/)[0] + 1
+                    ? model[field][1]
+                    : false
+                  : fieldArr.length === +field.match(/\d+/)[0]
+                  ? false
+                  : true
+              "
               @change="(date) => dateChange(date, model, field)"
             />
             <DatePicker v-else v-model:value="dataSource['planEndDate']" disabled />
@@ -144,8 +152,6 @@
   });
 
   const dateChange = (date, model, field) => {
-    console.log(model[`field[${field.match(/\d+/)[0] - 1}].date`]);
-
     model[`field[${+field.match(/\d+/)[0] + 1}].date`] = [
       moment(date).add(1, 'days').format('YYYY-MM-DD'),
       model[`field[${+field.match(/\d+/)[0] + 1}].date`][1],
@@ -202,6 +208,8 @@
           dataSource['generalBudget'] * (x.phaseBudgetRatio / 100),
           2,
         ).toFixed(2),
+        [`field[${i}].datedate`]: x['phaseEndDate'],
+        [`field[${i}].id`]: x['id'],
       });
     });
   };
@@ -222,11 +230,8 @@
       dataSource,
     });
   };
-  const handleSubmitGroup = () => {
-    console.log(getFieldsValueGroup());
-  };
+
   const onModalSuccess = (val) => {
-    console.log(val, 'val');
     templateData.value = val;
     initForm();
   };
@@ -241,6 +246,13 @@
 
     if (isDefer.value === '1') {
       addGroup();
+      // 为新增项日期赋值为结束日期 + 1
+      setFieldsValue({
+        [`field[${fieldArr.value.length}].date`]: [
+          moment(dataSource['planEndDate']).add(1, 'days').format('YYYY-MM-DD'),
+          null,
+        ],
+      });
     }
 
     initValue();
@@ -252,6 +264,7 @@
     JSON.parse(rowData['phaseBudgetRatio']).map((x) => {
       field.push({ phaseBudgetRatio: x });
     });
+
     field.map((x, i) => {
       setFieldsValue({
         [`field[${i}].phaseBudgetRatio`]: x['phaseBudgetRatio'],
@@ -263,7 +276,6 @@
           dataSource['generalBudget'] * (x.phaseBudgetRatio / 100),
           2,
         ).toFixed(2),
-        [`field[${i}].datedate`]: i === field.length - 1 ? dataSource['planEndDate'] : null,
       });
     });
   };
@@ -288,18 +300,19 @@
       icon: createVNode(ExclamationCircleOutlined),
       content: '提交后将不能修改，请仔细检查填写数据！',
       okText: '确认',
-      onOk: () => onSubmit(values),
+      onOk: () => onSubmit(),
       cancelText: '取消',
     });
   };
 
-  const onSubmit = async (values) => {
+  const onSubmit = async () => {
     await addApi(
-      convertObjectToArray(values).map((x) => ({
+      getFieldsValueGroup().field.map((x) => ({
         ...x,
         projectId: router.currentRoute.value.query.id,
-        phaseStartDate: x.date[0],
-        phaseEndDate: x.date[1],
+        phaseStartDate: moment(x.date[0]).format('YYYY-MM-DD'),
+        phaseEndDate: moment(x['datedate']).format('YYYY-MM-DD'),
+        id: x.id ?? null,
       })),
     );
     message.success('添加成功');
@@ -314,6 +327,7 @@
     date: string[];
     phaseBudgetRatio: string;
     phaseBudgetCost: string;
+    id: string;
   }
   /**
    *
@@ -334,6 +348,7 @@
             date: [],
             phaseBudgetRatio: '',
             phaseBudgetCost: '',
+            id: '',
           };
         }
         const property = key.split('.').pop()!;

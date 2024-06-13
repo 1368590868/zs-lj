@@ -41,12 +41,14 @@ export const formSchema = (count): FormSchema[] => {
       slot: 'date',
       required: true,
     },
+
     {
       field: `field[${count.value}].phaseBudgetRatio`,
       component: 'Input',
       label: `预算比例`,
       colProps: { span: 6 },
       slot: 'phaseBudgetRatio',
+      required: true,
     },
     {
       label: '阶段预算成本',
@@ -57,6 +59,20 @@ export const formSchema = (count): FormSchema[] => {
       },
       suffix: '元',
       colProps: { span: 6 },
+    },
+    // 用于form赋值
+    {
+      field: `field[${count.value}].datedate`,
+      colProps: { span: 6 },
+      component: 'RangePicker',
+      label: 'Date',
+      ifShow: false,
+    },
+    {
+      field: `field[${count.value}].id`,
+      component: 'Input',
+      label: 'ID',
+      ifShow: false,
     },
   ];
 };
