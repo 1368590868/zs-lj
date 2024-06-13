@@ -1,5 +1,5 @@
 <template>
-  <BasicModal v-bind="$attrs" @register="register" title="编辑" width="700px" @ok="handleSubmit">
+  <BasicModal v-bind="$attrs" @register="register" title="编辑" width="750px" @ok="handleSubmit">
     <div>
       <BasicForm @register="registerFrom" />
     </div>
@@ -16,6 +16,7 @@
 
   const [registerFrom, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 120,
+    colon: true,
     schemas: formEditSchema,
     showActionButtonGroup: false,
     actionColOptions: {
