@@ -26,18 +26,20 @@ export default defineComponent({
     return () =>
       Array.from({ length: props?.getFieldsValue?.().phaseNum ?? 3 }).map((_, i) => (
         <>
-          <InputNumber
-            value={props?.value?.[i]}
-            placeholder={`请输入第${i + 1}阶段预算比例`}
-            key={i}
-            required
-            min={props.min}
-            max={props.max}
-            precision={0}
-            onChange={(inputValue: number) => handleInput(i, inputValue)}
-          />
-          &nbsp;&nbsp;
-          <span>%</span>
+          <div class="flex  justify-between ">
+            <InputNumber
+              value={props?.value?.[i]}
+              placeholder={`请输入第${i + 1}阶段预算比例`}
+              key={i}
+              required
+              min={props.min}
+              max={props.max}
+              precision={0}
+              onChange={(inputValue: number) => handleInput(i, inputValue)}
+            />
+            &nbsp;&nbsp;
+            <span>%</span>
+          </div>
           <div class={'h-1'}></div>
         </>
       ));

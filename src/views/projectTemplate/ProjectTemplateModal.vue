@@ -97,6 +97,6 @@
 
 <style scoped>
   :global(.ant-input-number) {
-    width: 96%;
+    width: 92%;
   }
 </style>
