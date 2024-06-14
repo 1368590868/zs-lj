@@ -93,7 +93,7 @@ export const formSchema: FormSchema[] = [
     },
   },
   {
-    field: 'costLeaderStatus',
+    field: 'costOwnerName',
     component: 'Input',
     label: '成本负责人',
     colProps: {

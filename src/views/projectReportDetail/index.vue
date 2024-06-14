@@ -117,19 +117,19 @@
     schema: [
       {
         field: 'lastYearOutputValue',
-        label: '截止上年底完成产值（元）',
+        label: '截止上年底完成产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },
       {
         field: 'allYearOutputValue',
-        label: '截止目前累计完成产值（元）',
+        label: '截止目前累计完成产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },
     ],
   });
   const [registerOutputDesc] = useDescription({
     colon: true,
-    title: '本年月度完成产值（元）',
+    title: '本年月度完成产值',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,
     class: 'pl-[50px]',
@@ -141,7 +141,7 @@
 
   const [registerSelfOutput] = useDescription({
     colon: true,
-    title: '自有产值查看（元）',
+    title: '自有产值查看',
     column: 5,
     bordered: false,
     data: store.getReportData,
@@ -149,27 +149,27 @@
     schema: [
       {
         field: 'thisMonthValueMonth',
-        label: '当月完成产值',
+        label: '当月完成产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },
       {
         field: 'allValueMonth',
-        label: '累计完成产值',
+        label: '累计完成产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },
       {
         field: 'selfSurplusOutputValue',
-        label: '剩余产值',
+        label: '剩余产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },
       {
         field: 'selfPredictMonthOutputValue',
-        label: '未来3个月预测产值',
+        label: '未来3个月预测产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },
       {
         field: 'predictYearOutputValue',
-        label: '全年预测产值',
+        label: '全年预测产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },
     ],
@@ -177,7 +177,7 @@
 
   const [registerCost] = useDescription({
     colon: true,
-    title: '项目直接生成成本数据查看（元）',
+    title: '项目直接生成成本数据查看',
     column: 4,
     bordered: false,
     class: 'pl-[50px]',
@@ -185,19 +185,19 @@
     schema: [
       {
         field: 'lastYearOutputValue',
-        label: '截止上年底生产成本（元）',
+        label: '截止上年底生产成本(元)',
         render: (val) => useCurrencyFormatter(val),
       },
       {
         field: 'allYearOutputValue',
-        label: '截止目前生产成本（元）',
+        label: '截止目前生产成本(元)',
         render: (val) => useCurrencyFormatter(val),
       },
     ],
   });
   const [registerCostDesc] = useDescription({
     colon: true,
-    title: '本年月度生成成本（元）',
+    title: '本年月度生成成本(元)',
     column: { xxl: 6, md: 4 },
     data: store.getReportData,
     class: 'pl-[50px]',
