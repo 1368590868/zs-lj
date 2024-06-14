@@ -42,12 +42,12 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '提交时间',
-    dataIndex: 'costSubmitTime',
+    dataIndex: 'createTime',
     width: 200,
   },
   {
     title: '最近修改时间',
-    dataIndex: 'costSubmitTime',
+    dataIndex: 'updateTime',
     width: 200,
   },
   {
@@ -214,6 +214,8 @@ export const formEditSchema: FormSchema[] = [
     labelWidth: 80,
     componentProps: {
       rows: 4,
+      maxLength: 15,
+      showCount: true,
     },
   },
   {

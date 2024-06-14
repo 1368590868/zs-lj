@@ -27,9 +27,6 @@
       autoSubmitOnEnter: true,
     },
     clickToRowSelect: false,
-    rowSelection: {
-      type: 'checkbox',
-    },
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,

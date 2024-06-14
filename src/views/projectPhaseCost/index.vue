@@ -26,6 +26,8 @@
     // 额外参数
     searchInfo: {
       projectPhaseId: router.currentRoute.value.query.id,
+      projectLeaderStatus: 1,
+      costLeaderStatus: 1,
     },
     columns,
     formConfig: {
