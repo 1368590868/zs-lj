@@ -38,6 +38,7 @@ export const formSchema = (count): FormSchema[] => {
       itemProps: {
         colon: false,
       },
+      labelWidth: 50,
       slot: 'date',
       required: true,
     },
@@ -47,6 +48,7 @@ export const formSchema = (count): FormSchema[] => {
       component: 'Input',
       label: `预算比例`,
       colProps: { span: 6 },
+      suffix: '%',
       slot: 'phaseBudgetRatio',
       required: true,
     },
@@ -58,12 +60,13 @@ export const formSchema = (count): FormSchema[] => {
         disabled: true,
       },
       suffix: '元',
+      labelWidth: 170,
       colProps: { span: 6 },
     },
     // 用于form赋值
     {
       field: `field[${count.value}].datedate`,
-      colProps: { span: 6 },
+      colProps: { span: 4 },
       component: 'RangePicker',
       label: 'Date',
       ifShow: false,

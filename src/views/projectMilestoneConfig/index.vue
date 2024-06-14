@@ -23,7 +23,6 @@
         </template>
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumber
-            class="w-[calc(100% - 30px)]]"
             :min="1"
             :max="100"
             :precision="0"
@@ -38,7 +37,6 @@
               }
             "
           />
-          <span>&nbsp;&nbsp;%</span>
         </template>
         <template #date="{ model, field }">
           <Space>
@@ -48,6 +46,7 @@
             <DatePicker
               v-if="fieldArr.length !== +field.match(/\d+/)[0] + 1"
               v-model:value="model[field + 'date']"
+              :disabledDate="disabledDate"
               :disabled="
                 isDefer !== '1'
                   ? fieldArr.length === +field.match(/\d+/)[0] + 1
@@ -140,6 +139,7 @@
       getFieldsValue: getFieldsValueGroup,
       resetSchema,
       setFieldsValue,
+      resetFields,
       validate,
     },
   ] = useForm({
@@ -165,13 +165,23 @@
     model[field + 'date'] = moment(date).format('YYYY-MM-DD');
   };
 
-  const dataSource = reactive({});
+  const dataSource = reactive({ planStartDate: '1997-01-01', planEndDate: '2030-12-01' });
   const [register] = useDescription({
     title: '项目基础信息',
     bordered: false,
     data: dataSource,
     schema,
   });
+
+  const disabledDate = (current) => {
+    // 2024-01-02
+    const startDate = new Date(dataSource['planStartDate']);
+    // 2024-05-06
+    const endDate = new Date(dataSource['planEndDate']);
+
+    // Disable dates outside the specified range
+    return current && (current < startDate || current > endDate);
+  };
 
   const phaseTitleDisabled = (field: string) => {
     // 找出最后一个阶段索引
@@ -232,6 +242,7 @@
   };
 
   const onModalSuccess = (val) => {
+    resetFields();
     templateData.value = val;
     initForm();
   };
@@ -306,15 +317,18 @@
   };
 
   const onSubmit = async () => {
-    await addApi(
-      getFieldsValueGroup().field.map((x) => ({
+    // 如果比例为空，则移除数组这项
+    const params = getFieldsValueGroup()
+      .field.filter((x) => x.phaseBudgetRatio)
+      .map((x) => ({
         ...x,
         projectId: router.currentRoute.value.query.id,
         phaseStartDate: moment(x.date[0]).format('YYYY-MM-DD'),
         phaseEndDate: moment(x['datedate']).format('YYYY-MM-DD'),
         id: x.id ?? null,
-      })),
-    );
+      }));
+
+    await addApi(params);
     message.success('添加成功');
     router.push('/projectPhase');
   };
@@ -366,7 +380,7 @@
 
 <style lang="less" scoped>
   :global(.ant-input-number) {
-    width: 80%;
+    width: 100%;
   }
   .ant-table-striped :global(.table-striped) td {
     background-color: #fafafa;
