@@ -44,6 +44,7 @@
             -
             <!-- 当选择日期后，重新组装日期格式-->
             <DatePicker
+              :allowClear="false"
               v-if="fieldArr.length !== +field.match(/\d+/)[0] + 1"
               v-model:value="model[field + 'date']"
               :disabledDate="disabledDate"
@@ -306,6 +307,10 @@
       message.error('请选择项目模板');
       return;
     }
+    if (convertObjectToArray(values).some((x) => x.date.some((y) => !y))) {
+      message.error('请填写完整日期范围');
+      return;
+    }
     Modal.confirm({
       title: '确认提交吗？',
       icon: createVNode(ExclamationCircleOutlined),
@@ -317,7 +322,6 @@
   };
 
   const onSubmit = async () => {
-    // 如果比例为空，则移除数组这项
     const params = getFieldsValueGroup()
       .field.filter((x) => x.phaseBudgetRatio)
       .map((x) => ({

@@ -41,16 +41,6 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '提交时间',
-    dataIndex: 'createTime',
-    width: 200,
-  },
-  {
-    title: '最近修改时间',
-    dataIndex: 'updateTime',
-    width: 200,
-  },
-  {
     title: '成本备注',
     dataIndex: 'remark',
     width: 200,
