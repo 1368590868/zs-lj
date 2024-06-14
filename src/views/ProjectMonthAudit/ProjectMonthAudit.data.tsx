@@ -22,7 +22,7 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '审核金额',
+    title: '审核金额(元)',
     dataIndex: 'monthBudget',
     width: 120,
     customRender: ({ record }) => {

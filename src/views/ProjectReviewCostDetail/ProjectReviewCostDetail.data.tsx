@@ -32,7 +32,7 @@ export const columns: BasicColumn[] = [
     width: 150,
   },
   {
-    title: '金额',
+    title: '金额(元)',
     dataIndex: 'phaseBudget',
     width: 150,
     align: 'right',

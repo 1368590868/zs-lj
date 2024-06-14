@@ -90,7 +90,7 @@ export const schema: DescItem[] = [
   },
   {
     field: 'generalBudget',
-    label: '项目预算',
+    label: '项目预算(元)',
   },
   {
     field: 'date',
