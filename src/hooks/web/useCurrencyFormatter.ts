@@ -9,6 +9,7 @@ export function useCurrencyFormatter(value: number | string) {
     currency: 'CNY', // 这里可以根据实际情况替换为相应的ISO货币代码
     currencyDisplay: 'symbol',
     minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   });
 
   return formatter.format(+value);
