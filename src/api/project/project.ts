@@ -23,6 +23,8 @@ enum Api {
   deptList = `${prefix}/xmjcxx/deptList`,
   deptProjectStatistics = `${prefix}/xmjcxx/deptProjectStatistics`,
   refreshProject = `${prefix}/xmjcxx/refreshProject`,
+  getone = `/cmct-auth/user/getone/`,
+  isUnitLeader = `/cmct-auth/role/isUnitLeader/`,
 }
 
 /**
@@ -129,4 +131,14 @@ export const deptProjectStatisticsApi = () => {
 // 刷新项目
 export const refreshProjectApi = () => {
   return defHttp.get({ url: Api.refreshProject });
+};
+
+// 获取用户ID
+export const getoneApi = (params) => {
+  return defHttp.get({ url: Api.getone + params });
+};
+
+// 是否是单位负责人
+export const isUnitLeaderApi = (params) => {
+  return defHttp.get({ url: Api.isUnitLeader, params });
 };

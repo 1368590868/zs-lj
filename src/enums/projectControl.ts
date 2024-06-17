@@ -46,6 +46,20 @@ export enum ProjectOwnerStatusEnum {
   REJECTED = 2,
 }
 
+// 项目角色枚举
+export enum ProjectRoleEnum {
+  /**分管领导 */
+  LEADER = 'xmzctj_leader',
+  /**项目负责人 */
+  XMFZR = 'xmzctj_xmfzr',
+  /**成本负责人*/
+  CBFZR = 'xmzctj_cbfzr',
+  /**运营管理部 */
+  YYB = 'xmzctj_yyb',
+  /**费控员 */
+  FKY = 'xmzctj_fky',
+}
+
 //  预警状态
 export const warningStatusOptions = {
   0: '正常',
