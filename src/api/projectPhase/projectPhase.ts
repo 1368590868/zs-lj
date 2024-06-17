@@ -5,16 +5,16 @@ import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
 enum Api {
-  add = `${prefix}/project_phase/add`,
-  edit = `${prefix}/project_phase/edit`,
-  page = `${prefix}/project_phase/page`,
-  remove = `${prefix}/project_phase/remove/`,
-  detail = `${prefix}/project_phase/detail/`,
-  import = `${prefix}/project_phase/import`,
-  export = `${prefix}/project_phase/export?ids=`,
-  list = `${prefix}/project_phase/list/`,
-  statisticsProjectPhase = `${prefix}/project_phase/statisticsProjectPhase`,
-  findNowPhasesByProjectId = `${prefix}/project_phase/findNowPhasesByProjectId/`,
+  add = `${prefix}/xmlcb/add`,
+  edit = `${prefix}/xmlcb/edit`,
+  page = `${prefix}/xmlcb/page`,
+  remove = `${prefix}/xmlcb/remove/`,
+  detail = `${prefix}/xmlcb/detail/`,
+  import = `${prefix}/xmlcb/import`,
+  export = `${prefix}/xmlcb/export?ids=`,
+  list = `${prefix}/xmlcb/list/`,
+  statisticsProjectPhase = `${prefix}/xmlcb/statisticsProjectPhase`,
+  findNowPhasesByProjectId = `${prefix}/xmlcb/findNowPhasesByProjectId/`,
 }
 
 /**

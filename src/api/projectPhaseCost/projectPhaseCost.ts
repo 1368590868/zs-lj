@@ -5,17 +5,17 @@ import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
 enum Api {
-  add = `${prefix}/project_phase_cost/add`,
-  audit = `${prefix}/project_phase_cost/audit`,
-  edit = `${prefix}/project_phase_cost/edit`,
-  page = `${prefix}/project_phase_cost/page`,
-  remove = `${prefix}/project_phase_cost/remove/`,
-  detail = `${prefix}/project_phase_cost/detail/`,
-  import = `${prefix}/project_phase_cost/import`,
-  export = `${prefix}/project_phase_cost/export?ids=`,
-  costLeaderAudit = `${prefix}/project_phase_cost/costLeaderAudit`,
-  operationDeptAudit = `${prefix}/project_phase_cost/operationDeptAudit`,
-  addAndUpdatePersonCost = `${prefix}/project_phase_cost/addAndUpdatePersonCost`,
+  add = `${prefix}/xmjdcbmx/add`,
+  audit = `${prefix}/xmjdcbmx/audit`,
+  edit = `${prefix}/xmjdcbmx/edit`,
+  page = `${prefix}/xmjdcbmx/page`,
+  remove = `${prefix}/xmjdcbmx/remove/`,
+  detail = `${prefix}/xmjdcbmx/detail/`,
+  import = `${prefix}/xmjdcbmx/import`,
+  export = `${prefix}/xmjdcbmx/export?ids=`,
+  costLeaderAudit = `${prefix}/xmjdcbmx/costLeaderAudit`,
+  operationDeptAudit = `${prefix}/xmjdcbmx/operationDeptAudit`,
+  addAndUpdatePersonCost = `${prefix}/xmjdcbmx/addAndUpdatePersonCost`,
 }
 
 /**

@@ -5,14 +5,14 @@ import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
 enum Api {
-  add = `${prefix}/project_output_value/add`,
-  edit = `${prefix}/project_output_value/edit`,
-  page = `${prefix}/project_output_value/page`,
-  remove = `${prefix}/project_output_value/remove/`,
-  detail = `${prefix}/project_output_value/detail/`,
-  import = `${prefix}/project_output_value/import`,
-  export = `${prefix}/project_output_value/export?ids=`,
-  findYearAndMoth = `${prefix}/project_output_value/findYearAndMoth`,
+  add = `${prefix}/xmcz/add`,
+  edit = `${prefix}/xmcz/edit`,
+  page = `${prefix}/xmcz/page`,
+  remove = `${prefix}/xmcz/remove/`,
+  detail = `${prefix}/xmcz/detail/`,
+  import = `${prefix}/xmcz/import`,
+  export = `${prefix}/xmcz/export?ids=`,
+  findYearAndMoth = `${prefix}/xmcz/findYearAndMoth`,
 }
 
 /**

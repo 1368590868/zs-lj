@@ -5,15 +5,15 @@ import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
 enum Api {
-  add = `${prefix}/project_month_audit/add`,
-  edit = `${prefix}/project_month_audit/edit`,
-  page = `${prefix}/project_month_audit/page`,
-  remove = `${prefix}/project_month_audit/remove/`,
-  detail = `${prefix}/project_month_audit/detail/`,
-  import = `${prefix}/project_month_audit/import`,
-  export = `${prefix}/project_month_audit/export?ids=`,
-  operationDeptAudit = `${prefix}/project_month_audit/operationDeptAudit`,
-  costLeaderAudit = `${prefix}/project_month_audit/costLeaderAudit`,
+  add = `${prefix}/xmydsh/add`,
+  edit = `${prefix}/xmydsh/edit`,
+  page = `${prefix}/xmydsh/page`,
+  remove = `${prefix}/xmydsh/remove/`,
+  detail = `${prefix}/xmydsh/detail/`,
+  import = `${prefix}/xmydsh/import`,
+  export = `${prefix}/xmydsh/export?ids=`,
+  operationDeptAudit = `${prefix}/xmydsh/operationDeptAudit`,
+  costLeaderAudit = `${prefix}/xmydsh/costLeaderAudit`,
 }
 
 /**

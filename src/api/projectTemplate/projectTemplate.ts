@@ -5,13 +5,13 @@ import { defHttp } from '/@/utils/http/axios';
 import { defHttpFile } from '/@/utils/http/axios/file';
 
 enum Api {
-  add = `${prefix}/project_template/add`,
-  edit = `${prefix}/project_template/edit`,
-  page = `${prefix}/project_template/page`,
-  remove = `${prefix}/project_template/remove/`,
-  detail = `${prefix}/project_template/detail/`,
-  import = `${prefix}/project_template/import`,
-  export = `${prefix}/project_template/export?ids=`,
+  add = `${prefix}/xmmb/add`,
+  edit = `${prefix}/xmmb/edit`,
+  page = `${prefix}/xmmb/page`,
+  remove = `${prefix}/xmmb/remove/`,
+  detail = `${prefix}/xmmb/detail/`,
+  import = `${prefix}/xmmb/import`,
+  export = `${prefix}/xmmb/export?ids=`,
 }
 
 /**
