@@ -166,7 +166,7 @@
     model[field + 'date'] = moment(date).format('YYYY-MM-DD');
   };
 
-  const dataSource = reactive({ planStartDate: '1997-01-01', planEndDate: '2030-12-01' });
+  const dataSource = reactive({ planStartDate: '1997-01-01', planEndDate: '2099-12-01' });
   const [register] = useDescription({
     title: '项目基础信息',
     bordered: false,
@@ -175,10 +175,8 @@
   });
 
   const disabledDate = (current) => {
-    // 2024-01-02
     const startDate = new Date(dataSource['planStartDate']);
-    // 2024-05-06
-    const endDate = new Date(dataSource['planEndDate']);
+    const endDate = new Date(isDefer.value === '1' ? '2099-12-01' : dataSource['planEndDate']);
 
     // Disable dates outside the specified range
     return current && (current < startDate || current > endDate);
