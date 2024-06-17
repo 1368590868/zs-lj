@@ -2,7 +2,15 @@
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
-        <a-button type="primary" :disabled="!showProjectModal" @click="handleCreate">
+        <a-button
+          type="primary"
+          :disabled="!showProjectModal"
+          @click="handleCreate"
+          v-if="
+            projectStore.hasRoles(ProjectRoleEnum.XMFZR) ||
+            projectStore.hasRoles(ProjectRoleEnum.YYB)
+          "
+        >
           完善项目信息
         </a-button>
         <a-button type="primary" @click="onRefresh"> 刷新项目数据 </a-button>
@@ -30,7 +38,9 @@
             {
               label: '里程碑配置',
               onClick: handleMilestoneConfig.bind(null, record),
-              ifShow: [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus),
+              ifShow:
+                [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus) &&
+                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
             {
               label: '详情',
@@ -47,7 +57,9 @@
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, false),
               },
-              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED,
+              ifShow:
+                record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED &&
+                projectStore.hasRoles(ProjectRoleEnum.CBFZR),
             },
             {
               label: '管控',
@@ -55,12 +67,16 @@
                 title: '是否确认操作',
                 confirm: handleControl.bind(null, record, true),
               },
-              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED,
+              ifShow:
+                record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED &&
+                projectStore.hasRoles(ProjectRoleEnum.CBFZR),
             },
             {
               label: '延期配置',
               onClick: handleDeferConfig.bind(null, record),
-              ifShow: record.controlStatus === +ControlStatusEnum.DELAY_CONFIGURATION,
+              ifShow:
+                record.controlStatus === +ControlStatusEnum.DELAY_CONFIGURATION &&
+                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
             {
               label: '结束管控',
@@ -68,7 +84,9 @@
                 title: '是否确认操作',
                 confirm: handleControlBtn.bind(null, record, true),
               },
-              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED,
+              ifShow:
+                record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED &&
+                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
             {
               label: '延期管控',
@@ -76,7 +94,9 @@
                 title: '是否确认操作',
                 confirm: handleControlBtn.bind(null, record, false),
               },
-              ifShow: record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED,
+              ifShow:
+                record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED &&
+                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
           ]"
         />
@@ -99,7 +119,7 @@
   } from '/@/api/project/project';
   import ProjectModal from './projectModal.vue';
   import { columns, searchFormSchema } from './project.data';
-  import { computed, ref, unref } from 'vue';
+  import { computed, onMounted, ref, unref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import {
@@ -107,9 +127,11 @@
     projectProgressOptions,
     ControlStatusEnum,
     ProjectProgressEnum,
+    ProjectRoleEnum,
   } from '/@/enums/projectControl';
   import { useUserStore } from '/@/store/modules/user';
   import { debounce } from 'lodash-es';
+  import { useProjectControl } from '/@/store/modules/projectControl';
 
   const router = useRouter();
   const showProjectModal = computed(() => {
@@ -130,6 +152,7 @@
       autoSubmitOnEnter: true,
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
+    searchInfo: { projectOwnerName: '', costOwnerName: '' },
     clickToRowSelect: false,
     rowSelection: {
       type: 'radio',
@@ -199,6 +222,10 @@
     });
   };
   const store = useUserStore();
+  const projectStore = useProjectControl();
+  onMounted(() => {
+    projectStore.setUserHasRoleKey();
+  });
   // 管控项目确认
   const handleControl = async (record: Recordable, isControl: Boolean) => {
     const { id } = record;

@@ -2,10 +2,16 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
 import { Button, Space, TypographyText, message } from 'ant-design-vue';
-import { costChargeOptions, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
-
+import {
+  ProjectRoleEnum,
+  costChargeOptions,
+  costSubjectEnum,
+  myCostStatusEnum,
+} from '/@/enums/projectControl';
+import { useProjectControl } from '/@/store/modules/projectControl';
 import { monthAuditApi } from '/@/api/projectMonthAudit/projectMonthAudit';
 
+const projectStore = useProjectControl();
 export const columns: BasicColumn[] = [
   {
     title: '成本月度',
@@ -171,6 +177,7 @@ import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
 import { useUserStore } from '/@/store/modules/user';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 import { EllipsisText } from '/@/components/EllipsisText';
+
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
   props: {
@@ -264,7 +271,7 @@ export const ProjectLeaderStatus = defineComponent({
           />
         </BasicModal>
         {props.type === 'cost' ? (
-          props.text === 0 ? (
+          props.text === 0 && projectStore.hasRoles(ProjectRoleEnum.CBFZR) ? (
             <Space>
               <Button type="link" onClick={() => onOpenModal(1)}>
                 通过
@@ -282,7 +289,7 @@ export const ProjectLeaderStatus = defineComponent({
             </TypographyText>
           )
         ) : // 运营部审核
-        props.text === 0 && props.costStatus === 1 ? (
+        props.text === 0 && props.costStatus === 1 && projectStore.hasRoles(ProjectRoleEnum.YYB) ? (
           <Space>
             <Button type="link" onClick={() => onOpenModal(1)}>
               通过

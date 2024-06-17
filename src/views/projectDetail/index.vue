@@ -33,7 +33,12 @@
             <Space>
               <!-- <a-button type="primary" @click="onDetail">项目成本明细</a-button> -->
               <a-button type="primary" @click="onLogs">项目管控日志</a-button>
-              <a-button type="primary" @click="onRemark">管控意见</a-button>
+              <a-button
+                type="primary"
+                @click="onRemark"
+                v-if="projectStore.hasRoles(ProjectRoleEnum.LEADER)"
+                >管控意见</a-button
+              >
             </Space>
           </div>
         </div>
@@ -67,11 +72,16 @@
   import { columns, searchFormSchema } from './projectDetail.data';
   import ProjectDetailModal from './ProjectDetailModal.vue';
   import { useModal } from '/@/components/Modal';
-  import { WarningStatusEnum, projectProgressOptions } from '/@/enums/projectControl';
+  import {
+    ProjectRoleEnum,
+    WarningStatusEnum,
+    projectProgressOptions,
+  } from '/@/enums/projectControl';
   import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { pageApi as projectPhase } from '/@/api/projectPhase/projectPhase';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { EllipsisText } from '/@/components/EllipsisText';
+  import { useProjectControl } from '/@/store/modules/projectControl';
   // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
   const { setOptions, resize, getInstance } = useECharts(chartRef as Ref<HTMLDivElement>);
@@ -168,9 +178,14 @@
     datasource: [{ phaseTitle: '', id: '' }],
   });
 
+  const projectStore = useProjectControl();
+  const getRoles = async () => {
+    await projectStore.setUserHasRoleKey();
+  };
+
   onMounted(() => {
     getDetail();
-
+    getRoles();
     getInstance()?.on('click', function (params) {
       try {
         router.push({

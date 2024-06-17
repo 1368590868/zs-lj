@@ -1,44 +1,42 @@
-import type { UserInfo } from '/#/store';
-import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { getoneApi, isUnitLeaderApi } from '/@/api/project/project';
 import { ProjectRoleEnum } from '/@/enums/projectControl';
+import { useUserStore } from './user';
 interface ProjectState {
   reportData: Recordable;
   userId: Nullable<string>;
-  userRoleKey: ProjectRoleEnum[];
+  userRoleKeys: ProjectRoleEnum[];
 }
+
+const store = useUserStore();
 
 export const useProjectControl = defineStore({
   id: 'app-project-control',
   state: (): ProjectState => ({
     reportData: {},
     userId: null,
-    userRoleKey: [],
+    userRoleKeys: [],
   }),
   getters: {
     getReportData(): Recordable {
       return this.reportData;
     },
     getUserRoleKey(): ProjectRoleEnum[] {
-      return this.userRoleKey;
+      return this.userRoleKeys;
     },
   },
   actions: {
     setReportData(data: Recordable) {
       this.reportData = data;
     },
-    /**
-     * Sets the user's role key based on their account.
-     * @param {string} account - The user account.
-     */
-    async setUserHasRoleKey(account: string) {
+    async setUserHasRoleKey() {
       if (!this.userId) {
-        const { id } = await getoneApi(account);
+        const { id } = await getoneApi(store.userInfo?.account);
         this.userId = id;
       }
+
+      if (this.userRoleKeys.length) return;
 
       const results = await Promise.all(
         Object.values(ProjectRoleEnum).map(async (roleKey) => {
@@ -48,9 +46,17 @@ export const useProjectControl = defineStore({
           }
         }),
       );
-      this.userRoleKey = results.filter(
+
+      this.userRoleKeys = results.filter(
         (roleKey): roleKey is typeof ProjectRoleEnum[keyof typeof ProjectRoleEnum] => !!roleKey,
       );
+    },
+    hasRoles(role) {
+      return this.userRoleKeys.includes(role);
+    },
+    clearUserIdAndRolekeys() {
+      this.userId = null;
+      this.userRoleKeys = [];
     },
   },
 });

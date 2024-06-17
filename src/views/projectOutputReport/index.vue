@@ -10,12 +10,18 @@
             {
               label: '修改',
               onClick: onDetail.bind(null, record, ActionType.ADD),
-              ifShow: !!record.updateBy,
+              ifShow:
+                !!record.updateBy &&
+                (projectStore.hasRoles(ProjectRoleEnum.YYB) ||
+                  projectStore.hasRoles(ProjectRoleEnum.CBFZR)),
             },
             {
               label: '编辑',
               onClick: onDetail.bind(null, record, ActionType.EDIT),
-              ifShow: !record.updateBy,
+              ifShow:
+                !record.updateBy &&
+                (projectStore.hasRoles(ProjectRoleEnum.YYB) ||
+                  projectStore.hasRoles(ProjectRoleEnum.CBFZR)),
             },
             {
               label: '查看',
@@ -34,7 +40,8 @@
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import ProjectPhaseModal from './projectOutputReportModal.vue';
   import { columns, searchFormSchema, ActionType } from './projectOutputReport.data';
-  import { reactive } from 'vue';
+  import { onMounted, reactive } from 'vue';
+  import { ProjectRoleEnum } from '/@/enums/projectControl';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
@@ -80,6 +87,11 @@
   function handleSuccess() {
     reload();
   }
+
+  const projectStore = useProjectControl();
+  onMounted(() => {
+    projectStore.setUserHasRoleKey();
+  });
 
   const store = useProjectControl();
   const onDetail = (record, type) => {

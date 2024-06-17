@@ -40,12 +40,16 @@
               {
                 icon: 'ant-design:edit-outlined',
                 ifShow:
-                  typeof record.personCost === 'number' && [0, 3].includes(record.costLeaderStatus),
+                  typeof record.personCost === 'number' &&
+                  [0, 3].includes(record.costLeaderStatus) &&
+                  projectStore.hasRoles(ProjectRoleEnum.CBFZR),
                 onClick: onPersonCost.bind(null, record),
               },
               {
                 label: '填写',
-                ifShow: typeof record.personCost !== 'number',
+                ifShow:
+                  typeof record.personCost !== 'number' &&
+                  projectStore.hasRoles(ProjectRoleEnum.CBFZR),
                 onClick: onPersonCost.bind(null, record),
               },
             ]"
@@ -62,12 +66,14 @@
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import MyPhaseCostModal from './projectMonthAuditModal.vue';
   import { columns, searchFormSchema, ProjectLeaderStatus } from './projectMonthAudit.data';
-
+  import { ProjectRoleEnum } from '/@/enums/projectControl';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { useModal } from '/@/components/Modal';
   import { pageApi } from '/@/api/projectMonthAudit/projectMonthAudit';
   import { useRouter } from 'vue-router';
   import PersonCostModal from './personCostModal.vue';
+  import { onMounted } from 'vue';
+  import { useProjectControl } from '/@/store/modules/projectControl';
   const [registerModal, { openModal }] = useModal();
   const [registerPersonCostModal, { openModal: openPersonCost }] = useModal();
   const [registerTable, { reload }] = useTable({
@@ -89,11 +95,15 @@
     bordered: true,
     showIndexColumn: true,
     clickToRowSelect: false,
-
     pagination: {
       current: 1,
       pageSize: 10,
     },
+  });
+
+  const projectStore = useProjectControl();
+  onMounted(() => {
+    projectStore.setUserHasRoleKey();
   });
 
   // 编辑项目阶段成本明细 Modal
