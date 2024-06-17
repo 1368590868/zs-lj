@@ -54,6 +54,7 @@
 
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
   import { router } from '/@/router';
+  import { useProjectControl } from '/@/store/modules/projectControl';
 
   type MenuEvent = 'logout' | 'doc' | 'lock';
 
@@ -99,10 +100,12 @@
         router.push('/system/account');
       }
 
+      const projectStore = useProjectControl();
       function handleMenuClick(e: { key: MenuEvent }) {
         switch (e.key) {
           case 'logout':
             handleLoginOut();
+            projectStore.clearUserIdAndRolekeys();
             break;
           case 'doc':
             openDoc();
