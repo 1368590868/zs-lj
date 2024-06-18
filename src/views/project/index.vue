@@ -126,7 +126,6 @@
     controlStatusOptions,
     projectProgressOptions,
     ControlStatusEnum,
-    ProjectProgressEnum,
     ProjectRoleEnum,
   } from '/@/enums/projectControl';
   import { useUserStore } from '/@/store/modules/user';
@@ -134,6 +133,7 @@
   import { useProjectControl } from '/@/store/modules/projectControl';
 
   const router = useRouter();
+  const projectStore = useProjectControl();
   const showProjectModal = computed(() => {
     return (
       getSelectRows().length && getSelectRows()[0].controlStatus === +ControlStatusEnum.UNCONFIGURED
@@ -152,7 +152,22 @@
       autoSubmitOnEnter: true,
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
-    searchInfo: { projectOwnerName: '', costOwnerName: '' },
+    beforeFetch: (info) => {
+      return {
+        ...info,
+        projectOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+        costOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+      };
+    },
+    immediate: false,
     clickToRowSelect: false,
     rowSelection: {
       type: 'radio',
@@ -172,6 +187,7 @@
       slots: { customRender: 'action' },
     },
   });
+
   // 创建项目管理
   const handleCreate = () => {
     // 项目负责人+运营部可见
@@ -182,7 +198,7 @@
 
     const { planStartDate, planEndDate } = getSelectRows()[0];
     const planDate = `${planStartDate} - ${planEndDate}`;
-    console.log(getSelectRows()[0]);
+
     openModal(true, {
       ...getSelectRows()[0],
       isUpdate: true,
@@ -222,9 +238,10 @@
     });
   };
   const store = useUserStore();
-  const projectStore = useProjectControl();
-  onMounted(() => {
-    projectStore.setUserHasRoleKey();
+
+  onMounted(async () => {
+    await projectStore.setUserHasRoleKey();
+    await projectStore.setUserCode().finally(reload);
   });
   // 管控项目确认
   const handleControl = async (record: Recordable, isControl: Boolean) => {

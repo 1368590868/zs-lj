@@ -32,24 +32,22 @@
         />
       </template>
     </BasicTable>
-    <ProjectPhaseModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import ProjectPhaseModal from './projectOutputReportModal.vue';
   import { columns, searchFormSchema, ActionType } from './projectOutputReport.data';
   import { onMounted, reactive } from 'vue';
   import { ProjectRoleEnum } from '/@/enums/projectControl';
   import { usePermission } from '/@/hooks/web/usePermission';
-  import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import { exportApi, pageApi } from '/@/api/projectOutputValue/projectOutputValue';
   import { useProjectControl } from '/@/store/modules/projectControl';
   import moment from 'moment';
+
   const router = useRouter();
-  const [registerModal, { openModal }] = useModal();
+  const projectStore = useProjectControl();
   const [registerTable, { reload }] = useTable({
     api: pageApi,
     columns,
@@ -62,6 +60,22 @@
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
     },
+    beforeFetch: (info) => {
+      return {
+        ...info,
+        projectOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+        costOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+      };
+    },
+    immediate: false,
     actionColumn: {
       width: 120,
       title: '操作',
@@ -88,9 +102,9 @@
     reload();
   }
 
-  const projectStore = useProjectControl();
-  onMounted(() => {
-    projectStore.setUserHasRoleKey();
+  onMounted(async () => {
+    await projectStore.setUserHasRoleKey();
+    await projectStore.setUserCode().finally(reload);
   });
 
   const store = useProjectControl();

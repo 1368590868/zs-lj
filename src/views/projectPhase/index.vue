@@ -15,25 +15,21 @@
         />
       </template>
     </BasicTable>
-    <ProjectPhaseDrawer @register="registerDrawer" @success="handleSuccess" />
-    <ProjectPhaseModal @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { pageApi, exportApi } from '/@/api/projectPhase/projectPhase';
-  import { useDrawer } from '/@/components/Drawer';
-  import ProjectPhaseDrawer from './ProjectPhaseDrawer.vue';
-  import ProjectPhaseModal from './ProjectPhaseModal.vue';
   import { columns, searchFormSchema } from './projectPhase.data';
-  import { reactive } from 'vue';
+  import { onMounted, reactive } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
-  import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
+  import { useProjectControl } from '/@/store/modules/projectControl';
+  import { ProjectRoleEnum } from '/@/enums/projectControl';
+
   const router = useRouter();
-  const [registerDrawer, { openDrawer }] = useDrawer();
-  const [registerModal, { openModal }] = useModal();
+  const projectStore = useProjectControl();
   const [registerTable, { reload }] = useTable({
     title: '项目阶段列表',
     api: pageApi,
@@ -45,6 +41,22 @@
       autoSubmitOnEnter: true,
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
+    beforeFetch: (info) => {
+      return {
+        ...info,
+        projectOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+        costOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+      };
+    },
+    immediate: false,
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,
@@ -63,6 +75,10 @@
   const { hasPermission } = usePermission();
   let selectId = reactive<any[]>([]);
 
+  onMounted(async () => {
+    await projectStore.setUserHasRoleKey();
+    await projectStore.setUserCode().finally(reload);
+  });
   // 跳转里程碑详情
   const handleDetail = (record: Recordable) => {
     router.push({

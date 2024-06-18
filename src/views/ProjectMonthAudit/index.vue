@@ -92,10 +92,22 @@
         ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
       ],
     },
-    searchInfo: {
-      projectOwnerNumber: projectStore.userCode,
-      costOwnerNumber: projectStore.userCode,
+    beforeFetch: (info) => {
+      return {
+        ...info,
+        projectOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+        costOwnerNumber:
+          projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+          projectStore.hasRoles(ProjectRoleEnum.YYB)
+            ? null
+            : projectStore.userCode,
+      };
     },
+    immediate: false,
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,
@@ -108,8 +120,8 @@
   });
 
   onMounted(async () => {
-    await projectStore.setUserCode();
     await projectStore.setUserHasRoleKey();
+    await projectStore.setUserCode().finally(reload);
   });
 
   // 编辑项目阶段成本明细 Modal
