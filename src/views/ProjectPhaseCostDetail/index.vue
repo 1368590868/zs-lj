@@ -63,6 +63,11 @@
       clickToRowSelect: false,
       rowSelection: {
         type: 'checkbox',
+        getCheckboxProps: (record) => {
+          return {
+            disabled: record.projectLeaderStatus !== 0,
+          };
+        },
       },
       pagination: {
         current: 1,
