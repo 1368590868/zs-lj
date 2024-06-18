@@ -74,6 +74,8 @@
   import PersonCostModal from './personCostModal.vue';
   import { onMounted } from 'vue';
   import { useProjectControl } from '/@/store/modules/projectControl';
+
+  const projectStore = useProjectControl();
   const [registerModal, { openModal }] = useModal();
   const [registerPersonCostModal, { openModal: openPersonCost }] = useModal();
   const [registerTable, { reload }] = useTable({
@@ -90,6 +92,10 @@
         ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
       ],
     },
+    searchInfo: {
+      projectOwnerNumber: projectStore.userCode,
+      costOwnerNumber: projectStore.userCode,
+    },
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,
@@ -101,9 +107,9 @@
     },
   });
 
-  const projectStore = useProjectControl();
-  onMounted(() => {
-    projectStore.setUserHasRoleKey();
+  onMounted(async () => {
+    await projectStore.setUserCode();
+    await projectStore.setUserHasRoleKey();
   });
 
   // 编辑项目阶段成本明细 Modal

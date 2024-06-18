@@ -31,8 +31,11 @@
   import { pageApi, auditApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import MyPhaseCostModal from './projectPhaseCostDetailModal.vue';
   import { columns, searchFormSchema, ProjectLeaderStatus } from './projectPhaseCostDetail.data';
-  import { computed, reactive } from 'vue';
+  import { computed, onMounted, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
+  import { useProjectControl } from '/@/store/modules/projectControl';
+
+  const projectStore = useProjectControl();
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRowKeys, getSelectRows, clearSelectedRowKeys }] =
     useTable({
@@ -49,6 +52,10 @@
           ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
         ],
       },
+      searchInfo: {
+        projectOwnerNumber: projectStore.userCode,
+        costOwnerNumber: projectStore.userCode,
+      },
       useSearchForm: true,
       showTableSetting: true,
       bordered: true,
@@ -62,6 +69,11 @@
         pageSize: 10,
       },
     });
+
+  onMounted(() => {
+    projectStore.setUserCode();
+  });
+
   function handleSummary(tableData: Recordable[]) {
     const totalPhaseBudget = tableData.reduce((prev, next) => {
       prev += next.phaseBudget;

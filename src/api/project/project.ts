@@ -25,6 +25,7 @@ enum Api {
   refreshProject = `${prefix}/xmjcxx/refreshProject`,
   getone = `/cmct-auth/user/getone/`,
   isUnitLeader = `/cmct-auth/role/isUnitLeader/`,
+  personnal = `/cmct-auth/sys_personnel/page`,
 }
 
 /**
@@ -141,4 +142,9 @@ export const getoneApi = (params) => {
 // 是否是单位负责人
 export const isUnitLeaderApi = (params) => {
   return defHttp.get({ url: Api.isUnitLeader, params });
+};
+
+// 获取用户Code
+export const getPersonnalApi = (params) => {
+  return defHttp.get({ url: Api.personnal, params });
 };
