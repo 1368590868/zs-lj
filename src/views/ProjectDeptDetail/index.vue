@@ -57,7 +57,7 @@
     router.push({
       path: '/projectControl',
       query: {
-        deptNumber: record.deptNumber,
+        deptCode: record.deptCode,
         warningStatus,
       },
     });

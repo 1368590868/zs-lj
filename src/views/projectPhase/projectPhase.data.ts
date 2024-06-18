@@ -84,13 +84,13 @@ export const searchFormSchema: FormSchema[] = [
   { field: 'projectName', label: '项目名称', component: 'Input', colProps: { span: 6 } },
   { field: 'projectOwnerName', label: '项目负责人', component: 'Input', colProps: { span: 6 } },
   {
-    field: 'deptNumber',
+    field: 'deptCode',
     label: '归属部门',
     component: 'ApiSelect',
     componentProps: {
       api: deptListApi,
       labelField: 'deptName',
-      valueField: 'deptNumber',
+      valueField: 'deptCode',
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;

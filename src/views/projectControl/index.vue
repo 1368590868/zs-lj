@@ -52,7 +52,7 @@
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
     searchInfo: {
-      deptNumber: router.currentRoute.value.query?.deptNumber,
+      deptCode: router.currentRoute.value.query?.deptCode,
     },
     useSearchForm: true,
     showTableSetting: true,
