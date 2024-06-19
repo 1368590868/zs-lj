@@ -57,7 +57,11 @@ export const columns: BasicColumn[] = [
     dataIndex: 'controlStatus',
     width: 100,
     customRender: ({ record }) => {
-      return h('span', milestoneControlStatusEnum[record?.controlStatus]);
+      return h(
+        TypographyText,
+        { type: record?.controlStatus === 2 ? 'secondary' : null },
+        milestoneControlStatusEnum[record?.controlStatus],
+      );
     },
   },
   {

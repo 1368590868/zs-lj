@@ -2,6 +2,7 @@ import { h } from 'vue';
 import { DescItem } from '/@/components/Description';
 import { BasicColumn, FormSchema } from '/@/components/Table';
 import { EllipsisText } from '/@/components/EllipsisText';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 
 export const basicColumns: BasicColumn[] = [
   {
@@ -91,6 +92,9 @@ export const schema: DescItem[] = [
   {
     field: 'generalBudget',
     label: '项目预算(元)',
+    render: (value) => {
+      return useCurrencyFormatter(value);
+    },
   },
   {
     field: 'date',

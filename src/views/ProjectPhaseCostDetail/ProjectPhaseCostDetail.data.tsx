@@ -1,9 +1,9 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
-import { Button, Popconfirm, Space, Input, TypographyText, message } from 'ant-design-vue';
+import { Button, Space, TypographyText, message } from 'ant-design-vue';
 import {
-  costChargeOptions,
+  ProjectRoleEnum,
   costSubjectEnum,
   myCostStatusEnum,
   singleCostStatusOptions,
@@ -216,6 +216,7 @@ import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
 import { useUserStore } from '/@/store/modules/user';
 import { EllipsisText } from '/@/components/EllipsisText';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+import { useProjectControl } from '/@/store/modules/projectControl';
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
   props: {
@@ -274,6 +275,7 @@ export const ProjectLeaderStatus = defineComponent({
       const target = event.target as HTMLTextAreaElement;
       remark.value = target.value;
     };
+    const projectStore = useProjectControl();
 
     return () => (
       <>
@@ -291,7 +293,7 @@ export const ProjectLeaderStatus = defineComponent({
             onInput={handleInput}
           />
         </BasicModal>
-        {props.text === 0 ? (
+        {props.text === 0 && projectStore.hasRoles(ProjectRoleEnum.XMFZR) ? (
           <Space>
             <Button type="link" onClick={() => onOpenModal(1)}>
               通过

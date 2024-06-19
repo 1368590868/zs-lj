@@ -216,6 +216,7 @@
 
   // 跳转详情
   const handleDetail = (record: Recordable) => {
+    projectStore.setProjectRow(record);
     router.push({
       path: '/projectDetail',
       query: {

@@ -101,10 +101,11 @@
     Modal,
     Input,
     DatePicker,
+    TypographyText,
   } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
   import { detail } from '/@/api/project/project';
-  import { computed, createVNode, onMounted, reactive, ref, unref } from 'vue';
+  import { computed, createVNode, h, onMounted, reactive, ref, unref } from 'vue';
   import { useDescription, Description } from '/@/components/Description';
   import { useRouter } from 'vue-router';
   import { formSchema, schema } from './projectMilestoneConfig.data';
@@ -125,9 +126,26 @@
   const [registerModal, { openModal }] = useModal();
 
   const tipsArr = [
-    { title: '1.管控时间为工程计划开始时间到结束时间；', key: '1' },
-    { title: '2.里程碑阶段数和对应的预算比例是根据模板计数；', key: '1' },
-    { title: '3.只需要设置里程碑标题和阶段时间，请谨慎设置，提交后不允许修改；', key: '1' },
+    {
+      title: h(TypographyText, { type: 'danger' }, '1.管控时间为工程计划开始时间到结束时间；'),
+      key: '1',
+    },
+    {
+      title: h(
+        TypographyText,
+        { type: 'danger' },
+        '2.里程碑阶段数和对应的预算比例是根据模板计数；',
+      ),
+      key: '1',
+    },
+    {
+      title: h(
+        TypographyText,
+        { type: 'danger' },
+        '3.只需要设置里程碑标题和阶段时间，请谨慎设置，提交后不允许修改。',
+      ),
+      key: '1',
+    },
   ];
   const tipsColumns = [{ title: 'tips', dataIndex: 'title', key: 'tips' }];
 
@@ -326,7 +344,7 @@
         ...x,
         projectId: router.currentRoute.value.query.id,
         phaseStartDate: moment(x.date[0]).format('YYYY-MM-DD'),
-        phaseEndDate: moment(x['datedate']).format('YYYY-MM-DD'),
+        phaseEndDate: moment(x.date[1]).format('YYYY-MM-DD'),
         id: x.id ?? null,
       }));
 

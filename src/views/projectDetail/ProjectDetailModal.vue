@@ -25,10 +25,11 @@
   import { computed, ref, unref, watchEffect } from 'vue';
   import { message } from 'ant-design-vue';
   import { formSchema } from './projectDetail.data';
-  import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
   import { useUserStore } from '/@/store/modules/user';
   import { pageApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
   import { editApi } from '/@/api/project/project';
+  import { useProjectControl } from '/@/store/modules/projectControl';
+
   const isUpdate = ref(true);
   const [registerFrom, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 120,
@@ -39,9 +40,9 @@
       span: 24,
     },
   });
-
   const emits = defineEmits(['success', 'register']);
   const detail = ref<Recordable[]>([]);
+  const projectStore = useProjectControl();
 
   const [register, { setModalProps, closeModal }] = useModalInner(async (data) => {
     resetFields();
@@ -51,6 +52,7 @@
       setFieldsValue({
         ...data.dataSource,
         auditOpinionFlag: 0,
+        auditOpinion: projectStore.projectRow?.remark?.split(':')[1] ?? '',
       });
     } else {
       setModalProps({ confirmLoading: true });
@@ -92,6 +94,7 @@
         id: values.id,
         remark: `${getUserInfo.value} : ${values.auditOpinion}`,
       });
+      projectStore.setProjectRow({ remark: `${getUserInfo.value} : ${values.auditOpinion}` });
       // await addApi({
       //   ...values,
       //   createByName: getUserInfo.value,

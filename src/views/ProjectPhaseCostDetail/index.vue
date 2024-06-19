@@ -34,6 +34,7 @@
   import { computed, onMounted, reactive } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useProjectControl } from '/@/store/modules/projectControl';
+  import { ProjectRoleEnum } from '/@/enums/projectControl';
 
   const projectStore = useProjectControl();
   const [registerModal, { openModal }] = useModal();
@@ -52,10 +53,22 @@
           ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
         ],
       },
-      searchInfo: {
-        projectOwnerNumber: projectStore.userCode,
-        costOwnerNumber: projectStore.userCode,
+      beforeFetch: (info) => {
+        return {
+          ...info,
+          projectOwnerNumber:
+            projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+            projectStore.hasRoles(ProjectRoleEnum.YYB)
+              ? null
+              : projectStore.userCode,
+          costOwnerNumber:
+            projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
+            projectStore.hasRoles(ProjectRoleEnum.YYB)
+              ? null
+              : projectStore.userCode,
+        };
       },
+      immediate: false,
       useSearchForm: true,
       showTableSetting: true,
       bordered: true,
@@ -75,8 +88,9 @@
       },
     });
 
-  onMounted(() => {
-    projectStore.setUserCode();
+  onMounted(async () => {
+    await projectStore.setUserHasRoleKey();
+    await projectStore.setUserCode().finally(reload);
   });
 
   function handleSummary(tableData: Recordable[]) {

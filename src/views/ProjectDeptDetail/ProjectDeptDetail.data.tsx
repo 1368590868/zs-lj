@@ -4,6 +4,7 @@ import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
 import { deptListApi } from '/@/api/project/project';
 import { useRouter } from 'vue-router';
+import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 const router = useRouter();
 export const columns: BasicColumn[] = [
   {
@@ -19,12 +20,20 @@ export const columns: BasicColumn[] = [
   {
     title: '总预算(元)',
     dataIndex: 'totalBudget',
+    align: 'right',
     width: 200,
+    customRender: ({ record }) => {
+      return useCurrencyFormatter(record.totalBudget ?? 0);
+    },
   },
   {
     title: '实际成本(元)',
     dataIndex: 'totalCost',
+    align: 'right',
     width: 200,
+    customRender: ({ record }) => {
+      return useCurrencyFormatter(record.totalCost ?? 0);
+    },
   },
   {
     title: '延期管控项目',

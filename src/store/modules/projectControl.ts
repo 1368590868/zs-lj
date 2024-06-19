@@ -8,6 +8,7 @@ interface ProjectState {
   userId: Nullable<string>;
   userRoleKeys: ProjectRoleEnum[];
   userCode: Nullable<string>;
+  projectRow: Recordable;
 }
 
 const store = useUserStore();
@@ -19,6 +20,7 @@ export const useProjectControl = defineStore({
     userId: null,
     userRoleKeys: [],
     userCode: null,
+    projectRow: { remark: '' },
   }),
   getters: {
     getReportData(): Recordable {
@@ -29,6 +31,9 @@ export const useProjectControl = defineStore({
     },
     getUserCode(): Nullable<string> {
       return this.userCode;
+    },
+    getProjectRow(): Recordable {
+      return this.projectRow;
     },
   },
   actions: {
@@ -68,8 +73,11 @@ export const useProjectControl = defineStore({
         return Promise.resolve();
       }
       const { records = [] } = await getPersonnalApi({});
-      this.userCode = records.length ? records[0].id : null;
+      this.userCode = records.length ? records[0].code : null;
       return Promise.resolve();
+    },
+    setProjectRow(row: Recordable) {
+      this.projectRow = row;
     },
   },
 });
