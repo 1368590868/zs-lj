@@ -136,7 +136,7 @@
         { type: 'danger' },
         '2.里程碑阶段数和对应的预算比例是根据模板计数；',
       ),
-      key: '1',
+      key: '2',
     },
     {
       title: h(
@@ -144,7 +144,7 @@
         { type: 'danger' },
         '3.只需要设置里程碑标题和阶段时间，请谨慎设置，提交后不允许修改。',
       ),
-      key: '1',
+      key: '3',
     },
   ];
   const tipsColumns = [{ title: 'tips', dataIndex: 'title', key: 'tips' }];
@@ -193,7 +193,11 @@
   });
 
   const disabledDate = (current) => {
-    const startDate = new Date(dataSource['planStartDate']);
+    const startDate = new Date(
+      isDefer.value === '1'
+        ? moment().add(1, 'days').format('YYYY-MM-DD')
+        : dataSource['planStartDate'],
+    );
     const endDate = new Date(isDefer.value === '1' ? '2099-12-01' : dataSource['planEndDate']);
 
     // Disable dates outside the specified range
@@ -323,7 +327,22 @@
       message.error('请选择项目模板');
       return;
     }
-    if (convertObjectToArray(values).some((x) => x.date.some((y) => !y))) {
+
+    const params = getFieldsValueGroup()
+      .field.filter((x) => x.phaseBudgetRatio)
+      .map((x) => ({
+        ...x,
+        projectId: router.currentRoute.value.query.id,
+        phaseStartDate: moment(x.date[0]).format('YYYY-MM-DD'),
+        phaseEndDate: moment(x.date[1]).format('YYYY-MM-DD'),
+        id: x.id ?? null,
+      }));
+    // 延期模式最后一项没有填写则提示，并赋值给enddate
+    if (isDefer.value === '1' && !params.at(-1).datedate) {
+      message.error('请填写结束日期');
+      return;
+    }
+    if (convertObjectToArray(values).some((x) => x.date.some((y) => !y)) && isDefer.value !== '1') {
       message.error('请填写完整日期范围');
       return;
     }
@@ -344,7 +363,9 @@
         ...x,
         projectId: router.currentRoute.value.query.id,
         phaseStartDate: moment(x.date[0]).format('YYYY-MM-DD'),
-        phaseEndDate: moment(x.date[1]).format('YYYY-MM-DD'),
+        phaseEndDate: x.date[1]
+          ? moment(x.date[1]).format('YYYY-MM-DD')
+          : moment(x.datedate).format('YYYY-MM-DD'),
         id: x.id ?? null,
       }));
 
