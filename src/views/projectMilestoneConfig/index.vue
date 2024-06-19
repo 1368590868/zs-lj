@@ -346,6 +346,11 @@
       message.error('请填写完整日期范围');
       return;
     }
+    // 计算比例总和是否为100
+    if (params.map((x) => +x.phaseBudgetRatio).reduce((a, b) => a + b) !== 100) {
+      message.error('预算比例总和必须为100%');
+      return;
+    }
     Modal.confirm({
       title: '确认提交吗？',
       icon: createVNode(ExclamationCircleOutlined),
