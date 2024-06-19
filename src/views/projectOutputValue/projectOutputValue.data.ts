@@ -20,5 +20,13 @@ export const columns: BasicColumn[] = [
 ];
 
 export const searchFormSchema: FormSchema[] = [
-  { field: 'projectNumber', label: '项目编号', component: 'Input', colProps: { span: 6 } },
+  {
+    field: 'createTime',
+    label: '创建时间',
+    component: 'MonthPicker',
+    componentProps: {
+      picker: 'month',
+    },
+    colProps: { span: 6 },
+  },
 ];

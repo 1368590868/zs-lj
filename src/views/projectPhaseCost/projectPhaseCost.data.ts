@@ -3,6 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { TypographyText } from 'ant-design-vue';
 import {
+  costChargeOptions,
   costSubjectEnum,
   myCostStatusEnum,
   singleCostStatusOptions,
@@ -64,40 +65,69 @@ export const columns: BasicColumn[] = [
   // 项目负责人审核状态（0-待审核1-已通过2-已驳回）
   {
     title: '项目负责人审核',
-    dataIndex: 'projectOwnerName',
-    width: 200,
+    dataIndex: 'projectLeaderStatus',
+    width: 250,
     customRender: ({ record }) => {
+      const idx = record.projectLeaderStatus;
+      const textType = {
+        0: 'warning',
+        1: 'success',
+        2: 'danger',
+      };
       return h(
         TypographyText,
-        { type: textType[record.projectLeaderStatus] },
-        `${myCostStatusEnum[record.projectLeaderStatus] ?? ''} ${record.projectLeaderTime ?? ''}`,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? costChargeOptions[+idx]
+          : `${record.projectNickName ?? ''} ${costChargeOptions[+idx] ?? ''} ${
+              record.projectLeaderTime ?? ''
+            }`,
       );
     },
   },
   {
     title: '成本负责人审核',
-    dataIndex: 'costOwnerName',
-    width: 200,
+    dataIndex: 'costLeaderStatus',
+    width: 250,
     slots: { customRender: 'costLeaderStatus' },
     customRender: ({ record }) => {
+      const idx = record.costLeaderStatus;
+      const textType = {
+        0: 'warning',
+        1: 'success',
+        2: 'danger',
+        3: 'warning',
+      };
       return h(
         TypographyText,
-        { type: textType[+record.costLeaderStatus] },
-        `${singleCostStatusOptions[record.costLeaderStatus] ?? ''} ${record.costLeaderTime ?? ''}`,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? singleCostStatusOptions[+idx]
+          : `${record.costNickName ?? ''} ${singleCostStatusOptions[+idx] ?? ''} ${
+              record.costLeaderTime ?? ''
+            }`,
       );
     },
   },
   {
     title: '运营管理部审核',
-    dataIndex: 'operationOwnerName',
-    width: 200,
+    dataIndex: 'operationDeptStatus',
+    width: 250,
     customRender: ({ record }) => {
+      const idx = record.operationDeptStatus;
+      const textType = {
+        0: 'warning',
+        1: 'success',
+        2: 'danger',
+      };
       return h(
         TypographyText,
-        { type: textType[record.operationDeptStatus] },
-        `${singleCostStatusOptions[record.operationDeptStatus] ?? ''} ${
-          record.operationDeptTime ?? ''
-        }`,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? costChargeOptions[+idx]
+          : `${record.operationNickName ?? ''} ${costChargeOptions[+idx] ?? ''} ${
+              record.operationDeptTime ?? ''
+            }`,
       );
     },
   },
@@ -127,6 +157,29 @@ export const searchFormSchema: FormSchema[] = [
         label: val,
         value: val,
       })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
+    },
+    colProps: { span: 6 },
+  },
+  {
+    field: 'allStatus',
+    label: '成本状态',
+    component: 'Select',
+    helpMessage: `驳回状态根据项目负责人审核状态来判断,通过状态和待审核状态根据成本负责人审核状态来判断`,
+    helpComponentProps: {
+      showIndex: true,
+      maxWidth: '300px',
+    },
+    componentProps: {
+      options: Object.keys(myCostStatusEnum)
+        .filter((key) => key !== '3')
+        .map((key) => ({
+          label: myCostStatusEnum[key],
+          value: key,
+        })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;

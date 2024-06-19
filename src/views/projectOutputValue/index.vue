@@ -32,6 +32,12 @@
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
     },
+    beforeFetch: (params) => {
+      if (params.createTime) {
+        params.createTime = `${moment(params.createTime).format('YYYY-MM')}-26`;
+      }
+      return params;
+    },
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,

@@ -71,6 +71,6 @@ export const exportApi = (params) => {
 };
 
 // 获取年月
-export const findYearAndMothApi = () => {
-  return defHttp.get({ url: Api.findYearAndMoth });
+export const findYearAndMothApi = (params) => {
+  return defHttp.get({ url: Api.findYearAndMoth, params });
 };

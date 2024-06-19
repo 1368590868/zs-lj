@@ -31,7 +31,6 @@
           </div>
           <div>
             <Space>
-              <!-- <a-button type="primary" @click="onDetail">项目成本明细</a-button> -->
               <a-button type="primary" @click="onLogs">项目管控日志</a-button>
               <a-button
                 type="primary"
@@ -100,6 +99,15 @@
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
       fieldMapToTime: [['date', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD']],
+    },
+    beforeFetch: (info) => {
+      if (info?.allStatus) {
+        info[info.allStatus === '2' ? 'projectLeaderStatus' : 'costLeaderStatus'] = info.allStatus;
+        Reflect.deleteProperty(info, 'allStatus');
+      }
+      return {
+        ...info,
+      };
     },
     useSearchForm: true,
     showTableSetting: true,

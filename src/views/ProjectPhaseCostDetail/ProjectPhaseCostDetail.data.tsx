@@ -58,13 +58,13 @@ export const columns: BasicColumn[] = [
   {
     title: '项目负责人审核',
     dataIndex: 'projectLeaderStatus',
-    width: 200,
+    width: 250,
     slots: { customRender: 'projectLeaderStatus' },
   },
   {
     title: '成本负责人审核',
     dataIndex: 'costLeaderStatus',
-    width: 200,
+    width: 250,
     slots: { customRender: 'costLeaderStatus' },
     customRender: ({ record }) => {
       const idx = record.costLeaderStatus;
@@ -79,14 +79,16 @@ export const columns: BasicColumn[] = [
         { type: textType[+idx] },
         ![1, 2].includes(+idx)
           ? singleCostStatusOptions[+idx]
-          : `${singleCostStatusOptions[+idx]} ${record.costLeaderTime ?? ''}`,
+          : `${record.costNickName ?? ''} ${singleCostStatusOptions[+idx]} ${
+              record.costLeaderTime ?? ''
+            }`,
       );
     },
   },
   {
     title: '运营管理部审核',
     dataIndex: 'operationDeptStatus',
-    width: 200,
+    width: 250,
     customRender: ({ record }) => {
       const idx = record.operationDeptStatus;
       const textType = {
@@ -99,7 +101,9 @@ export const columns: BasicColumn[] = [
         { type: textType[+idx] },
         ![1, 2].includes(+idx)
           ? myCostStatusEnum[+idx]
-          : `${myCostStatusEnum[+idx]} ${record.operationDeptTime ?? ''}`,
+          : `${record.operationNickName ?? ''} ${myCostStatusEnum[+idx]} ${
+              record.operationDeptTime ?? ''
+            }`,
       );
     },
   },
@@ -123,10 +127,12 @@ export const searchFormSchema: FormSchema[] = [
     label: '审核状态',
     component: 'Select',
     componentProps: {
-      options: Object.keys(myCostStatusEnum).map((key) => ({
-        label: myCostStatusEnum[key],
-        value: key,
-      })),
+      options: Object.keys(myCostStatusEnum)
+        .filter((x) => x !== '3')
+        .map((key) => ({
+          label: myCostStatusEnum[key],
+          value: key,
+        })),
     },
     colProps: { span: 6 },
   },
@@ -235,6 +241,10 @@ export const ProjectLeaderStatus = defineComponent({
       type: String,
       default: () => new Date(),
     },
+    record: {
+      type: Object,
+      default: () => ({}),
+    },
   },
   setup(props, { emit }) {
     const [register, { openModal, closeModal }] = useModal();
@@ -249,6 +259,7 @@ export const ProjectLeaderStatus = defineComponent({
       await auditApi({
         ids: [props.id],
         projectLeaderStatus: isPass.value,
+        nickName: store.getUserInfo.nickName,
       })
         .then(() => {
           return addApi({
@@ -307,7 +318,9 @@ export const ProjectLeaderStatus = defineComponent({
           <TypographyText type={textType[props.text]}>
             {![1, 2].includes(+props.text)
               ? myCostStatusEnum[props.text]
-              : `${myCostStatusEnum[props.text] ?? ''} ${props.time ?? ''}`}
+              : `${props.record.projectNickName ?? ''} ${myCostStatusEnum[props.text] ?? ''} ${
+                  props.time ?? ''
+                }`}
           </TypographyText>
         )}
       </>

@@ -43,6 +43,17 @@
     searchInfo: {
       projectId: router.currentRoute.value.query.projectId,
     },
+    beforeFetch: (info) => {
+      if (!info.minMonthBudget) {
+        info.minMonthBudget = 0;
+      }
+      if (!info.maxMonthBudget) {
+        info.maxMonthBudget = 999999999;
+      }
+      return {
+        ...info,
+      };
+    },
     columns,
     rowKey: 'id',
     formConfig: {

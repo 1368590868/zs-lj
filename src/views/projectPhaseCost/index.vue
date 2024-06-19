@@ -26,8 +26,15 @@
     // 额外参数
     searchInfo: {
       projectPhaseId: router.currentRoute.value.query.id,
-      projectLeaderStatus: 1,
-      costLeaderStatus: 1,
+    },
+    beforeFetch: (info) => {
+      if (info?.allStatus) {
+        info[info.allStatus === '2' ? 'projectLeaderStatus' : 'costLeaderStatus'] = info.allStatus;
+        Reflect.deleteProperty(info, 'allStatus');
+      }
+      return {
+        ...info,
+      };
     },
     columns,
     formConfig: {

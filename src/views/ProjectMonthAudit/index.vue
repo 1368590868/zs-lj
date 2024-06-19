@@ -15,6 +15,7 @@
           @reload="reload"
           :time="record.costLeaderTime"
           :personCost="record.personCost"
+          :record="record"
           type="cost"
         />
       </template>
@@ -25,6 +26,7 @@
           :id="record.id"
           @reload="reload"
           :time="record.operationDeptTime"
+          :record="record"
           type="operation"
         />
       </template>

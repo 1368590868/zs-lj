@@ -1,7 +1,15 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
-import { Button, Popconfirm, Space, Input, TypographyText, message } from 'ant-design-vue';
+import {
+  Button,
+  Popconfirm,
+  Space,
+  Input,
+  TypographyText,
+  message,
+  InputNumber,
+} from 'ant-design-vue';
 import { costChargeOptions, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
 import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 import { BasicModal } from '/@/components/Modal';
@@ -122,6 +130,69 @@ export const searchFormSchema: FormSchema[] = [
         label: val,
         value: val,
       })),
+    },
+    colProps: { span: 6 },
+  },
+  {
+    field: 'jine',
+    label: '审核金额(元)',
+    component: 'Input',
+    render({ model, field }) {
+      return (
+        <Space>
+          <InputNumber
+            placeholder="请输入最小金额"
+            min={0}
+            max={99999999}
+            v-model:value={model['minMonthBudget']}
+          />
+          ~
+          <InputNumber
+            placeholder="请输入最大金额"
+            min={1}
+            max={99999999}
+            v-model:value={model['maxMonthBudget']}
+          />
+        </Space>
+      );
+    },
+    colProps: { span: 6 },
+  },
+  {
+    field: 'projectLeaderStatus',
+    label: '项目负责人审核状态',
+    component: 'Select',
+    labelWidth: 220,
+    componentProps: {
+      options: Object.keys(myCostStatusEnum)
+        .filter((key) => key !== '3')
+        .map((key) => ({
+          label: myCostStatusEnum[key],
+          value: key,
+        })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
+    },
+    colProps: { span: 6 },
+  },
+  {
+    field: 'costLeaderStatus',
+    label: '成本负责人审核状态',
+    component: 'Select',
+    labelWidth: 200,
+    componentProps: {
+      options: Object.keys(myCostStatusEnum)
+        .filter((key) => key !== '3')
+        .map((key) => ({
+          label: myCostStatusEnum[key],
+          value: key,
+        })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
     },
     colProps: { span: 6 },
   },

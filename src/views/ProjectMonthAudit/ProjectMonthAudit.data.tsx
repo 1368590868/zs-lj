@@ -1,7 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { defineComponent, h, ref } from 'vue';
-import { Button, Space, TypographyText, message } from 'ant-design-vue';
+import { Button, FormItem, InputNumber, Space, TypographyText, message } from 'ant-design-vue';
 import {
   ProjectRoleEnum,
   costChargeOptions,
@@ -31,6 +31,7 @@ export const columns: BasicColumn[] = [
     title: '审核金额(元)',
     dataIndex: 'monthBudget',
     width: 120,
+    align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.monthBudget);
     },
@@ -45,18 +46,19 @@ export const columns: BasicColumn[] = [
     title: '人力成本填写（元）',
     dataIndex: 'personCost',
     width: 150,
+    align: 'right',
     slots: { customRender: 'personCost' },
   },
   {
     title: '成本负责人审核',
     dataIndex: 'costLeaderStatus',
-    width: 150,
+    width: 250,
     slots: { customRender: 'costLeaderStatus' },
   },
   {
     title: '运营管理部审核',
     dataIndex: 'operationDeptStatus',
-    width: 150,
+    width: 250,
     slots: { customRender: 'operationDeptStatus' },
   },
   {
@@ -76,8 +78,9 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     field: 'costLeaderStatus',
-    label: '成本负责人状态',
+    label: '成本负责人审核状态',
     component: 'Select',
+    labelWidth: 200,
     componentProps: {
       options: Object.keys(myCostStatusEnum)
         .filter((key) => key !== '3')
@@ -96,11 +99,14 @@ export const searchFormSchema: FormSchema[] = [
     field: 'operationDeptStatus',
     label: '运营部审核状态',
     component: 'Select',
+    labelWidth: 200,
     componentProps: {
-      options: Object.keys(myCostStatusEnum).map((key) => ({
-        label: myCostStatusEnum[key],
-        value: key,
-      })),
+      options: Object.keys(myCostStatusEnum)
+        .filter((x) => x !== '3')
+        .map((key) => ({
+          label: myCostStatusEnum[key],
+          value: key,
+        })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -208,6 +214,10 @@ export const ProjectLeaderStatus = defineComponent({
       type: Number,
       default: null,
     },
+    record: {
+      type: Object,
+      default: () => {},
+    },
   },
   setup(props, { emit }) {
     const [register, { openModal, closeModal }] = useModal();
@@ -220,7 +230,10 @@ export const ProjectLeaderStatus = defineComponent({
       3: 'warning',
     };
     const onConfirm = async () => {
-      await monthAuditApi({ id: props.id, auditStatus: isPass.value }, props.type)
+      await monthAuditApi(
+        { id: props.id, auditStatus: isPass.value, nickName: store.getUserInfo.nickName },
+        props.type,
+      )
         .then(() => {
           return addApi({
             projectPhaseCostId: props.id,
@@ -285,7 +298,9 @@ export const ProjectLeaderStatus = defineComponent({
             <TypographyText type={textType[props.text]}>
               {![1, 2].includes(+props.text)
                 ? costChargeOptions[props.text]
-                : `${costChargeOptions[props.text]} ${props.time ?? ''}`}
+                : `${props.record.costNickName ?? ''} ${costChargeOptions[props.text]} ${
+                    props.time ?? ''
+                  }`}
             </TypographyText>
           )
         ) : // 运营部审核
@@ -303,7 +318,9 @@ export const ProjectLeaderStatus = defineComponent({
           <TypographyText type={textType[props.text]}>
             {![1, 2].includes(+props.text)
               ? costChargeOptions[props.text]
-              : `${costChargeOptions[props.text]} ${props.time ?? ''}`}
+              : `${props.record.operationNickName ?? ''} ${costChargeOptions[props.text]} ${
+                  props.time ?? ''
+                }`}
           </TypographyText>
         )}
       </>

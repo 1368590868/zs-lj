@@ -49,7 +49,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目负责人审核',
     dataIndex: 'projectLeaderStatus',
-    width: 200,
+    width: 250,
     customRender: ({ record }) => {
       const idx = record.projectLeaderStatus;
       const textType = {
@@ -62,14 +62,16 @@ export const columns: BasicColumn[] = [
         { type: textType[+idx] },
         ![1, 2].includes(+idx)
           ? costChargeOptions[+idx]
-          : `${costChargeOptions[+idx] ?? ''} ${record.projectLeaderTime ?? ''}`,
+          : `${record.projectNickName ?? ''} ${costChargeOptions[+idx] ?? ''} ${
+              record.projectLeaderTime ?? ''
+            }`,
       );
     },
   },
   {
     title: '成本负责人审核',
     dataIndex: 'costLeaderStatus',
-    width: 200,
+    width: 250,
     customRender: ({ record }) => {
       const idx = record.costLeaderStatus;
       const textType = {
@@ -83,14 +85,16 @@ export const columns: BasicColumn[] = [
         { type: textType[+idx] },
         ![1, 2].includes(+idx)
           ? singleCostStatusOptions[+idx]
-          : `${singleCostStatusOptions[+idx] ?? ''} ${record.costLeaderTime ?? ''}`,
+          : `${record.costNickName ?? ''} ${singleCostStatusOptions[+idx] ?? ''} ${
+              record.costLeaderTime ?? ''
+            }`,
       );
     },
   },
   {
     title: '运营管理部审核',
     dataIndex: 'operationDeptStatus',
-    width: 200,
+    width: 250,
     customRender: ({ record }) => {
       const idx = record.operationDeptStatus;
       const textType = {
@@ -103,7 +107,9 @@ export const columns: BasicColumn[] = [
         { type: textType[+idx] },
         ![1, 2].includes(+idx)
           ? costChargeOptions[+idx]
-          : `${costChargeOptions[+idx] ?? ''} ${record.operationDeptTime ?? ''}`,
+          : `${record.operationNickName ?? ''} ${costChargeOptions[+idx] ?? ''} ${
+              record.operationDeptTime ?? ''
+            }`,
       );
     },
   },
@@ -124,8 +130,9 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     field: 'projectLeaderStatus',
-    label: '状态',
+    label: '项目负责人审核状态',
     component: 'Select',
+    labelWidth: 200,
     componentProps: {
       options: Object.keys(myCostStatusEnum).map((key) => ({
         label: myCostStatusEnum[key],

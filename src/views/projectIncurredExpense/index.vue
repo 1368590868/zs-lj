@@ -18,7 +18,7 @@
         <template #tips
           ><div class="text-xl">
             <TypographyText type="danger">
-              提示：提交后项目负责人审核，驳回后5天内可重新提交，否则过期失效作废。
+              提示：提交后项目负责人审核，如驳回后请尽快处理 ！
             </TypographyText>
           </div></template
         >

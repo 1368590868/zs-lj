@@ -19,6 +19,7 @@
           :id="record.id"
           @reload="handleSuccess"
           :time="record.projectLeaderTime"
+          :record="record"
         />
       </template>
     </BasicTable>

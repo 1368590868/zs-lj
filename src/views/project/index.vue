@@ -135,6 +135,7 @@
 
   const router = useRouter();
   const projectStore = useProjectControl();
+  const searchParams = ref({});
 
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRows, clearSelectedRowKeys }] = useTable({
@@ -149,7 +150,7 @@
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
     beforeFetch: (info) => {
-      return {
+      const searchs = {
         ...info,
         projectOwnerNumber:
           projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
@@ -162,6 +163,8 @@
             ? null
             : projectStore.userCode,
       };
+      searchParams.value = searchs;
+      return searchs;
     },
     immediate: false,
     clickToRowSelect: false,
@@ -290,7 +293,7 @@
     try {
       let params = unref(selectId);
       console.log(params);
-      const res = await exportApi(params);
+      const res = await exportApi(params, searchParams.value);
       const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank');
