@@ -178,10 +178,16 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
+    field: 'createByName',
+    label: '提交人',
+    component: 'Input',
+    colProps: { span: 6 },
+  },
+  {
     field: 'costLeaderStatus',
     label: '成本负责人审核状态',
     component: 'Select',
-    labelWidth: 200,
+    labelWidth: 190,
     componentProps: {
       options: Object.keys(myCostStatusEnum)
         .filter((key) => key !== '3')
@@ -281,7 +287,7 @@ export const ProjectLeaderStatus = defineComponent({
     },
   },
   setup(props, { emit }) {
-    const [register, { openModal, closeModal }] = useModal();
+    const [register, { openModal, closeModal, setModalProps }] = useModal();
     const isPass = ref<number>(1);
     const store = useUserStore();
 
@@ -291,6 +297,7 @@ export const ProjectLeaderStatus = defineComponent({
       2: 'danger',
     };
     const onConfirm = async () => {
+      setModalProps({ confirmLoading: true });
       await auditApi({
         ids: [props.id],
         projectLeaderStatus: isPass.value,
@@ -305,10 +312,11 @@ export const ProjectLeaderStatus = defineComponent({
         })
         .then(() => {
           closeModal();
+          message.success('操作成功');
         })
         .finally(() => {
+          setModalProps({ confirmLoading: false });
           emit('reload');
-          message.success('操作成功');
         });
     };
 

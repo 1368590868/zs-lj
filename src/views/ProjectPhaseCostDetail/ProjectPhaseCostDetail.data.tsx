@@ -247,7 +247,7 @@ export const ProjectLeaderStatus = defineComponent({
     },
   },
   setup(props, { emit }) {
-    const [register, { openModal, closeModal }] = useModal();
+    const [register, { openModal, closeModal, setModalProps }] = useModal();
     const isPass = ref<number>(1);
     const store = useUserStore();
     const textType = {
@@ -256,6 +256,7 @@ export const ProjectLeaderStatus = defineComponent({
       2: 'danger',
     };
     const onConfirm = async () => {
+      setModalProps({ confirmLoading: true });
       await auditApi({
         ids: [props.id],
         projectLeaderStatus: isPass.value,
@@ -271,10 +272,11 @@ export const ProjectLeaderStatus = defineComponent({
         })
         .then(() => {
           closeModal();
+          message.success('操作成功');
         })
         .finally(() => {
+          setModalProps({ confirmLoading: false });
           emit('reload');
-          message.success('操作成功');
         });
     };
     const remark = ref<string>('');
