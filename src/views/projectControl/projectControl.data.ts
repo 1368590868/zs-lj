@@ -41,13 +41,12 @@ export const columns: BasicColumn[] = [
     dataIndex: 'warningStatus',
     width: 200,
     customRender: ({ record }) => {
-      const status = record.warningStatus;
-
+      const status = record.warningStatus ?? 0;
       const colorEnum = [{ success: '正常' }, { warning: '黄色警告' }, { danger: '红色警告' }];
       return h(
         TypographyText,
-        { type: Object.keys(colorEnum[status]) },
-        Object.values(colorEnum[status]),
+        { type: Object.keys(colorEnum[status])[0] },
+        Object.values(colorEnum[status])[0],
       );
     },
   },

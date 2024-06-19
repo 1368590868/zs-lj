@@ -69,7 +69,7 @@ export const columns: BasicColumn[] = [
     dataIndex: 'warningStatus',
     width: 100,
     customRender: ({ record }) => {
-      const status = record.warningStatus;
+      const status = record.warningStatus ?? 0;
 
       const colorEnum = [{ success: '正常' }, { warning: '黄色警告' }, { danger: '红色警告' }];
       return typeof status === 'number'
