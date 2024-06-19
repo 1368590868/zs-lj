@@ -770,12 +770,12 @@ export const columns: BasicColumn[] = [
       },
       {
         title: '全年预测产值（元）',
-        dataIndex: 'predictYearOutputValue',
+        dataIndex: 'selfPredictYearOutputValue',
         width: 200,
         align: 'right',
         customRender: ({ record }) => {
-          return typeof record.predictYearOutputValue === 'number'
-            ? useCurrencyFormatter(record.predictYearOutputValue)
+          return typeof record.selfPredictYearOutputValue === 'number'
+            ? useCurrencyFormatter(record.selfPredictYearOutputValue)
             : '0.00';
         },
       },
@@ -809,8 +809,8 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '已填写', value: 1 },
-        { label: '未填写', value: 0 },
+        { label: '已填写', value: 2 },
+        { label: '未填写', value: 1 },
       ],
       showSearch: true,
       filterOption: (input: string, option: any) => {
