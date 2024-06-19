@@ -2,17 +2,6 @@
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
-        <a-button
-          type="primary"
-          :disabled="!showProjectModal"
-          @click="handleCreate"
-          v-if="
-            projectStore.hasRoles(ProjectRoleEnum.XMFZR) ||
-            projectStore.hasRoles(ProjectRoleEnum.YYB)
-          "
-        >
-          完善项目信息
-        </a-button>
         <a-button type="primary" @click="onRefresh"> 刷新项目数据 </a-button>
         <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
       </template>
@@ -43,14 +32,13 @@
                 projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
             {
-              label: '详情',
-              onClick: handleDetail.bind(null, record),
-              ifShow: ![
-                +ControlStatusEnum.NONE,
-                +ControlStatusEnum.UNCONFIGURED,
-                +ControlStatusEnum.TO_BE_JUDGED,
-              ].includes(record.controlStatus),
+              label: '完善项目信息',
+              onClick: handleCreate.bind(null, record),
+              ifShow:
+                projectStore.hasRoles(ProjectRoleEnum.XMFZR) &&
+                [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus),
             },
+
             {
               label: '不管控',
               popConfirm: {
@@ -98,6 +86,15 @@
                 record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED &&
                 projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
+            {
+              label: '详情',
+              onClick: handleDetail.bind(null, record),
+              ifShow: ![
+                +ControlStatusEnum.NONE,
+                +ControlStatusEnum.UNCONFIGURED,
+                +ControlStatusEnum.TO_BE_JUDGED,
+              ].includes(record.controlStatus),
+            },
           ]"
         />
       </template>
@@ -134,11 +131,6 @@
 
   const router = useRouter();
   const projectStore = useProjectControl();
-  const showProjectModal = computed(() => {
-    return (
-      getSelectRows().length && getSelectRows()[0].controlStatus === +ControlStatusEnum.UNCONFIGURED
-    );
-  });
 
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRows, clearSelectedRowKeys }] = useTable({
@@ -169,9 +161,6 @@
     },
     immediate: false,
     clickToRowSelect: false,
-    rowSelection: {
-      type: 'radio',
-    },
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,
@@ -189,18 +178,12 @@
   });
 
   // 创建项目管理
-  const handleCreate = () => {
-    // 项目负责人+运营部可见
-    if (getSelectRows().length === 0) {
-      message.error('请选择一个项目');
-      return;
-    }
-
-    const { planStartDate, planEndDate } = getSelectRows()[0];
+  const handleCreate = (record) => {
+    const { planStartDate, planEndDate } = record;
     const planDate = `${planStartDate} - ${planEndDate}`;
 
     openModal(true, {
-      ...getSelectRows()[0],
+      ...record,
       isUpdate: true,
       planDate,
     });
