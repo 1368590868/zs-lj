@@ -11,6 +11,10 @@
           :type="
             [+ControlStatusEnum.NONE, +ControlStatusEnum.END].includes(record.controlStatus)
               ? 'secondary'
+              : [+ControlStatusEnum.END_AUDIT, +ControlStatusEnum.DELAY_AUDIT].includes(
+                  record.controlStatus,
+                )
+              ? 'danger'
               : undefined
           "
           >{{ controlStatusOptions[record.controlStatus ?? 0] }}</TypographyText
