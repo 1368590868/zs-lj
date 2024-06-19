@@ -263,7 +263,7 @@
       },
       legend: {
         selected: {
-          红色预警: false,
+          红色预警: true,
           黄色预警: true,
         },
       },
