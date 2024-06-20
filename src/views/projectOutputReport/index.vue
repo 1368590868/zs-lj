@@ -52,7 +52,7 @@
   const projectStore = useProjectControl();
   const [registerTable, { reload }] = useTable({
     api: pageApi,
-    columns: columns(month),
+    columns: columns(+month),
     searchInfo: {
       outputValueMonth: currentMonth,
     },
