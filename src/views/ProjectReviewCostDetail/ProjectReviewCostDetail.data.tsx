@@ -10,7 +10,12 @@ import {
   message,
   InputNumber,
 } from 'ant-design-vue';
-import { costChargeOptions, costSubjectEnum, myCostStatusEnum } from '/@/enums/projectControl';
+import {
+  costChargeOptions,
+  costSubjectEnum,
+  myCostStatusEnum,
+  singleCostStatusOptions,
+} from '/@/enums/projectControl';
 import { auditApi } from '/@/api/projectPhaseCost/projectPhaseCost';
 import { BasicModal } from '/@/components/Modal';
 
@@ -62,16 +67,9 @@ export const columns: BasicColumn[] = [
   {
     title: '项目负责人审核',
     dataIndex: 'projectLeaderStatus',
-    width: 200,
-    slots: { customRender: 'projectLeaderStatus' },
-  },
-  {
-    title: '成本负责人审核',
-    dataIndex: 'costLeaderStatus',
-    width: 200,
-    slots: { customRender: 'costLeaderStatus' },
+    width: 250,
     customRender: ({ record }) => {
-      const idx = record.costLeaderStatus;
+      const idx = record.projectLeaderStatus;
       const textType = {
         0: 'warning',
         1: 'success',
@@ -79,17 +77,42 @@ export const columns: BasicColumn[] = [
       };
       return h(
         TypographyText,
-        { type: textType[idx] },
-        idx === 1
-          ? costChargeOptions[idx]
-          : `${costChargeOptions[idx]} ${record.costLeaderTime ?? ''}`,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? costChargeOptions[+idx]
+          : `${record.projectNickName ?? ''} ${costChargeOptions[+idx] ?? ''} ${
+              record.projectLeaderTime ?? ''
+            }`,
+      );
+    },
+  },
+  {
+    title: '成本负责人审核',
+    dataIndex: 'costLeaderStatus',
+    width: 250,
+    customRender: ({ record }) => {
+      const idx = record.costLeaderStatus;
+      const textType = {
+        0: 'warning',
+        1: 'success',
+        2: 'danger',
+        3: 'warning',
+      };
+      return h(
+        TypographyText,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? singleCostStatusOptions[+idx]
+          : `${record.costNickName ?? ''} ${singleCostStatusOptions[+idx] ?? ''} ${
+              record.costLeaderTime ?? ''
+            }`,
       );
     },
   },
   {
     title: '运营管理部审核',
-    dataIndex: 'operationDeptStatus',
-    width: 200,
+    dataIndex: 'operationOwnerName',
+    width: 250,
     customRender: ({ record }) => {
       const idx = record.operationDeptStatus;
       const textType = {
@@ -99,10 +122,12 @@ export const columns: BasicColumn[] = [
       };
       return h(
         TypographyText,
-        { type: textType[idx] },
-        idx === 1
-          ? myCostStatusEnum[idx]
-          : `${myCostStatusEnum[idx]} ${record.operationDeptTime ?? ''}`,
+        { type: textType[+idx] },
+        ![1, 2].includes(+idx)
+          ? costChargeOptions[+idx]
+          : `${record.operationNickName ?? ''} ${costChargeOptions[+idx] ?? ''} ${
+              record.operationDeptTime ?? ''
+            }`,
       );
     },
   },
