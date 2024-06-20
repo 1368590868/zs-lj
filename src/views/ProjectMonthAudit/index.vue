@@ -1,6 +1,9 @@
 <template>
   <div>
     <BasicTable @register="registerTable">
+      <template #toolbar>
+        <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
+      </template>
       <!-- Column slots -->
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">详情</a-button>
@@ -64,20 +67,22 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { Space } from 'ant-design-vue';
+  import { Space, message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import MyPhaseCostModal from './projectMonthAuditModal.vue';
   import { columns, searchFormSchema, ProjectLeaderStatus } from './projectMonthAudit.data';
   import { ProjectRoleEnum } from '/@/enums/projectControl';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { useModal } from '/@/components/Modal';
-  import { pageApi } from '/@/api/projectMonthAudit/projectMonthAudit';
+  import { pageApi, exportApi } from '/@/api/projectMonthAudit/projectMonthAudit';
   import { useRouter } from 'vue-router';
   import PersonCostModal from './personCostModal.vue';
-  import { onMounted } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { useProjectControl } from '/@/store/modules/projectControl';
+  import { debounce } from 'lodash-es';
 
   const projectStore = useProjectControl();
+  const searchParams = ref({});
   const [registerModal, { openModal }] = useModal();
   const [registerPersonCostModal, { openModal: openPersonCost }] = useModal();
   const [registerTable, { reload }] = useTable({
@@ -95,7 +100,7 @@
       ],
     },
     beforeFetch: (info) => {
-      return {
+      const searchs = {
         ...info,
         projectOwnerNumber:
           projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
@@ -108,6 +113,8 @@
             ? null
             : projectStore.userCode,
       };
+      searchParams.value = searchs;
+      return searchs;
     },
     immediate: false,
     useSearchForm: true,
@@ -151,5 +158,22 @@
         projectId: record.projectId,
       },
     });
+  };
+  const debounceExportExcel = debounce(
+    () => {
+      exportExcel();
+    },
+    1000,
+    { leading: true, trailing: false },
+  );
+  // 导出
+  const exportExcel = async () => {
+    try {
+      const res = await exportApi(searchParams.value);
+      const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      message.success('导出成功');
+    } catch (error) {}
   };
 </script>

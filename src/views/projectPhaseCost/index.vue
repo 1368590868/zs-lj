@@ -1,6 +1,9 @@
 <template>
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange" :can-resize="true">
+      <template #toolbar>
+        <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
+      </template>
       <!-- 顶部echarts -->
       <template #headerTop>
         <div ref="chartRef" class="w-full min-h-200px"></div>
@@ -10,7 +13,7 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
-  import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { detailApi } from '/@/api/projectPhase/projectPhase';
   import { columns, searchFormSchema } from './projectPhaseCost.data';
   import { Ref, onMounted, reactive, ref, watchEffect } from 'vue';
@@ -18,8 +21,11 @@
   import { useECharts } from '/@/hooks/web/useECharts';
   import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';
   import { useRouter } from 'vue-router';
+  import { debounce } from 'lodash-es';
+  import { message } from 'ant-design-vue';
 
   const router = useRouter();
+  const searchParams = ref({});
   const [registerTable, { reload }] = useTable({
     title: '项目阶段成本明细列表',
     api: pageApi,
@@ -32,6 +38,7 @@
         info[info.allStatus === '2' ? 'projectLeaderStatus' : 'costLeaderStatus'] = info.allStatus;
         Reflect.deleteProperty(info, 'allStatus');
       }
+      searchParams.value = info;
       return {
         ...info,
       };
@@ -121,7 +128,23 @@
     getFindCurrent();
   });
   let selectId = reactive<any[]>([]);
-
+  const debounceExportExcel = debounce(
+    () => {
+      exportExcel();
+    },
+    1000,
+    { leading: true, trailing: false },
+  );
+  // 导出
+  const exportExcel = async () => {
+    try {
+      const res = await exportApi(searchParams.value);
+      const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      message.success('导出成功');
+    } catch (error) {}
+  };
   // 成功
   function handleSuccess() {
     reload();

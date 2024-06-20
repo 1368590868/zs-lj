@@ -80,5 +80,5 @@ export function importApi(params: UploadFileParams) {
  */
 
 export const exportApi = (params) => {
-  return defHttpFile.get({ url: Api.export + params, responseType: 'blob' });
+  return defHttpFile.get({ url: Api.export, params, responseType: 'blob' });
 };

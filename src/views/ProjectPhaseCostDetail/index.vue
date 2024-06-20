@@ -8,6 +8,7 @@
         <a-button type="primary" @click="onBatchPass" :disabled="!isSelectRows">
           批量通过
         </a-button>
+        <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
       </template>
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">详情</a-button>
@@ -29,15 +30,17 @@
 <script lang="ts" setup>
   import { Modal, message } from 'ant-design-vue';
   import { BasicTable, useTable } from '/@/components/Table';
-  import { pageApi, auditApi, removeApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi, auditApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import MyPhaseCostModal from './projectPhaseCostDetailModal.vue';
   import { columns, searchFormSchema, ProjectLeaderStatus } from './projectPhaseCostDetail.data';
-  import { computed, onMounted, reactive } from 'vue';
+  import { computed, onMounted, reactive, ref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useProjectControl } from '/@/store/modules/projectControl';
   import { ProjectRoleEnum } from '/@/enums/projectControl';
+  import { debounce } from 'lodash-es';
 
   const projectStore = useProjectControl();
+  const searchParams = ref({});
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRowKeys, getSelectRows, clearSelectedRowKeys }] =
     useTable({
@@ -55,7 +58,7 @@
         ],
       },
       beforeFetch: (info) => {
-        return {
+        const searchs = {
           ...info,
           projectOwnerNumber:
             projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
@@ -68,6 +71,8 @@
               ? null
               : projectStore.userCode,
         };
+        searchParams.value = searchs;
+        return searchs;
       },
       immediate: false,
       useSearchForm: true,
@@ -166,5 +171,22 @@
         handleSuccess();
       },
     });
+  };
+  const debounceExportExcel = debounce(
+    () => {
+      exportExcel();
+    },
+    1000,
+    { leading: true, trailing: false },
+  );
+  // 导出
+  const exportExcel = async () => {
+    try {
+      const res = await exportApi(searchParams.value);
+      const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      message.success('导出成功');
+    } catch (error) {}
   };
 </script>

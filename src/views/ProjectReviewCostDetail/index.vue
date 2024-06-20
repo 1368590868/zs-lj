@@ -1,14 +1,9 @@
 <template>
   <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
-      <!-- <template #toolbar>
-        <a-button type="primary" @click="onBatchReject" :disabled="!isSelectRows">
-          批量驳回
-        </a-button>
-        <a-button type="primary" @click="onBatchPass" :disabled="!isSelectRows">
-          批量通过
-        </a-button>
-      </template> -->
+      <template #toolbar>
+        <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
+      </template>
       <template #auditOpinion="{ record }">
         <a-button type="link" @click="handleDetailModal(record)">详情</a-button>
       </template>
@@ -28,13 +23,17 @@
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
-  import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import ProjectReviewCostDetailModal from './projectReviewCostDetailModal.vue';
   import { columns, searchFormSchema, ProjectLeaderStatus } from './projectReviewCostDetail.data';
-  import { reactive } from 'vue';
+  import { reactive, ref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import ProjectReviewCostEditModal from './projectReviewCostEditModal.vue';
   import { useRouter } from 'vue-router';
+  import { debounce } from 'lodash-es';
+  import { message } from 'ant-design-vue';
+
+  const searchParams = ref({});
   const [registerModal, { openModal }] = useModal();
   const [registerEditModal, { openModal: openEditModal }] = useModal();
   const router = useRouter();
@@ -50,6 +49,7 @@
       if (!info.maxMonthBudget) {
         info.maxMonthBudget = 999999999;
       }
+      searchParams.value = info;
       return {
         ...info,
       };
@@ -95,5 +95,22 @@
     e.rows.forEach((it) => {
       selectId.push(it.id);
     });
+  };
+  const debounceExportExcel = debounce(
+    () => {
+      exportExcel();
+    },
+    1000,
+    { leading: true, trailing: false },
+  );
+  // 导出
+  const exportExcel = async () => {
+    try {
+      const res = await exportApi(searchParams.value);
+      const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      message.success('导出成功');
+    } catch (error) {}
   };
 </script>

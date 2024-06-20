@@ -38,6 +38,7 @@
                 v-if="projectStore.hasRoles(ProjectRoleEnum.LEADER)"
                 >管控意见</a-button
               >
+              <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
             </Space>
           </div>
         </div>
@@ -76,13 +77,15 @@
     WarningStatusEnum,
     projectProgressOptions,
   } from '/@/enums/projectControl';
-  import { pageApi } from '/@/api/projectPhaseCost/projectPhaseCost';
+  import { pageApi, exportApi } from '/@/api/projectPhaseCost/projectPhaseCost';
   import { pageApi as projectPhase } from '/@/api/projectPhase/projectPhase';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { EllipsisText } from '/@/components/EllipsisText';
   import { useProjectControl } from '/@/store/modules/projectControl';
+  import { debounce } from 'lodash-es';
   // 图表
   const chartRef = ref<HTMLDivElement | null>(null);
+  const searchParams = ref({});
   const { setOptions, resize, getInstance } = useECharts(chartRef as Ref<HTMLDivElement>);
   const router = useRouter();
   const [registerModal, { openModal }] = useModal();
@@ -105,6 +108,7 @@
         info[info.allStatus === '2' ? 'projectLeaderStatus' : 'costLeaderStatus'] = info.allStatus;
         Reflect.deleteProperty(info, 'allStatus');
       }
+      searchParams.value = info;
       return {
         ...info,
       };
@@ -291,6 +295,24 @@
       }
     });
   });
+
+  const debounceExportExcel = debounce(
+    () => {
+      exportExcel();
+    },
+    1000,
+    { leading: true, trailing: false },
+  );
+  // 导出
+  const exportExcel = async () => {
+    try {
+      const res = await exportApi(searchParams.value);
+      const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, '_blank');
+      message.success('导出成功');
+    } catch (error) {}
+  };
 
   const getDetail = async () => {
     const params = router.currentRoute.value.query;
