@@ -167,7 +167,11 @@ export const columns: BasicColumn[] = [
   //   width: 200,
   // },
 ];
-
+export const costStatusEnum = {
+  1: '已通过',
+  2: '已驳回',
+  3: '待审核',
+};
 export const searchFormSchema: FormSchema[] = [
   {
     field: 'date',
@@ -201,12 +205,10 @@ export const searchFormSchema: FormSchema[] = [
     helpMessage:
       '驳回状态根据项目负责人审核状态来判断，通过状态和待审核状态根据成本负责人审核状态来判断',
     componentProps: {
-      options: Object.keys(myCostStatusEnum)
-        .filter((key) => key !== '3')
-        .map((key) => ({
-          label: myCostStatusEnum[key],
-          value: key,
-        })),
+      options: Object.keys(costStatusEnum).map((key) => ({
+        label: costStatusEnum[key],
+        value: key,
+      })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;

@@ -10,6 +10,7 @@ import {
 } from '/@/enums/projectControl';
 import { EllipsisText } from '/@/components/EllipsisText';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+import { costStatusEnum } from '../projectDetail/projectDetail.data';
 
 const textType = {
   0: 'warning',
@@ -174,12 +175,10 @@ export const searchFormSchema: FormSchema[] = [
       maxWidth: '300px',
     },
     componentProps: {
-      options: Object.keys(myCostStatusEnum)
-        .filter((key) => key !== '3')
-        .map((key) => ({
-          label: myCostStatusEnum[key],
-          value: key,
-        })),
+      options: Object.keys(costStatusEnum).map((key) => ({
+        label: costStatusEnum[key],
+        value: key,
+      })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
