@@ -144,7 +144,6 @@
   };
 
   const onBatchReject = () => {
-    console.log(getSelectRowKeys(), getSelectRowKeys());
     Modal.confirm({
       title: '提示',
       content: '确定批量驳回吗？',

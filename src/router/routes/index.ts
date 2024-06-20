@@ -95,6 +95,31 @@ export const genRoute: AppRouteRecordRaw = {
     },
   ],
 };
+export const projectApprove: AppRouteRecordRaw = {
+  path: '/projectApprove',
+  name: 'projectApprove',
+  component: LAYOUT,
+  redirect: '/projectApprove/page',
+  meta: {
+    title: '审批信息',
+    ignoreKeepAlive: true,
+    hideMenu: true,
+    hideBreadcrumb: false,
+  },
+  children: [
+    {
+      path: 'page/:id/:type',
+      name: 'approve',
+      meta: {
+        title: '审批信息',
+        ignoreKeepAlive: true,
+        hideMenu: true,
+        hideBreadcrumb: true,
+      },
+      component: () => import('/@/views/projectApprove/index.vue'),
+    },
+  ],
+};
 // Basic routing without permission
 export const basicRoutes = [
   LoginRoute,
@@ -104,4 +129,5 @@ export const basicRoutes = [
   ...mainOutRoutes,
   REDIRECT_ROUTE,
   PAGE_NOT_FOUND_ROUTE,
+  projectApprove,
 ];

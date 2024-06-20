@@ -100,13 +100,13 @@ export const controlDetermineApi = ({ id, determineStatus }) => {
 };
 
 // 管控结束申请
-export const controlEndApplyApi = (id) => {
-  return defHttp.get({ url: Api.controlEndApply + id });
+export const controlEndApplyApi = (id, params) => {
+  return defHttp.get({ url: Api.controlEndApply + id, params });
 };
 
 // 管控延期申请
-export const controlExtensionApplyApi = (id) => {
-  return defHttp.get({ url: Api.controlExtensionApply + id });
+export const controlExtensionApplyApi = (id, params) => {
+  return defHttp.get({ url: Api.controlExtensionApply + id, params });
 };
 
 // 通过预警状态分组统计数

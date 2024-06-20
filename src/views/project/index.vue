@@ -29,20 +29,19 @@
         <TableAction
           :actions="[
             {
-              label: '里程碑配置',
-              onClick: handleMilestoneConfig.bind(null, record),
-              ifShow:
-                [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus) &&
-                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
-            },
-            {
               label: '完善项目信息',
               onClick: handleCreate.bind(null, record),
               ifShow:
                 projectStore.hasRoles(ProjectRoleEnum.XMFZR) &&
                 [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus),
             },
-
+            {
+              label: '里程碑配置',
+              onClick: handleMilestoneConfig.bind(null, record),
+              ifShow:
+                [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus) &&
+                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
+            },
             {
               label: '不管控',
               popConfirm: {
@@ -263,9 +262,9 @@
   const handleControlBtn = async (record: Recordable, isFinish: Boolean) => {
     const { id } = record;
     if (isFinish) {
-      await controlEndApplyApi(id);
+      await controlEndApplyApi(id, { controlOpinion: store.userInfo?.nickName });
     } else {
-      await controlExtensionApplyApi(id);
+      await controlExtensionApplyApi(id, { controlOpinion: store.userInfo?.nickName });
     }
     message.success('操作成功');
     reload();
