@@ -19,7 +19,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目编号',
     dataIndex: 'projectNumber',
-    width: 200,
+    width: 160,
   },
   {
     title: '归属部门',
@@ -29,7 +29,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目负责人',
     dataIndex: 'projectOwnerName',
-    width: 200,
+    width: 100,
   },
   {
     title: '里程碑名称',

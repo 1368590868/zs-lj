@@ -37,7 +37,7 @@ export const columns: BasicColumn[] = [
   {
     title: '提交人',
     dataIndex: 'createByName',
-    width: 200,
+    width: 100,
   },
   {
     title: '成本科目',

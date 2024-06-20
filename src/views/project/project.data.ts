@@ -27,7 +27,7 @@ export const columns: BasicColumn[] = [
   {
     title: '项目编号',
     dataIndex: 'projectNumber',
-    width: 200,
+    width: 160,
   },
   {
     title: '工程进度',

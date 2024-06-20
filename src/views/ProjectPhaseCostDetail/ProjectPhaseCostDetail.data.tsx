@@ -28,17 +28,17 @@ export const columns: BasicColumn[] = [
   {
     title: '提交人',
     dataIndex: 'createByName',
-    width: 200,
+    width: 100,
   },
   {
     title: '成本科目',
     dataIndex: 'costTypeName',
-    width: 200,
+    width: 160,
   },
   {
     title: '金额（元）',
     dataIndex: 'phaseBudget',
-    width: 200,
+    width: 160,
     align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.phaseBudget ?? 0);
@@ -110,8 +110,9 @@ export const columns: BasicColumn[] = [
   {
     title: '审批意见',
     dataIndex: 'auditOpinion',
+    fixed: 'right',
     slots: { customRender: 'auditOpinion' },
-    width: 200,
+    width: 100,
   },
 ];
 

@@ -170,7 +170,7 @@
       pageSize: 10,
     },
     actionColumn: {
-      width: 300,
+      width: 230,
       title: '操作',
       dataIndex: 'action',
       slots: { customRender: 'action' },
