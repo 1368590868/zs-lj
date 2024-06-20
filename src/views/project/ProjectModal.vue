@@ -5,6 +5,7 @@
     title="完善项目信息"
     width="700px"
     @ok="handleSubmit"
+    okText="下一步"
     :minHeight="480"
   >
     <div>

@@ -29,13 +29,6 @@
         <TableAction
           :actions="[
             {
-              label: '完善项目信息',
-              onClick: handleCreate.bind(null, record),
-              ifShow:
-                projectStore.hasRoles(ProjectRoleEnum.XMFZR) &&
-                [+ControlStatusEnum.UNCONFIGURED].includes(record.controlStatus),
-            },
-            {
               label: '里程碑配置',
               onClick: handleMilestoneConfig.bind(null, record),
               ifShow:
@@ -135,6 +128,7 @@
   const router = useRouter();
   const projectStore = useProjectControl();
   const searchParams = ref({});
+  const projectId = ref<string>('');
 
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRows, clearSelectedRowKeys }] = useTable({
@@ -216,16 +210,8 @@
     });
   };
   const handleMilestoneConfig = (record: Recordable) => {
-    if (!record.generalBudget) {
-      return message.error('请先完善项目信息');
-    }
-    router.push({
-      path: '/projectMilestoneConfig',
-      query: {
-        id: record.id,
-        isDefer: 0,
-      },
-    });
+    projectId.value = record.id;
+    handleCreate(record);
   };
   const store = useUserStore();
 
@@ -271,8 +257,15 @@
   };
   // 成功
   function handleSuccess() {
-    clearSelectedRowKeys();
-    reload();
+    setTimeout(() => {
+      router.push({
+        path: '/projectMilestoneConfig',
+        query: {
+          id: projectId.value,
+          isDefer: 0,
+        },
+      });
+    }, 300);
   }
 
   let selectId = ref<string | null>(null);
