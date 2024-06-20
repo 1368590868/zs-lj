@@ -177,7 +177,7 @@
     return projectProgressOptions[Number(router.currentRoute.value.query?.projectProgress)];
   });
   const getTotleCost = computed(() => {
-    return useCurrencyFormatter(dataSource['totalCost']) + ' 元';
+    return useCurrencyFormatter(dataSource['totalCost'] ?? 0) + ' 元';
   });
 
   const badgeClass = () =>
