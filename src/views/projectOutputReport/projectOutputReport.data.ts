@@ -6,6 +6,7 @@ import { controlStatusOptions, warningStatusOptions } from '/@/enums/projectCont
 import { deptListApi } from '/@/api/project/project';
 import { EllipsisText } from '/@/components/EllipsisText';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
+import { useRouter } from 'vue-router';
 
 export enum ActionType {
   ADD = '0',
@@ -13,7 +14,7 @@ export enum ActionType {
   VIEW = '2',
 }
 
-export const columns: BasicColumn[] = [
+export const columns = (month): BasicColumn[] => [
   {
     title: '项目名称',
     dataIndex: 'projectName',
@@ -119,7 +120,7 @@ export const columns: BasicColumn[] = [
       {
         title: '1月',
         dataIndex: 'janRatio',
-        width: new Date().getMonth() + 1 >= 1 ? 80 : 0,
+        width: month >= 1 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.janRatio}%` || '0%');
         },
@@ -127,7 +128,7 @@ export const columns: BasicColumn[] = [
       {
         title: '2月',
         dataIndex: 'fedRatio',
-        width: new Date().getMonth() + 1 >= 2 ? 80 : 0,
+        width: month >= 2 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.fedRatio}%` || '0%');
         },
@@ -135,7 +136,7 @@ export const columns: BasicColumn[] = [
       {
         title: '3月',
         dataIndex: 'marRatio',
-        width: new Date().getMonth() + 1 >= 3 ? 80 : 0,
+        width: month >= 3 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.marRatio}%` || '0%');
         },
@@ -143,7 +144,7 @@ export const columns: BasicColumn[] = [
       {
         title: '4月',
         dataIndex: 'aprRatio',
-        width: new Date().getMonth() + 1 >= 4 ? 80 : 0,
+        width: month >= 4 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.aprRatio}%` || '0%');
         },
@@ -151,7 +152,7 @@ export const columns: BasicColumn[] = [
       {
         title: '5月',
         dataIndex: 'mayRatio',
-        width: new Date().getMonth() + 1 >= 5 ? 80 : 0,
+        width: month >= 5 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.mayRatio}%` || '0%');
         },
@@ -159,7 +160,7 @@ export const columns: BasicColumn[] = [
       {
         title: '6月',
         dataIndex: 'junRatio',
-        width: new Date().getMonth() + 1 >= 6 ? 80 : 0,
+        width: month >= 6 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.junRatio}%` || '0%');
         },
@@ -167,7 +168,7 @@ export const columns: BasicColumn[] = [
       {
         title: '7月',
         dataIndex: 'julRatio',
-        width: new Date().getMonth() + 1 >= 7 ? 80 : 0,
+        width: month >= 7 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.julRatio}%` || '0%');
         },
@@ -175,7 +176,7 @@ export const columns: BasicColumn[] = [
       {
         title: '8月',
         dataIndex: 'augRatio',
-        width: new Date().getMonth() + 1 >= 8 ? 80 : 0,
+        width: month >= 8 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.augRatio}%` || '0%');
         },
@@ -183,7 +184,7 @@ export const columns: BasicColumn[] = [
       {
         title: '9月',
         dataIndex: 'sepRatio',
-        width: new Date().getMonth() + 1 >= 9 ? 80 : 0,
+        width: month >= 9 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.sepRatio}%` || '0%');
         },
@@ -191,7 +192,7 @@ export const columns: BasicColumn[] = [
       {
         title: '10月',
         dataIndex: 'octRatio',
-        width: new Date().getMonth() + 1 >= 10 ? 80 : 0,
+        width: month >= 10 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.octRatio}%` || '0%');
         },
@@ -199,7 +200,7 @@ export const columns: BasicColumn[] = [
       {
         title: '11月',
         dataIndex: 'novRatio',
-        width: new Date().getMonth() + 1 >= 11 ? 80 : 0,
+        width: month >= 11 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.novRatio}%` || '0%');
         },
@@ -207,7 +208,7 @@ export const columns: BasicColumn[] = [
       {
         title: '12月',
         dataIndex: 'decRatio',
-        width: new Date().getMonth() + 1 >= 12 ? 80 : 0,
+        width: month >= 12 ? 80 : 0,
         customRender: ({ record }) => {
           return h('div', `${record.decRatio}%` || '0%');
         },
@@ -265,7 +266,7 @@ export const columns: BasicColumn[] = [
       {
         title: '1月完成产值（元）',
         dataIndex: 'janOutputValue',
-        width: new Date().getMonth() + 1 >= 1 ? 150 : 0,
+        width: month >= 1 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.janOutputValue === 'number'
@@ -276,7 +277,7 @@ export const columns: BasicColumn[] = [
       {
         title: '2月完成产值（元）',
         dataIndex: 'fedOutputValue',
-        width: new Date().getMonth() + 1 >= 2 ? 150 : 0,
+        width: month >= 2 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.fedOutputValue === 'number'
@@ -287,7 +288,7 @@ export const columns: BasicColumn[] = [
       {
         title: '3月完成产值（元）',
         dataIndex: 'marOutputValue',
-        width: new Date().getMonth() + 1 >= 3 ? 150 : 0,
+        width: month >= 3 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.marOutputValue === 'number'
@@ -298,7 +299,7 @@ export const columns: BasicColumn[] = [
       {
         title: '4月完成产值（元）',
         dataIndex: 'aprOutputValue',
-        width: new Date().getMonth() + 1 >= 4 ? 150 : 0,
+        width: month >= 4 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.aprOutputValue === 'number'
@@ -309,7 +310,7 @@ export const columns: BasicColumn[] = [
       {
         title: '5月完成产值（元）',
         dataIndex: 'mayOutputValue',
-        width: new Date().getMonth() + 1 >= 5 ? 150 : 0,
+        width: month >= 5 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.mayOutputValue === 'number'
@@ -320,7 +321,7 @@ export const columns: BasicColumn[] = [
       {
         title: '6月完成产值（元）',
         dataIndex: 'junOutputValue',
-        width: new Date().getMonth() + 1 >= 6 ? 150 : 0,
+        width: month >= 6 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.junOutputValue === 'number'
@@ -331,7 +332,7 @@ export const columns: BasicColumn[] = [
       {
         title: '7月完成产值（元）',
         dataIndex: 'julOutputValue',
-        width: new Date().getMonth() + 1 >= 7 ? 150 : 0,
+        width: month >= 7 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.julOutputValue === 'number'
@@ -342,7 +343,7 @@ export const columns: BasicColumn[] = [
       {
         title: '8月完成产值（元）',
         dataIndex: 'augOutputValue',
-        width: new Date().getMonth() + 1 >= 8 ? 150 : 0,
+        width: month >= 8 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.augOutputValue === 'number'
@@ -353,7 +354,7 @@ export const columns: BasicColumn[] = [
       {
         title: '9月完成产值（元）',
         dataIndex: 'sepOutputValue',
-        width: new Date().getMonth() + 1 >= 9 ? 150 : 0,
+        width: month >= 9 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.sepOutputValue === 'number'
@@ -364,7 +365,7 @@ export const columns: BasicColumn[] = [
       {
         title: '10月完成产值（元）',
         dataIndex: 'octOutputValue',
-        width: new Date().getMonth() + 1 >= 10 ? 150 : 0,
+        width: month >= 10 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.octOutputValue === 'number'
@@ -375,7 +376,7 @@ export const columns: BasicColumn[] = [
       {
         title: '11月完成产值（元）',
         dataIndex: 'novOutputValue',
-        width: new Date().getMonth() + 1 >= 11 ? 150 : 0,
+        width: month >= 11 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.novOutputValue === 'number'
@@ -386,7 +387,7 @@ export const columns: BasicColumn[] = [
       {
         title: '12月完成产值（元）',
         dataIndex: 'decOutputValue',
-        width: new Date().getMonth() + 1 >= 12 ? 150 : 0,
+        width: month >= 12 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.decOutputValue === 'number'
@@ -496,7 +497,7 @@ export const columns: BasicColumn[] = [
       {
         title: '1月生产成本（元）',
         dataIndex: 'janCost',
-        width: new Date().getMonth() + 1 >= 1 ? 150 : 0,
+        width: month >= 1 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.janCost === 'number' ? useCurrencyFormatter(record.janCost) : '0.00';
@@ -505,7 +506,7 @@ export const columns: BasicColumn[] = [
       {
         title: '2月生产成本（元）',
         dataIndex: 'fedCost',
-        width: new Date().getMonth() + 1 >= 2 ? 150 : 0,
+        width: month >= 2 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.fedCost === 'number' ? useCurrencyFormatter(record.fedCost) : '0.00';
@@ -514,7 +515,7 @@ export const columns: BasicColumn[] = [
       {
         title: '3月生产成本（元）',
         dataIndex: 'marCost',
-        width: new Date().getMonth() + 1 >= 3 ? 150 : 0,
+        width: month >= 3 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.marCost === 'number' ? useCurrencyFormatter(record.marCost) : '0.00';
@@ -523,7 +524,7 @@ export const columns: BasicColumn[] = [
       {
         title: '4月生产成本（元）',
         dataIndex: 'aprCost',
-        width: new Date().getMonth() + 1 >= 4 ? 150 : 0,
+        width: month >= 4 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.aprCost === 'number' ? useCurrencyFormatter(record.aprCost) : '0.00';
@@ -532,7 +533,7 @@ export const columns: BasicColumn[] = [
       {
         title: '5月生产成本（元）',
         dataIndex: 'mayCost',
-        width: new Date().getMonth() + 1 >= 5 ? 150 : 0,
+        width: month >= 5 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.mayCost === 'number' ? useCurrencyFormatter(record.mayCost) : '0.00';
@@ -542,7 +543,7 @@ export const columns: BasicColumn[] = [
         title: '6月生产成本（元）',
         dataIndex: 'junCost',
         align: 'right',
-        width: new Date().getMonth() + 1 >= 6 ? 150 : 0,
+        width: month >= 6 ? 150 : 0,
         customRender: ({ record }) => {
           return typeof record.junCost === 'number' ? useCurrencyFormatter(record.junCost) : '0.00';
         },
@@ -550,7 +551,7 @@ export const columns: BasicColumn[] = [
       {
         title: '7月生产成本（元）',
         dataIndex: 'julCost',
-        width: new Date().getMonth() + 1 >= 7 ? 150 : 0,
+        width: month >= 7 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.julCost === 'number' ? useCurrencyFormatter(record.julCost) : '0.00';
@@ -559,7 +560,7 @@ export const columns: BasicColumn[] = [
       {
         title: '8月生产成本（元）',
         dataIndex: 'augCost',
-        width: new Date().getMonth() + 1 >= 8 ? 150 : 0,
+        width: month >= 8 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.augCost === 'number' ? useCurrencyFormatter(record.augCost) : '0.00';
@@ -568,7 +569,7 @@ export const columns: BasicColumn[] = [
       {
         title: '9月生产成本（元）',
         dataIndex: 'sepCost',
-        width: new Date().getMonth() + 1 >= 9 ? 150 : 0,
+        width: month >= 9 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.sepCost === 'number' ? useCurrencyFormatter(record.sepCost) : '0.00';
@@ -577,7 +578,7 @@ export const columns: BasicColumn[] = [
       {
         title: '10月生产成本（元）',
         dataIndex: 'octCost',
-        width: new Date().getMonth() + 1 >= 10 ? 150 : 0,
+        width: month >= 10 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.octCost === 'number' ? useCurrencyFormatter(record.octCost) : '0.00';
@@ -586,7 +587,7 @@ export const columns: BasicColumn[] = [
       {
         title: '11月生产成本（元）',
         dataIndex: 'novCost',
-        width: new Date().getMonth() + 1 >= 11 ? 150 : 0,
+        width: month >= 11 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.novCost === 'number' ? useCurrencyFormatter(record.novCost) : '0.00';
@@ -595,7 +596,7 @@ export const columns: BasicColumn[] = [
       {
         title: '12月生产成本（元）',
         dataIndex: 'decCost',
-        width: new Date().getMonth() + 1 >= 12 ? 150 : 0,
+        width: month >= 12 ? 150 : 0,
         align: 'right',
         customRender: ({ record }) => {
           return typeof record.decCost === 'number' ? useCurrencyFormatter(record.decCost) : '0.00';
@@ -720,12 +721,12 @@ export const columns: BasicColumn[] = [
     ],
   },
   {
-    title: `${new Date().getMonth() + 1}月自有产值`,
+    title: `${month}月自有产值`,
     dataIndex: 'eyzycz',
     children: [
       // 自有当月产值
       {
-        title: `${new Date().getMonth() + 1}月实际完成产值（元）`,
+        title: `${month}月实际完成产值（元）`,
         dataIndex: 'thisMonthValueMonth',
         width: 200,
         align: 'right',
@@ -810,7 +811,7 @@ export const searchFormSchema: FormSchema[] = [
     componentProps: {
       options: [
         { label: '已填写', value: 2 },
-        { label: '未填写', value: 1 },
+        { label: '未填写', value: 3 },
       ],
       showSearch: true,
       filterOption: (input: string, option: any) => {

@@ -68,8 +68,8 @@ export function importApi(params: UploadFileParams) {
  * @description: 项目阶段导出
  */
 
-export const exportApi = (params) => {
-  return defHttpFile.get({ url: Api.export + params, responseType: 'blob' });
+export const exportApi = (params, searchParams) => {
+  return defHttpFile.get({ url: Api.export + params, params: searchParams, responseType: 'blob' });
 };
 
 // 项目阶段查询

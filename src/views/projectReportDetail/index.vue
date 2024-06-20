@@ -36,6 +36,7 @@
 
   const store = useProjectControl();
   const router = useRouter();
+  const month = (router.currentRoute.value.query?.month as string) ?? '';
   const [register, { setFieldsValue, updateSchema }] = useForm({
     colon: true,
     schemas: formSchema,
@@ -69,7 +70,7 @@
       return {
         field: key,
         label: data[key],
-        show: () => new Date().getMonth() >= i,
+        show: () => +month > i,
         render: (val) => renderFn(val),
       };
     });
@@ -168,7 +169,7 @@
         render: (val) => useCurrencyFormatter(val),
       },
       {
-        field: 'predictYearOutputValue',
+        field: 'selfPredictYearOutputValue',
         label: '全年预测产值(元)',
         render: (val) => useCurrencyFormatter(val),
       },

@@ -22,7 +22,7 @@
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { pageApi, exportApi } from '/@/api/projectPhase/projectPhase';
   import { columns, searchFormSchema } from './projectPhase.data';
-  import { onMounted, reactive } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useRouter } from 'vue-router';
   import { useProjectControl } from '/@/store/modules/projectControl';
@@ -30,6 +30,7 @@
 
   const router = useRouter();
   const projectStore = useProjectControl();
+  const searchParams = ref({});
   const [registerTable, { reload }] = useTable({
     title: '项目阶段列表',
     api: pageApi,
@@ -42,7 +43,7 @@
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
     beforeFetch: (info) => {
-      return {
+      const searchs = {
         ...info,
         projectOwnerNumber:
           projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
@@ -55,6 +56,8 @@
             ? null
             : projectStore.userCode,
       };
+      searchParams.value = searchs;
+      return searchs;
     },
     immediate: false,
     useSearchForm: true,
@@ -98,7 +101,7 @@
   const exportExcel = async () => {
     try {
       let params = selectId.toString();
-      const res = await exportApi(params);
+      const res = await exportApi(params, searchParams.value);
       const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
       const url = window.URL.createObjectURL(blob);
       console.log(url);
