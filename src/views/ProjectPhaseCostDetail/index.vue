@@ -38,8 +38,10 @@
   import { useProjectControl } from '/@/store/modules/projectControl';
   import { ProjectRoleEnum } from '/@/enums/projectControl';
   import { debounce } from 'lodash-es';
+  import { useUserStore } from '/@/store/modules/user';
 
   const projectStore = useProjectControl();
+  const store = useUserStore();
   const searchParams = ref({});
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload, getSelectRowKeys, getSelectRows, clearSelectedRowKeys }] =
@@ -151,6 +153,7 @@
         await auditApi({
           ids: getSelectRowKeys(),
           projectLeaderStatus: 2,
+          nickName: store.getUserInfo.nickName,
         });
         message.success('批量驳回成功');
         handleSuccess();
@@ -165,6 +168,7 @@
         await auditApi({
           ids: getSelectRowKeys(),
           projectLeaderStatus: 1,
+          nickName: store.getUserInfo.nickName,
         });
         message.success('批量通过成功');
         handleSuccess();

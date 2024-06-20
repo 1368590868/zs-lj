@@ -38,7 +38,7 @@
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { columns, searchFormSchema, ActionType } from './projectOutputReport.data';
-  import { onMounted, reactive } from 'vue';
+  import { onMounted, reactive, ref } from 'vue';
   import { ProjectRoleEnum } from '/@/enums/projectControl';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useRouter } from 'vue-router';
@@ -48,7 +48,7 @@
   const router = useRouter();
   const currentMonth = (router.currentRoute.value.query?.outputValueMonth as string) ?? '';
   const month = currentMonth.split('-')[1];
-
+  const searchParams = ref({});
   const projectStore = useProjectControl();
   const [registerTable, { reload }] = useTable({
     api: pageApi,
@@ -63,7 +63,7 @@
       autoSubmitOnEnter: true,
     },
     beforeFetch: (info) => {
-      return {
+      const searchs = {
         ...info,
         projectOwnerNumber:
           projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
@@ -76,6 +76,8 @@
             ? null
             : projectStore.userCode,
       };
+      searchParams.value = searchs;
+      return searchs;
     },
     immediate: false,
     actionColumn: {
@@ -117,8 +119,7 @@
   // 导出
   const exportExcel = async () => {
     try {
-      let params = selectId.toString();
-      const res = await exportApi(params);
+      const res = await exportApi(searchParams.value);
       const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
       const url = window.URL.createObjectURL(blob);
       console.log(url);
