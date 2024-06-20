@@ -67,7 +67,7 @@ export const columns: BasicColumn[] = [
   {
     title: '提交人',
     dataIndex: 'createByName',
-    width: 200,
+    width: 150,
   },
   {
     title: '成本科目',
@@ -77,7 +77,7 @@ export const columns: BasicColumn[] = [
   {
     title: '金额（元）',
     dataIndex: 'phaseBudget',
-    width: 200,
+    width: 120,
     align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.phaseBudget ?? 0);

@@ -53,6 +53,9 @@ export const columns: BasicColumn[] = [
     title: '成本备注',
     dataIndex: 'remark',
     width: 200,
+    customRender: ({ record }) => {
+      return h(EllipsisText, { tooltip: record.remark }, () => record.remark);
+    },
   },
   // 项目负责人审核状态（0-待审核1-已通过2-已驳回）
   {
