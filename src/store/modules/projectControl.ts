@@ -72,7 +72,7 @@ export const useProjectControl = defineStore({
       if (this.userCode) {
         return Promise.resolve();
       }
-      const { records = [] } = await getPersonnalApi({});
+      const { records = [] } = await getPersonnalApi({ account: store.userInfo?.account });
       this.userCode = records.length ? records[0].code : null;
       return Promise.resolve();
     },
