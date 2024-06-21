@@ -17,7 +17,7 @@ export function getLoginCode() {
 
 // 登录
 export function UserLogin(params: LoginParams, mode: ErrorMessageMode = 'modal') {
-  return defLoginHttp.post<LoginResultModel>(loginHeader(params), {
+  return defLoginHttp.post<LoginResultModel & { data: any }>(loginHeader(params), {
     errorMessageMode: mode,
   });
 }
