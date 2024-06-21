@@ -1,11 +1,11 @@
 <template>
   <div :class="prefixCls" class="relative w-full h-full px-4">
-    <!-- <AppLocalePicker
+    <AppLocalePicker
       class="absolute text-white top-4 right-4 enter-x xl:text-gray-600"
       :showText="false"
       v-if="!sessionTimeout && showLocale"
-    /> -->
-    <!-- <AppDarkModeToggle class="absolute top-3 right-7 enter-x" v-if="!sessionTimeout" /> -->
+    />
+    <AppDarkModeToggle class="absolute top-3 right-7 enter-x" v-if="!sessionTimeout" />
 
     <span class="-enter-x xl:hidden">
       <AppLogo :alwaysShowTitle="true" />
@@ -14,8 +14,8 @@
     <div class="container relative h-full py-2 mx-auto sm:px-10">
       <div class="flex h-full">
         <div class="hidden min-h-full pl-4 mr-4 xl:flex xl:flex-col xl:w-6/12">
-          <!-- <AppLogo class="-enter-x" /> -->
-          <!-- <div class="my-auto">
+          <AppLogo class="-enter-x" />
+          <div class="my-auto">
             <img
               :alt="title"
               src="../../../assets/svg/login-box-bg.svg"
@@ -27,38 +27,12 @@
             <div class="mt-5 font-normal text-white text-md dark:text-gray-500 -enter-x">
               {{ t('sys.login.signInDesc') }}
             </div>
-          </div> -->
-        </div>
-        <div
-          style="
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-          "
-          class="w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12"
-        >
-          <div class="text-center" style="font-size: 30px; margin-bottom: 20px">业管平台</div>
-          <div class="flex w-full">
-            <div
-              :class="`${prefixCls}-form`"
-              class="relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-md xl:ml-16 xl:bg-transparent sm:px-8 xl:p-4 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto enter-x bg-white"
-              style="margin-top: 0; margin-left: auto"
-            >
-              <LoginForm :modelTenantKey="modelKey" />
-              <ForgetPasswordForm />
-              <FindPasswordForm />
-              <RegisterForm />
-              <MobileForm :modelTenantKey="modelKey" />
-              <QrCodeForm :modelTenantKey="modelKey" />
-            </div>
           </div>
         </div>
-        <!--  -->
-        <!-- <div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
+        <div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
           <div
             :class="`${prefixCls}-form`"
-            class="relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-md xl:ml-16 xl:bg-transparent sm:px-8 xl:p-4 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto enter-x bg-white"
+            class="relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-md xl:ml-16 xl:bg-transparent sm:px-8 xl:p-4 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto enter-x"
           >
             <LoginForm :modelTenantKey="modelKey" />
             <ForgetPasswordForm />
@@ -67,8 +41,7 @@
             <MobileForm :modelTenantKey="modelKey" />
             <QrCodeForm :modelTenantKey="modelKey" />
           </div>
-        </div> -->
-        <!--  -->
+        </div>
       </div>
     </div>
   </div>
@@ -99,7 +72,8 @@
   });
   const modelKey = ref();
   const getUnitCode = async () => {
-    sessionStorage.removeItem('tenantId');
+    localStorage.setItem('systemConfig', '');
+    sessionStorage.setItem('tenantId', '');
     const route = useRoute();
     let code: any = route.params.code;
     localStorage.setItem(UNIT_LOGIN_CODE, code || '');
@@ -107,9 +81,10 @@
     if (res) {
       const { id } = res;
       modelKey.value = id;
-      sessionStorage.setItem('tenantId', id);
-      const data = await detailSettingApi({});
-      localStorage.setItem('systemConfig', data.data);
+      const res1 = await detailSettingApi({});
+      let resJson = JSON.stringify(res1.data);
+      let resJson1 = JSON.parse(resJson);
+      localStorage.setItem('systemConfig', resJson1);
     }
   };
 
@@ -177,12 +152,11 @@
       left: 0;
       width: 100%;
       height: 100%;
-      // margin-left: -48%;
-      // background-image: url(/@/assets/svg/login-bg.svg);
-      background-image: url(/@/assets/images/login-bg.png);
+      margin-left: -48%;
+      background-image: url(/@/assets/svg/login-bg.svg);
       background-position: 100%;
       background-repeat: no-repeat;
-      // background-size: auto 100%;
+      background-size: auto 100%;
       content: '';
       @media (max-width: @screen-xl) {
         display: none;

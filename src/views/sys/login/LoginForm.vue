@@ -25,7 +25,7 @@
         :placeholder="t('sys.login.password')"
       />
     </FormItem>
-    <!-- <FormItem name="code" class="enter-x">
+    <FormItem name="code" class="enter-x">
       <div class="codefix">
         <Input
           size="large"
@@ -35,14 +35,6 @@
         />
         <Image @click="handleCode" :preview="false" :width="100" :src="imgCode" />
       </div>
-    </FormItem> -->
-    <FormItem name="code" class="enter-x">
-      <CountdownInput
-        size="large"
-        v-model:value="formData.code"
-        placeholder="短信验证码"
-        :sendCodeApi="getCode"
-      />
     </FormItem>
 
     <ARow class="enter-x">
@@ -65,7 +57,7 @@
     </ARow>
 
     <FormItem class="enter-x">
-      <Button type="primary" size="large" block @click="(handleLogin as any)" :loading="loading">
+      <Button type="primary" size="large" block @click="handleLogin" :loading="loading">
         {{ t('sys.login.loginButton') }}
       </Button>
       <!-- <Button size="large" class="mt-4 enter-x" block @click="handleRegister">
@@ -73,41 +65,29 @@
       </Button> -->
     </FormItem>
     <ARow class="enter-x">
-      <ACol :md="12" :xs="24">
+      <ACol :md="8" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
         </Button>
       </ACol>
-      <ACol :md="11" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
+      <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
         <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
           {{ t('sys.login.qrSignInFormTitle') }}
+        </Button>
+      </ACol>
+      <ACol :md="7" :xs="24">
+        <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
+          {{ t('sys.login.registerButton') }}
         </Button>
       </ACol>
     </ARow>
 
     <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
-    <Modal title="提醒" v-model:visible="visible" :confirm-loading="confirmLoading" @ok="handleOk">
-      <div style="padding: 20px">
-        <TypographyText type="danger">{{ occupyText }}</TypographyText>
-      </div>
-    </Modal>
   </Form>
 </template>
 <script lang="ts" setup>
   import { reactive, ref, unref, computed } from 'vue';
-  import {
-    Checkbox,
-    Form,
-    Input,
-    Row,
-    Col,
-    Button,
-    Divider,
-    Image,
-    message,
-    Modal,
-    TypographyText,
-  } from 'ant-design-vue';
+  import { Checkbox, Form, Input, Row, Col, Button, Divider, Image, message } from 'ant-design-vue';
   import LoginFormTitle from './LoginFormTitle.vue';
   import { getLoginCode } from '/@/api/login/login';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -116,8 +96,6 @@
   import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
   import { AesEncryption, encryptByBase64, decodeByBase64 } from '/@/utils/cipher';
   import { cacheLoginCipher } from '/@/settings/encryptionSetting';
-  import { CountdownInput } from '/@/components/CountDown';
-  import { getCodeByAccountApi } from '/@/api/sys/user';
 
   const props = defineProps({
     modelTenantKey: {
@@ -141,7 +119,7 @@
   const loading = ref(false);
   const rememberMe = ref(false);
 
-  const formData = reactive({
+  const formData: any = reactive({
     account: '',
     password: '',
     code: '',
@@ -155,30 +133,30 @@
   const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
   const key = cacheLoginCipher.key;
   const iv = cacheLoginCipher.iv;
-  async function handleLogin(occupy?: boolean) {
+  async function handleLogin() {
     const data = await validForm();
     if (!data) return;
+    if (props.modelTenantKey) {
+      console.log('props.modelTenantKey', props.modelTenantKey);
+      sessionStorage.setItem('tenantId', props.modelTenantKey);
+    }
 
-    if (!sessionStorage.getItem('tenantId')) {
+    if (sessionStorage.getItem('tenantId') == null || sessionStorage.getItem('tenantId') == '') {
       message.error('地址栏租户不正确');
       return;
     }
     try {
       loading.value = true;
       const encryption = new AesEncryption({ key, iv });
-      const params = {
+      const userInfo = await userStore.login({
         password: encryption.encryptByAES(data.password),
         username: data.account,
         grant_type: 'password',
         code: data.code || props.modelTenantKey,
         uuid: imgUuid.value,
         mode: 'none', //不要默认的错误提示
-      } as any;
-      if (occupy === true) {
-        params.occupy = occupy;
-      }
-      const userInfo = await userStore.login(params);
-      // handleCode();
+      });
+      handleCode();
       if (userInfo) {
         // 记住密码
         if (rememberMe.value) {
@@ -199,11 +177,7 @@
         });
       }
     } catch (error) {
-      if (typeof error === 'string') {
-        occupyText.value = error;
-        visible.value = true;
-      }
-      // handleCode();
+      handleCode();
     } finally {
       loading.value = false;
     }
@@ -213,11 +187,11 @@
     imgCode.value = `data:image/png;base64,${res.img}`;
     imgUuid.value = res.uuid;
   };
-  // handleCode();
+  handleCode();
   // 检查加载页面时，查看账户密码是否存在
   const hasUserCodeOrPassword = () => {
     if (localStorage.getItem('userNameRemember') && localStorage.getItem('userPasswordRemember')) {
-      formData.account = localStorage.getItem('userNameRemember') as string;
+      formData.account = localStorage.getItem('userNameRemember');
       let pwd: any = localStorage.getItem('userPasswordRemember');
       formData.password = decodeByBase64(pwd); //解密
       rememberMe.value = true;
@@ -225,35 +199,6 @@
   };
 
   hasUserCodeOrPassword();
-
-  const getCode = async () => {
-    if (!formData.account) {
-      message.error('请输入账号');
-      return false;
-    }
-    try {
-      const data = await getCodeByAccountApi(formData.account, sessionStorage.getItem('tenantId'));
-      const { msg, uuid } = data;
-      imgUuid.value = uuid;
-      message.success(msg);
-      return true;
-    } catch (error) {
-      return false;
-    }
-  };
-  const occupyText = ref('');
-  const visible = ref(false);
-  const confirmLoading = ref(false);
-  const handleOk = async () => {
-    confirmLoading.value = true;
-    try {
-      await handleLogin(true);
-    } catch (error) {
-    } finally {
-      confirmLoading.value = false;
-      visible.value = false;
-    }
-  };
 </script>
 <style lang="less" scoped>
   .codefix {

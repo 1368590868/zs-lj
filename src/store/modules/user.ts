@@ -112,7 +112,6 @@ export const useUserStore = defineStore({
       params: LoginParams & {
         goHome?: boolean;
         mode?: ErrorMessageMode;
-        occupy?: boolean;
       },
     ): Promise<GetUserInfoModel | null> {
       try {
@@ -124,11 +123,7 @@ export const useUserStore = defineStore({
           const token = `${token_type} ${access_token}`;
           this.setToken(token);
         } else {
-          if (data.data === 'occupy') {
-            return Promise.reject(data.msg);
-          } else {
-            message.error(data.msg);
-          }
+          message.error(data.msg);
         }
         return this.afterLoginAction(goHome);
       } catch (error) {
@@ -158,9 +153,6 @@ export const useUserStore = defineStore({
         });
         router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
         permissionStore.setDynamicAddedRoute(true);
-
-        // 进入首页是否自动弹窗标记1是0否
-        sessionStorage.setItem('isAutoPop', '1');
 
         goHome && (await router.replace(userInfo?.homePath || PageEnum.BASE_HOME));
       }
@@ -207,10 +199,7 @@ export const useUserStore = defineStore({
       const code: string | null = localStorage.getItem(UNIT_LOGIN_CODE);
       if (code) {
         // 获取之前的登录的单位code
-        goLogin &&
-          router
-            .push(PageEnum.BASE_LOGIN.replace(':code', code))
-            .then(() => window.location.reload());
+        goLogin && router.push(PageEnum.BASE_LOGIN.replace(':code', code));
       } else {
         // goLogin && router.push(PageEnum.ERROR_LOGIN_PATH);
       }
