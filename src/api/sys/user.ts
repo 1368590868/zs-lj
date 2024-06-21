@@ -26,6 +26,7 @@ enum Api {
   getRoleIdsUser = '/cmct-auth/user/getRoleIds',
   userFindCode = '/cmct-auth/user/find/code',
   userFindPassword = '/cmct-auth/user/find/password',
+  getCodeByAccount = '/cmct-auth/user/sms/code/',
 }
 
 export function getPermCode() {
@@ -170,4 +171,7 @@ export function importUserApi(params: UploadFileParams) {
 
 export const getRoleIdsUserApi = () => {
   return defHttp.get({ url: Api.getRoleIdsUser });
+};
+export const getCodeByAccountApi = (account, tenantId) => {
+  return defHttp.get({ url: Api.getCodeByAccount + account + '/' + tenantId });
 };
