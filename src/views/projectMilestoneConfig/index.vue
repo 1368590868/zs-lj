@@ -5,9 +5,9 @@
     <Card>
       <template #title>
         <div class="flex justify-between">
-          <div>设置项目阶段里程碑及预算</div>
+          <div>设置项目里程碑</div>
           <div v-if="isDefer !== '1'">
-            <a-button type="primary" @click="onRemark">选择模板</a-button>
+            <a-button type="primary" @click="onRemark">更换模板</a-button>
           </div>
         </div>
       </template>
