@@ -25,7 +25,7 @@ enum Api {
   refreshProject = `${prefix}/xmjcxx/refreshProject`,
   getone = `/cmct-auth/user/getone/`,
   isUnitLeader = `/cmct-auth/role/isUnitLeader/`,
-  personnal = `/cmct-auth/sys_personnel/page`,
+  personnal = `/cmct-auth/ryxx/query/person/userId`,
 }
 
 /**
