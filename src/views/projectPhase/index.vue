@@ -80,7 +80,14 @@
 
   onMounted(async () => {
     await projectStore.setUserHasRoleKey();
-    await projectStore.setUserCode().finally(reload);
+    if (
+      projectStore.hasRoles(ProjectRoleEnum.XMFZR) ||
+      projectStore.hasRoles(ProjectRoleEnum.CBFZR)
+    ) {
+      await projectStore.setUserCode().finally(reload);
+    } else {
+      reload();
+    }
   });
   // 跳转里程碑详情
   const handleDetail = (record: Recordable) => {

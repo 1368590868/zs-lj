@@ -130,7 +130,14 @@
 
   onMounted(async () => {
     await projectStore.setUserHasRoleKey();
-    await projectStore.setUserCode().finally(reload);
+    if (
+      projectStore.hasRoles(ProjectRoleEnum.XMFZR) ||
+      projectStore.hasRoles(ProjectRoleEnum.CBFZR)
+    ) {
+      await projectStore.setUserCode().finally(reload);
+    } else {
+      reload();
+    }
   });
 
   // 编辑项目阶段成本明细 Modal

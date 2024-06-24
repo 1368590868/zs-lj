@@ -72,8 +72,8 @@ export const useProjectControl = defineStore({
       if (this.userCode) {
         return Promise.resolve();
       }
-      const { records = [] } = await getPersonnalApi({ userId: this.userId });
-      this.userCode = records.length ? records[0].code : null;
+      const data = await getPersonnalApi({ userId: this.userId });
+      this.userCode = data.length ? data[0].code : null;
       return Promise.resolve();
     },
     setProjectRow(row: Recordable) {

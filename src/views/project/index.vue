@@ -217,7 +217,14 @@
 
   onMounted(async () => {
     await projectStore.setUserHasRoleKey();
-    await projectStore.setUserCode().finally(reload);
+    if (
+      projectStore.hasRoles(ProjectRoleEnum.XMFZR) ||
+      projectStore.hasRoles(ProjectRoleEnum.CBFZR)
+    ) {
+      await projectStore.setUserCode().finally(reload);
+    } else {
+      reload();
+    }
   });
   // 管控项目确认
   const handleControl = async (record: Recordable, isControl: Boolean) => {
