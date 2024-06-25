@@ -37,7 +37,6 @@
   const [registerTable] = useTable({
     api: deptProjectStatisticsApi,
     columns,
-    rowKey: 'id',
     formConfig: {
       labelWidth: 120,
       colon: true,
@@ -50,9 +49,6 @@
     bordered: true,
     showIndexColumn: true,
     clickToRowSelect: false,
-    rowSelection: {
-      type: 'checkbox',
-    },
     pagination: {
       current: 1,
       pageSize: 10,

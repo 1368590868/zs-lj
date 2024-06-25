@@ -125,8 +125,8 @@ export const deptListApi = () => {
 };
 
 // 根据科室统计项目预算和成本
-export const deptProjectStatisticsApi = () => {
-  return defHttp.get({ url: Api.deptProjectStatistics });
+export const deptProjectStatisticsApi = (params) => {
+  return defHttp.get({ url: Api.deptProjectStatistics, params });
 };
 
 // 刷新项目
