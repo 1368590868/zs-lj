@@ -241,6 +241,7 @@ export const ProjectLeaderStatus = defineComponent({
             auditOpinion: remark.value || (isPass.value === 1 ? '通过' : '不通过'),
             auditOpinionFlag: props.type === 'cost' ? 2 : 3,
             createByName: store.getUserInfo.nickName,
+            remark: isPass.value,
           });
         })
         .then(() => {
