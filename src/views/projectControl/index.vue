@@ -28,9 +28,9 @@
 <script lang="ts" setup>
   import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
-  import { pageApi, exportApi } from '/@/api/project/project';
+  import { pageApi, projectStatisticsExportApi } from '/@/api/project/project';
   import { columns, searchFormSchema } from './projectControl.data';
-  import { onMounted, ref, unref } from 'vue';
+  import { onMounted, ref } from 'vue';
   import { useRouter } from 'vue-router';
   import {
     controlStatusOptions,
@@ -39,9 +39,9 @@
   } from '/@/enums/projectControl';
 
   const router = useRouter();
-
+  const searchParams = ref({});
   const [registerTable, { reload, clearSelectedRowKeys, getForm }] = useTable({
-    title: '项目管理列表',
+    title: '项目管控统计列表',
     api: pageApi,
     columns,
     formConfig: {
@@ -53,6 +53,10 @@
     },
     searchInfo: {
       deptCode: router.currentRoute.value.query?.deptCode,
+    },
+    beforeFetch: (params) => {
+      searchParams.value = params;
+      return params;
     },
     useSearchForm: true,
     showTableSetting: true,
@@ -111,9 +115,7 @@
   // 导出
   const exportExcel = async () => {
     try {
-      let params = unref(selectId);
-      console.log(params);
-      const res = await exportApi(params);
+      const res = await projectStatisticsExportApi(searchParams.value);
       const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
       const url = window.URL.createObjectURL(blob);
       window.open(url, '_blank');

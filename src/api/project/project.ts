@@ -13,6 +13,7 @@ enum Api {
   detail = `${prefix}/xmjcxx/detail/`,
   import = `${prefix}/xmjcxx/import`,
   export = `${prefix}/xmjcxx/export?ids=`,
+  projectStatisticsExport = `${prefix}/xmjcxx/projectStatisticsExport`,
   getProjectNameAndId = `${prefix}/xmjcxx/getProjectNameAndId`,
   logs = `${prefix}/xmczrz/page`,
   controlDetermine = `${prefix}/xmjcxx/controlDetermine/`,
@@ -81,6 +82,14 @@ export function importApi(params: UploadFileParams) {
 
 export const exportApi = (params, searchParams) => {
   return defHttpFile.get({ url: Api.export + params, params: searchParams, responseType: 'blob' });
+};
+
+/**
+ * @description: 项目管控统计导出
+ */
+
+export const projectStatisticsExportApi = (params) => {
+  return defHttpFile.get({ url: Api.projectStatisticsExport, params, responseType: 'blob' });
 };
 
 /**
