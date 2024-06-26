@@ -37,14 +37,23 @@
   const store = useProjectControl();
   const router = useRouter();
   const month = (router.currentRoute.value.query?.month as string) ?? '';
+  const baseColProps = {
+    sm: 12,
+    xl: 8,
+    xxl: 6,
+  };
   const [register, { setFieldsValue, updateSchema }] = useForm({
     colon: true,
     schemas: formSchema,
     labelWidth: 200,
+    baseColProps,
     actionColOptions: {
-      span: 13,
+      span: 24,
       // @ts-ignore
       class: 'mt-15',
+      style: {
+        textAlign: 'center',
+      },
     },
     resetButtonOptions: {
       text: '返回',
@@ -111,7 +120,11 @@
   const [registerOutput] = useDescription({
     colon: true,
     title: '完成产值数据查看',
-    column: 4,
+    column: {
+      sm: 2,
+      xl: 3,
+      xxl: 4,
+    },
     bordered: false,
     class: 'pl-[50px]',
     data: store.getReportData,
@@ -143,7 +156,11 @@
   const [registerSelfOutput] = useDescription({
     colon: true,
     title: '自有产值查看',
-    column: 5,
+    column: {
+      sm: 2,
+      xl: 3,
+      xxl: 4,
+    },
     bordered: false,
     data: store.getReportData,
     class: 'pl-[50px]',
@@ -179,7 +196,11 @@
   const [registerCost] = useDescription({
     colon: true,
     title: '项目直接生成成本数据查看',
-    column: 4,
+    column: {
+      sm: 2,
+      xl: 3,
+      xxl: 4,
+    },
     bordered: false,
     class: 'pl-[50px]',
     data: store.getReportData,
