@@ -30,7 +30,7 @@ export const formSchema: FormSchema[] = [
     field: 'phaseBudget',
     component: 'InputNumber',
     componentProps: {
-      min: 0,
+      min: 1,
       max: 999999999.99,
       precision: 2,
     },
