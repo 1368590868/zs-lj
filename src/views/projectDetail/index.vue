@@ -215,7 +215,7 @@
   });
 
   const getEchartsData = async () => {
-    const res = await projectPhase({ projectId: router.currentRoute.value.query.id });
+    const res = await projectPhase({ projectId: router.currentRoute.value.query.id, size: 100 });
     const { records = [] } = res;
     echartsData.yAxis = records.map((item) => item.phaseTitle);
     echartsData.actualCost = records.map((item) => item.phaseOutlayCost ?? 0);
