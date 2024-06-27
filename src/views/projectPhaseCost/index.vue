@@ -49,6 +49,7 @@
       colon: true,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
+      fieldMapToTime: [['date', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD']],
     },
     useSearchForm: true,
     showTableSetting: true,

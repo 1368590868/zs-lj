@@ -142,7 +142,7 @@ export const columns: BasicColumn[] = [
 export const searchFormSchema: FormSchema[] = [
   {
     field: 'date',
-    label: '创建时间',
+    label: '提交时间',
     component: 'RangePicker',
     componentProps: {
       placeholder: ['开始日期', '结束日期'],
