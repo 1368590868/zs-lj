@@ -82,12 +82,10 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     labelWidth: 200,
     componentProps: {
-      options: Object.keys(myCostStatusEnum)
-        .filter((key) => key !== '3')
-        .map((key) => ({
-          label: myCostStatusEnum[key],
-          value: key,
-        })),
+      options: Object.keys(costStatusEnum).map((key) => ({
+        label: costStatusEnum[key],
+        value: key,
+      })),
       showSearch: true,
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
@@ -183,6 +181,7 @@ import { addApi } from '/@/api/projectAuditOpinion/projectAuditOpinion';
 import { useUserStore } from '/@/store/modules/user';
 import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 import { EllipsisText } from '/@/components/EllipsisText';
+import { costStatusEnum } from '../projectDetail/projectDetail.data';
 
 // child column ui
 export const ProjectLeaderStatus = defineComponent({
