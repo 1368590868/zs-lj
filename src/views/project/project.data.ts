@@ -75,7 +75,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '业务类型',
-    dataIndex: 'businessTypeName',
+    dataIndex: 'businessTypeDescr',
     width: 110,
   },
   {

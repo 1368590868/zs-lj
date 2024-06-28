@@ -66,7 +66,7 @@ export const columns = (month): BasicColumn[] => [
       },
       {
         title: '业务类型',
-        dataIndex: 'businessTypeName',
+        dataIndex: 'businessTypeDescr',
         width: 200,
       },
       {
