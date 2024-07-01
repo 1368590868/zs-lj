@@ -5,7 +5,20 @@
         <a-button type="primary" @click="exportExcel"> 下载 </a-button>
       </template>
       <!-- bodycell slot-->
-      <template #controlStatus="{ record }">{{ controlStatus(record) }} </template>
+      <template #controlStatus="{ record }">
+        <TypographyText
+          :type="
+            [+ControlStatusEnum.NONE, +ControlStatusEnum.END].includes(record.controlStatus)
+              ? 'secondary'
+              : [+ControlStatusEnum.END_AUDIT, +ControlStatusEnum.DELAY_AUDIT].includes(
+                  record.controlStatus,
+                )
+              ? 'danger'
+              : undefined
+          "
+          >{{ controlStatusOptions[record.controlStatus ?? 0] }}</TypographyText
+        >
+      </template>
       <template #planDate="{ record }">
         {{ record.planStartDate }} - {{ record.planEndDate }}
       </template>
@@ -26,7 +39,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-  import { message } from 'ant-design-vue';
+  import { message, TypographyText } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { pageApi, projectStatisticsExportApi } from '/@/api/project/project';
   import { columns, searchFormSchema } from './projectControl.data';
