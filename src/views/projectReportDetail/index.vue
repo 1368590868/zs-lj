@@ -243,6 +243,9 @@
         ...x['componentProps'],
         disabled: router.currentRoute.value.query.type === ActionType.VIEW,
       };
+      if (x.field === 'monthRatio') {
+        x['label'] = `${+month}月完成比例`;
+      }
       return x;
     });
     updateSchema(newSchema);
