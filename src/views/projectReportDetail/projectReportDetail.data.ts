@@ -103,13 +103,16 @@ export const formSchema: FormSchema[] = [
       return model[field];
     },
   },
+
   {
     field: 'divider-required',
     component: 'Divider',
     label: '必填信息',
-
     colProps: {
-      span: 24,
+      sm: 24,
+      xl: 24,
+      xxl: 24,
+      md: 24,
     },
   },
   {
@@ -177,7 +180,10 @@ export const formSchema: FormSchema[] = [
     component: 'Divider',
     label: '项目合作信息',
     colProps: {
-      span: 24,
+      sm: 24,
+      xl: 24,
+      xxl: 24,
+      md: 24,
     },
   },
   {
