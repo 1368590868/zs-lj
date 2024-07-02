@@ -61,7 +61,7 @@ export const columns = (month): BasicColumn[] => [
       },
       {
         title: '项目类型',
-        dataIndex: 'projectTypeName',
+        dataIndex: 'projectType',
         width: 200,
       },
       {

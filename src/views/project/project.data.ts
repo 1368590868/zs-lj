@@ -60,7 +60,7 @@ export const columns: BasicColumn[] = [
   },
   {
     title: '项目类型',
-    dataIndex: 'projectTypeName',
+    dataIndex: 'projectType',
     width: 100,
   },
   {
