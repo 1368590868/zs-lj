@@ -41,16 +41,16 @@ export const useProjectControl = defineStore({
       this.reportData = data;
     },
     async setUserHasRoleKey() {
-      if (!this.userId) {
-        const { id } = await getoneApi(store.userInfo?.account);
-        this.userId = id;
-      }
+      // if (!this.userId) {
+      //   const { id } = await getoneApi(store.userInfo?.account);
+      //   this.userId = id;
+      // }
 
       if (this.userRoleKeys.length) return;
 
       const results = await Promise.all(
         Object.values(ProjectRoleEnum).map(async (roleKey) => {
-          const res = await isUnitLeaderApi({ userId: this.userId!, roleKey });
+          const res = await isUnitLeaderApi({ userId: store.userInfo?.id, roleKey });
           if (res) {
             return roleKey;
           }
@@ -64,7 +64,7 @@ export const useProjectControl = defineStore({
       return this.userRoleKeys.includes(role);
     },
     clearUserIdAndRolekeys() {
-      this.userId = null;
+      // this.userId = null;
       this.userRoleKeys = [];
       this.userCode = null;
     },
@@ -72,7 +72,7 @@ export const useProjectControl = defineStore({
       if (this.userCode) {
         return Promise.resolve();
       }
-      const data = await getPersonnalApi({ userId: this.userId });
+      const data = await getPersonnalApi({ userId: store.userInfo?.id });
       this.userCode = data.length ? data[0].code : null;
       return Promise.resolve();
     },
