@@ -59,7 +59,7 @@
   // 跳转里程碑详情
   const handleDetail = (record: Recordable) => {
     router.push({
-      path: '/projectOutputReport',
+      name: 'ProjectOutputReport',
       query: {
         outputValueMonth: moment(`${record.year}-${record.month}`).format('YYYY-MM') + '-26',
       },

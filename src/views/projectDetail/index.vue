@@ -202,7 +202,7 @@
     getInstance()?.on('click', function (params) {
       try {
         router.push({
-          path: 'projectPhaseCost',
+          name: 'ProjectPhaseCost',
           query: {
             id: echartsData.datasource.find((x: any) => x.phaseTitle === params.name)?.id,
             projectId: router.currentRoute.value.query.id,
@@ -329,7 +329,7 @@
   };
   const onLogs = () => {
     router.push({
-      path: '/projectLogs',
+      name: 'ProjectLogs',
       query: {
         id: router.currentRoute.value.query.id,
       },
