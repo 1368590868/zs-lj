@@ -56,7 +56,7 @@
   });
   const onGoDetail = (record: Recordable, warningStatus: string) => {
     router.push({
-      name: 'ProjectControl',
+      name: 'ProjectStatistics',
       query: {
         deptCode: record.deptCode,
         warningStatus,
