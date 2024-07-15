@@ -4,8 +4,8 @@
       <template #toolbar>
         <TypographyText type="warning"
           >提示：点击预警项目的数字，可查看部门所有项目。</TypographyText
-        ></template
-      >
+        >
+      </template>
       <template #redWarning="{ record }">
         <TypographyText
           class="cursor-pointer"
@@ -56,7 +56,7 @@
   });
   const onGoDetail = (record: Recordable, warningStatus: string) => {
     router.push({
-      path: '/projectControl',
+      name: 'ProjectControl',
       query: {
         deptCode: record.deptCode,
         warningStatus,

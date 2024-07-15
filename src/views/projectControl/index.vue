@@ -104,7 +104,7 @@
   // 跳转详情
   const handleDetail = (record: Recordable) => {
     router.push({
-      path: '/projectDetail',
+      name: 'ProjectDetail',
       query: {
         id: record.id,
         warningStatus: record.warningStatus,
@@ -141,6 +141,7 @@
   :global(.ant-input-number) {
     width: 100%;
   }
+
   :global(.ant-calendar-picker, .ant-calendar-picker-default) {
     width: 100%;
   }

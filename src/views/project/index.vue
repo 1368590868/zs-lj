@@ -6,8 +6,8 @@
         <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
       </template>
       <!-- bodycell slot-->
-      <template #controlStatus="{ record }"
-        ><TypographyText
+      <template #controlStatus="{ record }">
+        <TypographyText
           :type="
             [+ControlStatusEnum.NONE, +ControlStatusEnum.END].includes(record.controlStatus)
               ? 'secondary'
@@ -201,7 +201,7 @@
   const handleDetail = (record: Recordable) => {
     projectStore.setProjectRow(record);
     router.push({
-      path: '/projectDetail',
+      name: 'ProjectDetail',
       query: {
         id: record.id,
         warningStatus: record.warningStatus,
@@ -244,7 +244,7 @@
   // 延期配置
   const handleDeferConfig = (record: Recordable) => {
     router.push({
-      path: '/projectMilestoneConfig',
+      name: 'ProjectMilestoneConfig',
       query: {
         id: record.id,
         isDefer: 1,
@@ -266,7 +266,7 @@
   function handleSuccess() {
     setTimeout(() => {
       router.push({
-        path: '/projectMilestoneConfig',
+        name: 'ProjectMilestoneConfig',
         query: {
           id: projectId.value,
           isDefer: 0,
@@ -305,6 +305,7 @@
   :global(.ant-input-number) {
     width: 100%;
   }
+
   :global(.ant-calendar-picker, .ant-calendar-picker-default) {
     width: 100%;
   }

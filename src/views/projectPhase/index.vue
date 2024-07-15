@@ -92,7 +92,7 @@
   // 跳转里程碑详情
   const handleDetail = (record: Recordable) => {
     router.push({
-      path: '/projectPhaseCost',
+      name: 'ProjectPhaseCost',
       query: {
         id: record.id,
         projectId: record.projectId,

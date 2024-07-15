@@ -121,7 +121,7 @@
   const store = useProjectControl();
   const onDetail = (record, type) => {
     store.setReportData(record);
-    router.push({ path: '/projectReportDetail', query: { type, month } });
+    router.push({ name: 'ProjectReportDetail', query: { type, month } });
   };
   // 导出
   const exportExcel = async () => {
