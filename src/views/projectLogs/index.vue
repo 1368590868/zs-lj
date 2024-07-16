@@ -1,14 +1,14 @@
 <template>
-  <div style="min-height: 89vh">
+  <div>
     <PageWrapper title="项目日志">
       <Card>
         <BasicTable @register="registerTable" :canResize="false" />
       </Card>
     </PageWrapper>
   </div>
-
-  <div class="vben-layout-content full bg-white p-4" style="position: sticky; bottom: 0"
-    ><a-button class="ml-auto" style="display: block" @click="onGoBack">返回</a-button></div
+  <div class="h-[65px]"></div>
+  <BottomBar :customStyle="{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }"
+    ><a-button @click="onGoBack">返回</a-button></BottomBar
   >
 </template>
 <script lang="ts" setup>
@@ -18,6 +18,7 @@
   import { getLogsApi } from '/@/api/project/project';
   import { useRouter } from 'vue-router';
   import { basicColumns } from './projectLogs.data';
+  import BottomBar from '/@/components/BottomBar/index.vue';
 
   const router = useRouter();
 

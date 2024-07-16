@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height: 89vh">
+  <div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
         <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
@@ -20,8 +20,9 @@
     <ProjectReviewCostDetailModal @register="registerModal" />
     <ProjectReviewCostEditModal @register="registerEditModal" @success="handleSuccess" />
   </div>
-  <div class="vben-layout-content full bg-white p-4" style="position: sticky; bottom: 0"
-    ><a-button class="ml-auto" style="display: block" @click="onGoBack">返回</a-button></div
+  <div class="h-[65px]"></div>
+  <BottomBar :customStyle="{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }"
+    ><a-button @click="onGoBack">返回</a-button></BottomBar
   >
 </template>
 <script lang="ts" setup>
@@ -35,6 +36,7 @@
   import { useRouter } from 'vue-router';
   import { debounce } from 'lodash-es';
   import { message } from 'ant-design-vue';
+  import BottomBar from '/@/components/BottomBar/index.vue';
 
   const searchParams = ref({});
   const [registerModal, { openModal }] = useModal();
