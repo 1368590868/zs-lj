@@ -46,7 +46,7 @@
   const [registerTable, { reload }] = useTable({
     api: pageApi,
     searchInfo: {
-      createBy: store.getUserInfo.account,
+      createBy: store.getUserInfo.id,
     },
     columns,
     formConfig: {
