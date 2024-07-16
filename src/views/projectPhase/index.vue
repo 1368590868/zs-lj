@@ -111,8 +111,17 @@
       const res = await exportApi(params, searchParams.value);
       const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
       const url = window.URL.createObjectURL(blob);
-      console.log(url);
-      window.open(url, '_blank');
+      const tempLink = document.createElement('a');
+      tempLink.style.display = 'none';
+      tempLink.href = url;
+      tempLink.setAttribute('download', '项目支出统计.xlsx');
+      if (typeof tempLink.download === 'undefined') {
+        tempLink.setAttribute('target', '_blank');
+      }
+      document.body.appendChild(tempLink);
+      tempLink.click();
+      document.body.removeChild(tempLink);
+      window.URL.revokeObjectURL(url);
       message.success('导出成功');
     } catch (error) {}
   };
