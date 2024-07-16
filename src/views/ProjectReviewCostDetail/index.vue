@@ -20,10 +20,6 @@
     <ProjectReviewCostDetailModal @register="registerModal" />
     <ProjectReviewCostEditModal @register="registerEditModal" @success="handleSuccess" />
   </div>
-  <div class="h-[65px]"></div>
-  <BottomBar :customStyle="{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }"
-    ><a-button @click="onGoBack">返回</a-button></BottomBar
-  >
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
@@ -36,7 +32,6 @@
   import { useRouter } from 'vue-router';
   import { debounce } from 'lodash-es';
   import { message } from 'ant-design-vue';
-  import BottomBar from '/@/components/BottomBar/index.vue';
 
   const searchParams = ref({});
   const [registerModal, { openModal }] = useModal();
@@ -127,8 +122,5 @@
       window.URL.revokeObjectURL(url);
       message.success('导出成功');
     } catch (error) {}
-  };
-  const onGoBack = () => {
-    router.go(-1);
   };
 </script>

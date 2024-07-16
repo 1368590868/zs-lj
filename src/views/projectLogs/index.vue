@@ -6,10 +6,6 @@
       </Card>
     </PageWrapper>
   </div>
-  <div class="h-[65px]"></div>
-  <BottomBar :customStyle="{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }"
-    ><a-button @click="onGoBack">返回</a-button></BottomBar
-  >
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
@@ -18,7 +14,6 @@
   import { getLogsApi } from '/@/api/project/project';
   import { useRouter } from 'vue-router';
   import { basicColumns } from './projectLogs.data';
-  import BottomBar from '/@/components/BottomBar/index.vue';
 
   const router = useRouter();
 
@@ -31,8 +26,4 @@
     columns: basicColumns,
     pagination: { pageSize: 10 },
   });
-
-  const onGoBack = () => {
-    router.go(-1);
-  };
 </script>

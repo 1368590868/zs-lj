@@ -161,7 +161,9 @@
           ids: getSelectRowKeys(),
           projectLeaderStatus: 2,
           nickName: store.getUserInfo.nickName,
+          addProjectPhaseCostAudit: true,
         });
+
         message.success('批量驳回成功');
         handleSuccess();
       },
@@ -176,6 +178,7 @@
           ids: getSelectRowKeys(),
           projectLeaderStatus: 1,
           nickName: store.getUserInfo.nickName,
+          addProjectPhaseCostAudit: true,
         });
         message.success('批量通过成功');
         handleSuccess();
