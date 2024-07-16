@@ -36,7 +36,6 @@
               v-if="projectStore.hasRoles(ProjectRoleEnum.LEADER)"
               >管控意见</a-button
             >
-            <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
           </Space>
         </div>
       </div>
@@ -44,6 +43,9 @@
     </Card>
     <div class="mt-6"></div>
     <BasicTable @register="registerTable">
+      <template #toolbar>
+        <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
+      </template>
       <template #action="{ record }">
         <TableAction
           :actions="[
