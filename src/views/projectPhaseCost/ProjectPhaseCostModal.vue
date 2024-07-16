@@ -5,6 +5,7 @@
     title="审批意见"
     width="700px"
     @ok="handleSubmit"
+    ok-text="关闭"
     :show-cancel-btn="false"
   >
     <div>

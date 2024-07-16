@@ -1,9 +1,15 @@
 <template>
-  <PageWrapper title="项目日志">
-    <Card>
-      <BasicTable @register="registerTable" :canResize="true" />
-    </Card>
-  </PageWrapper>
+  <div style="min-height: 89vh">
+    <PageWrapper title="项目日志">
+      <Card>
+        <BasicTable @register="registerTable" :canResize="false" />
+      </Card>
+    </PageWrapper>
+  </div>
+
+  <div class="vben-layout-content full bg-white p-4" style="position: sticky; bottom: 0"
+    ><a-button class="ml-auto" style="display: block" @click="onGoBack">返回</a-button></div
+  >
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
@@ -24,4 +30,8 @@
     columns: basicColumns,
     pagination: { pageSize: 10 },
   });
+
+  const onGoBack = () => {
+    router.go(-1);
+  };
 </script>

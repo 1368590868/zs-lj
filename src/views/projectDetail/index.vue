@@ -2,49 +2,48 @@
   <PageWrapper>
     <Description @register="register" />
     <div class="mt-6"></div>
-    <BasicTable @register="registerTable">
-      <!-- 顶部echarts -->
-      <template #headerTop>
-        <div class="flex justify-between">
-          <div>工程阶段：{{ getProgress }}</div>
-          <div>实际成本：{{ getTotleCost }}</div>
-          <div class="flex"
-            >项目预警状态：
-            <div
-              v-if="showStatus === WarningStatusEnum.YELLOW"
-              :class="badgeClass()"
-              style="background: #efad03"
-              >黄</div
-            >
-            <div
-              v-if="showStatus === WarningStatusEnum.RED"
-              :class="badgeClass()"
-              style="background: #ff7455"
-              >红</div
-            >
-            <div
-              v-if="showStatus === WarningStatusEnum.GREEN"
-              :class="badgeClass()"
-              style="background: #27cb0d"
-              >绿</div
-            >
-          </div>
-          <div>
-            <Space>
-              <a-button type="primary" @click="onLogs">项目管控日志</a-button>
-              <a-button
-                type="primary"
-                @click="onRemark"
-                v-if="projectStore.hasRoles(ProjectRoleEnum.LEADER)"
-                >管控意见</a-button
-              >
-              <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
-            </Space>
-          </div>
+    <Card>
+      <div class="flex justify-between">
+        <div>工程阶段：{{ getProgress }}</div>
+        <div>实际成本：{{ getTotleCost }}</div>
+        <div class="flex"
+          >项目预警状态：
+          <div
+            v-if="showStatus === WarningStatusEnum.YELLOW"
+            :class="badgeClass()"
+            style="background: #efad03"
+            >黄</div
+          >
+          <div
+            v-if="showStatus === WarningStatusEnum.RED"
+            :class="badgeClass()"
+            style="background: #ff7455"
+            >红</div
+          >
+          <div
+            v-if="showStatus === WarningStatusEnum.GREEN"
+            :class="badgeClass()"
+            style="background: #27cb0d"
+            >绿</div
+          >
         </div>
-        <div ref="chartRef" class="w-full min-h-200px"></div>
-      </template>
-
+        <div>
+          <Space>
+            <a-button type="primary" @click="onLogs">项目管控日志</a-button>
+            <a-button
+              type="primary"
+              @click="onRemark"
+              v-if="projectStore.hasRoles(ProjectRoleEnum.LEADER)"
+              >管控意见</a-button
+            >
+            <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
+          </Space>
+        </div>
+      </div>
+      <div ref="chartRef" class="w-full min-h-200px"></div>
+    </Card>
+    <div class="mt-6"></div>
+    <BasicTable @register="registerTable">
       <template #action="{ record }">
         <TableAction
           :actions="[

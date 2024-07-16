@@ -214,7 +214,7 @@ export const formEditSchema: FormSchema[] = [
     labelWidth: 80,
     componentProps: {
       rows: 4,
-      maxLength: 15,
+      maxLength: 200,
       showCount: true,
     },
   },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-height: 89vh">
     <BasicTable @register="registerTable" @selection-change="onSelectionChange">
       <template #toolbar>
         <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
@@ -20,6 +20,9 @@
     <ProjectReviewCostDetailModal @register="registerModal" />
     <ProjectReviewCostEditModal @register="registerEditModal" @success="handleSuccess" />
   </div>
+  <div class="vben-layout-content full bg-white p-4" style="position: sticky; bottom: 0"
+    ><a-button class="ml-auto" style="display: block" @click="onGoBack">返回</a-button></div
+  >
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
@@ -112,5 +115,8 @@
       window.open(url, '_blank');
       message.success('导出成功');
     } catch (error) {}
+  };
+  const onGoBack = () => {
+    router.go(-1);
   };
 </script>

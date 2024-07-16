@@ -376,7 +376,7 @@
 
     await addApi(params);
     message.success('添加成功');
-    router.push('/projectPhase');
+    router.push({ name: 'ProjectPhase' });
   };
   const onCancel = () => {
     router.go(-1);

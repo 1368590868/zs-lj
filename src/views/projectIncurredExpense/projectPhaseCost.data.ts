@@ -56,7 +56,7 @@ export const formSchema: FormSchema[] = [
     label: '备注',
     componentProps: {
       showCount: true,
-      maxLength: 20,
+      maxLength: 200,
     },
   },
   {

@@ -305,8 +305,8 @@ export const ProjectLeaderStatus = defineComponent({
           <a-textarea
             rows={10}
             showCount
-            maxlength={15}
-            placeholder={'非必填备注信息不超过15个字'}
+            maxlength={200}
+            placeholder={'非必填备注信息不超过200个字'}
             value={remark.value}
             onInput={handleInput}
           />

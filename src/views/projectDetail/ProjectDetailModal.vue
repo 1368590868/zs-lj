@@ -5,6 +5,7 @@
     :title="getTitle"
     width="700px"
     @ok="handleSubmit"
+    :ok-text="!isUpdate ? '关闭' : '提交'"
     :show-cancel-btn="isUpdate"
   >
     <div>
