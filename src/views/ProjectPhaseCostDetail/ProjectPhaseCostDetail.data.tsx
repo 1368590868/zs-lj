@@ -124,7 +124,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'projectName',
     label: '项目名称',
     component: 'Input',
-    colProps: { span: 6 },
+    colProps: { span: 5 },
   },
   {
     field: 'projectLeaderStatus',
@@ -138,7 +138,7 @@ export const searchFormSchema: FormSchema[] = [
           value: key,
         })),
     },
-    colProps: { span: 6 },
+    colProps: { span: 5 },
   },
   {
     field: 'costTypeName',
@@ -150,7 +150,7 @@ export const searchFormSchema: FormSchema[] = [
         value: val,
       })),
     },
-    colProps: { span: 6 },
+    colProps: { span: 5 },
   },
   {
     field: 'costSubmitTime',
@@ -159,7 +159,7 @@ export const searchFormSchema: FormSchema[] = [
     componentProps: {
       placeholder: ['开始日期', '结束日期'],
     },
-    colProps: { span: 6 },
+    colProps: { span: 5 },
   },
 ];
 

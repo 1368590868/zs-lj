@@ -54,6 +54,9 @@
         colon: true,
         schemas: searchFormSchema,
         autoSubmitOnEnter: true,
+        actionColOptions: {
+          span: 4,
+        },
         fieldMapToTime: [
           ['date', ['startDate', 'endDate'], 'YYYY-MM-DD'],
           ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],

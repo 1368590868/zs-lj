@@ -52,6 +52,9 @@
     formConfig: {
       labelWidth: 120,
       colon: true,
+      actionColOptions: {
+        span: 4,
+      },
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
       fieldMapToTime: [
