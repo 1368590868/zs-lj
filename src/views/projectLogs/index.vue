@@ -20,6 +20,7 @@
   // 项目操作日志
   const [registerTable] = useTable({
     api: getLogsApi,
+    bordered: true,
     searchInfo: {
       projectId: router.currentRoute.value.query.id,
     },
