@@ -1,15 +1,19 @@
 <template>
-  <div>
+  <PageWrapper>
+    <Card>
+      <div ref="chartRef" class="w-full min-h-200px"></div>
+    </Card>
+    <div class="mt-6"></div>
     <BasicTable @register="registerTable" @selection-change="onSelectionChange" :can-resize="true">
       <template #toolbar>
         <a-button type="primary" @click="debounceExportExcel"> 下载 </a-button>
       </template>
       <!-- 顶部echarts -->
-      <template #headerTop>
+      <!-- <template #headerTop>
         <div ref="chartRef" class="w-full min-h-200px"></div>
-      </template>
+      </template> -->
     </BasicTable>
-  </div>
+  </PageWrapper>
 </template>
 <script lang="ts" setup>
   import { BasicTable, useTable } from '/@/components/Table';
@@ -17,12 +21,13 @@
   import { detailApi } from '/@/api/projectPhase/projectPhase';
   import { columns, searchFormSchema } from './projectPhaseCost.data';
   import { Ref, onMounted, reactive, ref, watchEffect } from 'vue';
+  import { PageWrapper } from '/@/components/Page';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useECharts } from '/@/hooks/web/useECharts';
   import { findNowPhasesByProjectIdApi } from '/@/api/projectPhase/projectPhase';
   import { useRouter } from 'vue-router';
   import { debounce } from 'lodash-es';
-  import { message } from 'ant-design-vue';
+  import { message, Card } from 'ant-design-vue';
 
   const router = useRouter();
   const searchParams = ref({});
@@ -167,3 +172,8 @@
     });
   };
 </script>
+<style lang="less" scoped>
+  .vben-basic-table-form-container {
+    padding: initial;
+  }
+</style>
