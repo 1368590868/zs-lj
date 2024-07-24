@@ -8,7 +8,7 @@
         <TableAction
           :actions="[
             {
-              label: '修改',
+              label: '编辑',
               onClick: onDetail.bind(null, record, ActionType.ADD),
               ifShow:
                 record.updateBy === '1' &&
@@ -16,7 +16,7 @@
                   projectStore.hasRoles(ProjectRoleEnum.CBFZR)),
             },
             {
-              label: '编辑',
+              label: '填写',
               onClick: onDetail.bind(null, record, ActionType.EDIT),
               ifShow:
                 record.updateBy === '2' &&
