@@ -76,7 +76,7 @@ export const columns: BasicColumn[] = [
   {
     title: '业务类型',
     dataIndex: 'businessTypeDescr',
-    width: 110,
+    width: 180,
   },
   {
     title: '总预算（元）',

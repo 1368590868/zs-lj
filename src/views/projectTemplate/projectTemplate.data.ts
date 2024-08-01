@@ -14,7 +14,7 @@ export const columns: BasicColumn[] = [
   {
     title: '专业类型',
     dataIndex: 'professionType',
-    width: 100,
+    width: 180,
   },
   {
     title: '里程碑阶段数',
