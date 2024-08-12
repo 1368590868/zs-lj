@@ -27,6 +27,8 @@ enum Api {
   getone = `/cmct-auth/user/getone/`,
   isUnitLeader = `/cmct-auth/role/isUnitLeader/`,
   personnal = `/cmct-auth/ryxx/query/person/userId`,
+  deptMonthCostPage = `${prefix}/xmydsh/groupByDept`,
+  exportDeptMonthCost = `${prefix}/xmydsh/exportGroupByDept`,
 }
 
 /**
@@ -156,4 +158,14 @@ export const isUnitLeaderApi = (params) => {
 // 获取用户Code
 export const getPersonnalApi = (params) => {
   return defHttp.get({ url: Api.personnal, params });
+};
+
+// 部门月度成本统计
+export const getDeptMonthCostApi = (params) => {
+  return defHttp.get({ url: Api.deptMonthCostPage, params });
+};
+
+// 部门月度成本统计导出
+export const exportDeptMonthCostApi = (params) => {
+  return defHttpFile.get({ url: Api.exportDeptMonthCost, params, responseType: 'blob' });
 };
