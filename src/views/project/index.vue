@@ -20,9 +20,7 @@
           >{{ controlStatusOptions[record.controlStatus ?? 0] }}</TypographyText
         >
       </template>
-      <template #planDate="{ record }">
-        {{ record.planStartDate }} - {{ record.planEndDate }}
-      </template>
+
       <template #projectProgress="{ record }"> {{ projectProgress(record) }} </template>
       <!-- action slot -->
       <template #action="{ record }">
