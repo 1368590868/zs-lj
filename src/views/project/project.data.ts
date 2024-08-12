@@ -88,14 +88,14 @@ export const columns: BasicColumn[] = [
     },
   },
   {
-    title: '工程开始时间',
+    title: '工程计划开始时间',
     dataIndex: 'planStartDate',
-    width: 120,
+    width: 150,
   },
   {
-    title: '工程结束时间',
+    title: '工程计划结束时间',
     dataIndex: 'planEndDate',
-    width: 120,
+    width: 150,
   },
   {
     title: '项目负责人',
