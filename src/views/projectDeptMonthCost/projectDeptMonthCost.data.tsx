@@ -1,8 +1,7 @@
 import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
-import { h } from 'vue';
+import { h, onMounted, watchEffect } from 'vue';
 import { deptListApi } from '/@/api/project/project';
-import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
 export const columns: BasicColumn[] = [
   {
     title: '部门',
@@ -10,100 +9,76 @@ export const columns: BasicColumn[] = [
     width: 200,
   },
   {
-    title: '1月',
+    title: '1月(元)',
     dataIndex: 'month1',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month1 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '2月',
+    title: '2月(元)',
     dataIndex: 'month2',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month2 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '3月',
+    title: '3月(元)',
     dataIndex: 'month3',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month3 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '4月',
+    title: '4月(元)',
     dataIndex: 'month4',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month4 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '5月',
+    title: '5月(元)',
     dataIndex: 'month5',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month5 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '6月',
+    title: '6月(元)',
     dataIndex: 'month6',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month6 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '7月',
+    title: '7月(元)',
     dataIndex: 'month7',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month7 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '8月',
+    title: '8月(元)',
     dataIndex: 'month8',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record.month8 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '9月',
+    title: '9月(元)',
     dataIndex: 'month9',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month9 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '10月',
+    title: '10月(元)',
     dataIndex: 'month10',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month10 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '11月',
+    title: '11月(元)',
     dataIndex: 'month11',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month11 ?? 0);
-    },
+    align: 'right',
   },
   {
-    title: '12月',
+    title: '12月(元)',
     dataIndex: 'month12',
     width: 120,
-    customRender: ({ record }) => {
-      return useCurrencyFormatter(record?.month12 ?? 0);
-    },
+    align: 'right',
   },
 ];
 
@@ -124,11 +99,11 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    field: 'redWarning',
+    field: 'year',
     label: '统计年',
     component: 'Input',
     render: ({ model, field }) => {
-      return h(YearPicker, { model, field });
+      return h(YearPicker, { model, field, defaultValue: new Date().getFullYear() });
     },
     colProps: { span: 6 },
   },
@@ -142,14 +117,22 @@ export const YearPicker = defineComponent({
   props: {
     field: { type: String as any, default: () => '' },
     model: { type: Object as any, defualt: () => {} },
+    defaultValue: { type: String as any, default: () => '' },
   },
   setup(props) {
     const selectedYear = ref<string>('');
     const isOpen = ref(false);
+    onMounted(() => {
+      selectedYear.value = props.defaultValue + '' ?? '';
+    });
+
+    watchEffect(() => {
+      props.model[props.field] = selectedYear.value;
+    });
 
     const handlePanelChange = (value) => {
       selectedYear.value = moment(value).format('YYYY');
-      props.model[props.field] = selectedYear.value;
+
       isOpen.value = false;
     };
 
@@ -167,7 +150,7 @@ export const YearPicker = defineComponent({
         value={selectedYear.value}
         mode="year"
         format="YYYY"
-        allowClear={true}
+        allowClear={false}
         onChange={(date) => {
           if (!date) clearSelectedYear(); // 当值被清除时，将 selectedYear 设置为 null
         }}

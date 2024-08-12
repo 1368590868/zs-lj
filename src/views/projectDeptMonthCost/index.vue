@@ -26,6 +26,9 @@
       fieldMapToTime: [['submitDate', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD']],
     },
     beforeFetch: (info) => {
+      if (!info.year) {
+        info.year = new Date().getFullYear() + '';
+      }
       searchParams.value = info;
       return info;
     },
@@ -36,7 +39,7 @@
     clickToRowSelect: false,
     pagination: {
       current: 1,
-      pageSize: 10,
+      pageSize: 100,
     },
   });
   const searchParams = ref({});
