@@ -151,7 +151,7 @@
           info.professionType = professionTypes[1];
           info.businessType = professionTypes[0];
         } else {
-          info.professionType = professionTypes[0];
+          info.businessType = professionTypes[0];
         }
         Reflect.deleteProperty(info, 'professionTypes');
       }
