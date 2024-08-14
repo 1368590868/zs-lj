@@ -88,6 +88,15 @@ export const controlStatusOptions = {
   8: '结束审核中',
 };
 
+// GS状态 0未开工 1执行 2冻结 3销户在途 4销户
+export const gsStatusOptions = {
+  0: '未开工',
+  1: '执行',
+  2: '冻结',
+  3: '销户在途',
+  4: '销户',
+};
+
 // 预警颜色
 export const warningColorEnum = {
   0: '#27CB0D',

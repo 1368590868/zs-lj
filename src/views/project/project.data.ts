@@ -3,6 +3,7 @@ import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import {
   controlStatusOptions,
+  gsStatusOptions,
   professionTypeEnum,
   professionTypeTree,
   projectProgressOptions,
@@ -41,6 +42,14 @@ export const columns: BasicColumn[] = [
     dataIndex: 'controlStatus',
     width: 100,
     slots: { customRender: 'controlStatus' },
+  },
+  {
+    title: '项目状态',
+    dataIndex: 'gsStatus',
+    width: 100,
+    customRender: ({ record }) => {
+      return h('span', gsStatusOptions[record.gsStatus]);
+    },
   },
   {
     title: '预警状态',
@@ -230,27 +239,31 @@ export const searchFormSchema: FormSchema[] = [
     colProps: { span: 6 },
   },
   {
-    field: 'planStartDateStart',
-    label: '计划开始时间起',
-    component: 'DatePicker',
+    field: 'gsStatus',
+    label: '项目状态',
+    component: 'Select',
+    componentProps: {
+      options: Object.keys(gsStatusOptions).map((key) => ({
+        label: gsStatusOptions[key],
+        value: key,
+      })),
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
+    },
     colProps: { span: 6 },
   },
   {
-    field: 'planStartDateEnd',
-    label: '计划开始时间起',
-    component: 'DatePicker',
+    field: 'gcplanStartDate',
+    label: '工程计划开始时间',
+    component: 'RangePicker',
     colProps: { span: 6 },
   },
   {
-    field: 'planEndDateStart',
-    label: '计划结束时间起',
-    component: 'DatePicker',
-    colProps: { span: 6 },
-  },
-  {
-    field: 'planEndDateEnd',
-    label: '计划结束时间止',
-    component: 'DatePicker',
+    field: 'gcplanEndDate',
+    label: '工程计划结束时间止',
+    component: 'RangePicker',
     colProps: { span: 6 },
   },
 ];

@@ -122,7 +122,6 @@
   import { useUserStore } from '/@/store/modules/user';
   import { debounce } from 'lodash-es';
   import { useProjectControl } from '/@/store/modules/projectControl';
-  import moment from 'moment';
 
   const router = useRouter();
   const projectStore = useProjectControl();
@@ -135,11 +134,15 @@
     api: pageApi,
     columns,
     formConfig: {
-      labelWidth: 120,
+      labelWidth: 140,
       colon: true,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
-      fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
+      fieldMapToTime: [
+        ['date', ['startDate', 'endDate'], 'YYYY-MM-DD'],
+        ['gcplanStartDate', ['planStartDateStart', 'planStartDateEnd'], 'YYYY-MM-DD'],
+        ['gcplanEndDate', ['planEndDateStart', 'planEndDateEnd'], 'YYYY-MM-DD'],
+      ],
     },
     beforeFetch: (info) => {
       if (info?.professionTypes) {
@@ -151,19 +154,6 @@
           info.professionType = professionTypes[0];
         }
         Reflect.deleteProperty(info, 'professionTypes');
-      }
-
-      if (info?.planStartDateStart) {
-        info.planStartDateStart = moment(info.planStartDateStart).format('YYYY-MM-DD');
-      }
-      if (info?.planStartDateEnd) {
-        info.planStartDateEnd = moment(info.planStartDateEnd).format('YYYY-MM-DD');
-      }
-      if (info?.planEndDateStart) {
-        info.planEndDateStart = moment(info.planEndDateStart).format('YYYY-MM-DD');
-      }
-      if (info?.planEndDateEnd) {
-        info.planEndDateEnd = moment(info.planEndDateEnd).format('YYYY-MM-DD');
       }
 
       const searchs = {
