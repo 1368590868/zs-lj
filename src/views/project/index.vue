@@ -141,6 +141,16 @@
       fieldMapToTime: [['date', ['startDate', 'endDate'], 'YYYY-MM-DD']],
     },
     beforeFetch: (info) => {
+      if (info?.professionTypes) {
+        const professionTypes = info.professionTypes.split('-');
+        if (professionTypes.length === 2) {
+          info.professionType = professionTypes[1];
+          info.businessType = professionTypes[0];
+        } else {
+          info.professionType = professionTypes[0];
+        }
+        Reflect.deleteProperty(info, 'professionTypes');
+      }
       const searchs = {
         ...info,
         projectOwnerNumber:

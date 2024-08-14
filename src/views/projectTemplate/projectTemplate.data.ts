@@ -2,7 +2,7 @@ import { BasicColumn } from '/@/components/Table';
 import { FormSchema } from '/@/components/Table';
 import { h } from 'vue';
 import { InputNumber, Tag } from 'ant-design-vue';
-import { professionTypeEnum, projectTypeEnum } from '/@/enums/projectControl';
+import { professionTypeEnum, professionTypeTree, projectTypeEnum } from '/@/enums/projectControl';
 import InputNumbers from './component/InputNumbers';
 
 export const columns: BasicColumn[] = [
@@ -64,14 +64,19 @@ export const searchFormSchema: FormSchema[] = [
   },
   {
     label: '专业类型',
-    field: 'professionType',
-    component: 'Select',
+    field: 'professionTypes',
+    component: 'TreeSelect',
     componentProps: {
+      treeData: professionTypeTree(true),
+      replaceFields: {
+        label: 'label',
+        key: 'value',
+        value: 'value',
+      },
       showSearch: true,
       filterOption: (input: string, option: any) => {
-        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       },
-      options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
       getPopupContainer: () => document.body,
     },
     colProps: { span: 6 },
@@ -94,15 +99,19 @@ export const formSchema: FormSchema[] = [
   },
   {
     label: '专业类型',
-    field: 'professionType',
-    component: 'Select',
-    required: true,
+    field: 'professionTypes',
+    component: 'TreeSelect',
     componentProps: {
+      treeData: professionTypeTree(true),
+      replaceFields: {
+        label: 'label',
+        key: 'value',
+        value: 'value',
+      },
       showSearch: true,
       filterOption: (input: string, option: any) => {
-        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       },
-      options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
       getPopupContainer: () => document.body,
     },
   },

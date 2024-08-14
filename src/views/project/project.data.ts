@@ -4,6 +4,7 @@ import { h } from 'vue';
 import {
   controlStatusOptions,
   professionTypeEnum,
+  professionTypeTree,
   projectProgressOptions,
   projectTypeEnum,
   provinceEnum,
@@ -195,16 +196,29 @@ export const searchFormSchema: FormSchema[] = [
   { field: 'projectOwnerName', label: '项目负责人', component: 'Input', colProps: { span: 6 } },
   {
     label: '业务类型',
-    field: 'professionType',
-    component: 'Select',
+    field: 'professionTypes',
+    component: 'TreeSelect',
     componentProps: {
+      treeData: professionTypeTree(false),
+      replaceFields: {
+        label: 'label',
+        key: 'value',
+        value: 'value',
+      },
       showSearch: true,
       filterOption: (input: string, option: any) => {
-        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+        return option.title.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       },
-      options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
       getPopupContainer: () => document.body,
     },
+    // componentProps: {
+    //   showSearch: true,
+    //   filterOption: (input: string, option: any) => {
+    //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    //   },
+    //   options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
+    //   getPopupContainer: () => document.body,
+    // },
     colProps: { span: 6 },
   },
   {

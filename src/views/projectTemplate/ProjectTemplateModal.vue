@@ -79,6 +79,17 @@
         return;
       }
 
+      if (values?.professionTypes) {
+        const professionTypes = values.professionTypes.split('-');
+        if (professionTypes.length === 2) {
+          values.professionType = professionTypes[1];
+          values.businessType = professionTypes[0];
+        } else {
+          values.professionType = professionTypes[0];
+        }
+        Reflect.deleteProperty(values, 'professionTypes');
+      }
+
       await addApi({
         createByName: getUserInfo.value.nickName,
         ...values,
