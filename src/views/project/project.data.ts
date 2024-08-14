@@ -211,14 +211,6 @@ export const searchFormSchema: FormSchema[] = [
       },
       getPopupContainer: () => document.body,
     },
-    // componentProps: {
-    //   showSearch: true,
-    //   filterOption: (input: string, option: any) => {
-    //     return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    //   },
-    //   options: Object.values(professionTypeEnum).map((val) => ({ label: val, value: val })),
-    //   getPopupContainer: () => document.body,
-    // },
     colProps: { span: 6 },
   },
   {
@@ -235,6 +227,30 @@ export const searchFormSchema: FormSchema[] = [
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       },
     },
+    colProps: { span: 6 },
+  },
+  {
+    field: 'planStartDateStart',
+    label: '计划开始时间起',
+    component: 'DatePicker',
+    colProps: { span: 6 },
+  },
+  {
+    field: 'planStartDateEnd',
+    label: '计划开始时间起',
+    component: 'DatePicker',
+    colProps: { span: 6 },
+  },
+  {
+    field: 'planEndDateStart',
+    label: '计划结束时间起',
+    component: 'DatePicker',
+    colProps: { span: 6 },
+  },
+  {
+    field: 'planEndDateEnd',
+    label: '计划结束时间止',
+    component: 'DatePicker',
     colProps: { span: 6 },
   },
 ];

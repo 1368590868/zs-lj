@@ -122,6 +122,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { debounce } from 'lodash-es';
   import { useProjectControl } from '/@/store/modules/projectControl';
+  import moment from 'moment';
 
   const router = useRouter();
   const projectStore = useProjectControl();
@@ -151,6 +152,20 @@
         }
         Reflect.deleteProperty(info, 'professionTypes');
       }
+
+      if (info?.planStartDateStart) {
+        info.planStartDateStart = moment(info.planStartDateStart).format('YYYY-MM-DD');
+      }
+      if (info?.planStartDateEnd) {
+        info.planStartDateEnd = moment(info.planStartDateEnd).format('YYYY-MM-DD');
+      }
+      if (info?.planEndDateStart) {
+        info.planEndDateStart = moment(info.planEndDateStart).format('YYYY-MM-DD');
+      }
+      if (info?.planEndDateEnd) {
+        info.planEndDateEnd = moment(info.planEndDateEnd).format('YYYY-MM-DD');
+      }
+
       const searchs = {
         ...info,
         projectOwnerNumber:
