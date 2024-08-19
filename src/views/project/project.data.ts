@@ -208,6 +208,7 @@ export const searchFormSchema: FormSchema[] = [
     field: 'professionTypes',
     component: 'TreeSelect',
     componentProps: {
+      dropdownStyle: { maxHeight: '300px' },
       treeData: professionTypeTree(false),
       replaceFields: {
         label: 'label',
