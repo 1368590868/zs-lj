@@ -30,7 +30,7 @@ export const columns: BasicColumn[] = [
   {
     title: '审核金额(元)',
     dataIndex: 'monthBudget',
-    width: 120,
+    width: 130,
     align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.monthBudget);
@@ -45,7 +45,7 @@ export const columns: BasicColumn[] = [
   {
     title: '人力成本填写（元）',
     dataIndex: 'personCost',
-    width: 150,
+    width: 170,
     align: 'right',
     slots: { customRender: 'personCost' },
   },

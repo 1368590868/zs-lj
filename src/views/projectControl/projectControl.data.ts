@@ -65,7 +65,7 @@ export const columns: BasicColumn[] = [
   {
     title: '工程计划时间',
     dataIndex: 'planDate',
-    width: 200,
+    width: 210,
     slots: { customRender: 'planDate' },
   },
 

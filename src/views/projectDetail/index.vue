@@ -149,7 +149,7 @@
       field: 'date',
       label: '工程计划时间',
       render: (_, data) => {
-        return `${data.planStartDate} - ${data.planEndDate}`;
+        return `${data.planStartDate} 至 ${data.planEndDate}`;
       },
     },
     {

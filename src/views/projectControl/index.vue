@@ -10,9 +10,7 @@
           :type="
             [+ControlStatusEnum.NONE, +ControlStatusEnum.END].includes(record.controlStatus)
               ? 'secondary'
-              : [+ControlStatusEnum.END_AUDIT, +ControlStatusEnum.DELAY_AUDIT].includes(
-                  record.controlStatus,
-                )
+              : [+ControlStatusEnum.END_AUDIT].includes(record.controlStatus)
               ? 'danger'
               : undefined
           "
@@ -20,7 +18,7 @@
         >
       </template>
       <template #planDate="{ record }">
-        {{ record.planStartDate }} - {{ record.planEndDate }}
+        {{ record.planStartDate }} 至 {{ record.planEndDate }}
       </template>
       <template #projectProgress="{ record }"> {{ projectProgress(record) }} </template>
       <!-- action slot -->

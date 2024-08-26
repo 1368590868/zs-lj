@@ -1,17 +1,17 @@
 <template>
-  <PageWrapper title="产值信息">
+  <PageWrapper
+    :title="`产值信息 - ${store.getReportData.yearNum}年${store.getReportData.monthNum}月`"
+  >
     <Card title="项目基础信息">
       <BasicForm @register="register" @submit="handleSubmit" />
       <Description @register="registerRatio" class="mt-4" />
       <Description @register="registerDesc" />
 
       <Description @register="registerOutput" class="mt-4" />
-      <Description @register="registerOutputDesc" />
 
       <Description @register="registerSelfOutput" class="mt-4" />
 
       <Description @register="registerCost" class="mt-4" />
-      <Description @register="registerCostDesc" />
     </Card>
   </PageWrapper>
 </template>
@@ -21,22 +21,16 @@
   import { Card, message } from 'ant-design-vue';
   import { BasicForm, useForm } from '/@/components/Form';
   import { PageWrapper } from '/@/components/Page';
-  import {
-    costOptions,
-    formSchema,
-    outputValueOptions,
-    ratioOptions,
-  } from './projectReportDetail.data';
+  import { formSchema } from './projectReportDetail.data';
   import { useProjectControl } from '/@/store/modules/projectControl';
   import { useRouter } from 'vue-router';
   import { editApi } from '/@/api/projectOutputValue/projectOutputValue';
-  import { DescItem, Description, useDescription } from '/@/components/Description';
+  import { Description, useDescription } from '/@/components/Description';
   import { useCurrencyFormatter } from '/@/hooks/web/useCurrencyFormatter';
   import { ActionType } from '../projectOutputReport/projectOutputReport.data';
 
   const store = useProjectControl();
   const router = useRouter();
-  const month = (router.currentRoute.value.query?.month as string) ?? '';
   const baseColProps = {
     sm: 12,
     xl: 8,
@@ -72,19 +66,6 @@
     },
   });
 
-  type RenderFunction = (val: any) => string;
-
-  const coverSchema = (data: Recordable, renderFn: RenderFunction): DescItem[] => {
-    return Object.keys(data).map((key, i) => {
-      return {
-        field: key,
-        label: data[key],
-        show: () => +month > i,
-        render: (val) => renderFn(val),
-      };
-    });
-  };
-
   const [registerRatio] = useDescription({
     colon: true,
     title: '完成比例数据查看',
@@ -107,13 +88,31 @@
   });
   const [registerDesc] = useDescription({
     colon: true,
-    title: '本年月度完成比例',
-    column: { xxl: 6, md: 4 },
+    title: '当月信息',
+    column: {
+      sm: 2,
+      xl: 3,
+      xxl: 4,
+    },
     data: store.getReportData,
     class: 'pl-[50px]',
-    schema: coverSchema(ratioOptions, (val) => {
-      return val ? `${val}%` : '';
-    }),
+    schema: [
+      {
+        field: 'monthRatio',
+        label: '当月完成比例',
+        render: (val) => (val ? `${val}%` : ''),
+      },
+      {
+        field: 'monthCost',
+        label: '当月完成产值(元)',
+        render: (val) => (val ? useCurrencyFormatter(val) : 0),
+      },
+      {
+        field: 'monthBud',
+        label: '当月生产成本(元)',
+        render: (val) => (val ? useCurrencyFormatter(val) : '0'),
+      },
+    ],
     bordered: false,
   });
 
@@ -140,17 +139,6 @@
         render: (val) => useCurrencyFormatter(val),
       },
     ],
-  });
-  const [registerOutputDesc] = useDescription({
-    colon: true,
-    title: '本年月度完成产值',
-    column: { xxl: 6, md: 4 },
-    data: store.getReportData,
-    class: 'pl-[50px]',
-    schema: coverSchema(outputValueOptions, (val) => {
-      return val ? useCurrencyFormatter(val) : '';
-    }),
-    bordered: false,
   });
 
   const [registerSelfOutput] = useDescription({
@@ -217,17 +205,6 @@
       },
     ],
   });
-  const [registerCostDesc] = useDescription({
-    colon: true,
-    title: '本年月度生成成本(元)',
-    column: { xxl: 6, md: 4 },
-    data: store.getReportData,
-    class: 'pl-[50px]',
-    schema: coverSchema(costOptions, (val) => {
-      return val ? useCurrencyFormatter(val) : '';
-    }),
-    bordered: false,
-  });
 
   onMounted(() => {
     if (Object.keys(store.getReportData).length === 0) {
@@ -243,9 +220,6 @@
         ...x['componentProps'],
         disabled: router.currentRoute.value.query.type === ActionType.VIEW,
       };
-      if (x.field === 'monthRatio') {
-        x['label'] = `${+month}月完成比例`;
-      }
       return x;
     });
     updateSchema(newSchema);

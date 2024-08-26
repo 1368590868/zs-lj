@@ -39,9 +39,9 @@ export const columns: BasicColumn[] = [
   {
     title: '阶段时间',
     dataIndex: 'phaseStartDate',
-    width: 200,
+    width: 210,
     customRender: ({ record }) => {
-      return h('span', record.phaseStartDate + ' ~ ' + record.phaseEndDate);
+      return h('span', record.phaseStartDate + ' 至 ' + record.phaseEndDate);
     },
   },
 

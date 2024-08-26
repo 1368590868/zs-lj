@@ -40,14 +40,17 @@
         </template>
         <template #date="{ model, field }">
           <Space>
-            <DatePicker :value="model[field]?.[0]" disabled />
+            <DatePicker
+              :value="model[field]?.[0]"
+              @change="(date) => beforeDateChange(date, model)"
+              :disabled="+field.match(/\d+/)[0] !== 0"
+            />
             -
             <!-- 当选择日期后，重新组装日期格式-->
             <DatePicker
               :allowClear="false"
               v-if="fieldArr.length !== +field.match(/\d+/)[0] + 1"
               v-model:value="model[field + 'date']"
-              :disabledDate="disabledDate"
               :disabled="
                 isDefer !== '1'
                   ? fieldArr.length === +field.match(/\d+/)[0] + 1
@@ -59,7 +62,11 @@
               "
               @change="(date) => dateChange(date, model, field)"
             />
-            <DatePicker v-else v-model:value="dataSource['planEndDate']" disabled />
+            <DatePicker
+              v-else
+              :value="model[field]?.[1]"
+              @change="(date) => afterDateChange(date, model)"
+            />
           </Space>
         </template>
       </BasicForm>
@@ -127,7 +134,11 @@
 
   const tipsArr = [
     {
-      title: h(TypographyText, { type: 'danger' }, '1.管控时间为工程计划开始时间到结束时间；'),
+      title: h(
+        TypographyText,
+        { type: 'danger' },
+        '1.管控时间起止范围自定义设置，设置完成后不允许修改；',
+      ),
       key: '1',
     },
     {
@@ -142,9 +153,17 @@
       title: h(
         TypographyText,
         { type: 'danger' },
-        '3.只需要设置里程碑标题和阶段时间，请谨慎设置，提交后不允许修改。',
+        '3.只需要设置里程碑标题和阶段时间，请谨慎设置，提交后不允许修改；',
       ),
       key: '3',
+    },
+    {
+      title: h(
+        TypographyText,
+        { type: 'danger' },
+        '4.管控最后一阶段的结束时间到后会自动延期直到申请管控结束为止。',
+      ),
+      key: '4',
     },
   ];
   const tipsColumns = [{ title: 'tips', dataIndex: 'title', key: 'tips' }];
@@ -184,6 +203,22 @@
     model[field + 'date'] = moment(date).format('YYYY-MM-DD');
   };
 
+  const beforeDateChange = (date, model) => {
+    // 当第一项修改时，修改后的值重新赋值给第一项
+    model[`field[0].date`] = [
+      date ? moment(date).format('YYYY-MM-DD') : null,
+      model[`field[0].date`][1],
+    ];
+  };
+
+  const afterDateChange = (date, model) => {
+    // 当第一项修改时，修改后的值重新赋值给第一项
+    model[`field[${fieldArr.value.length - 1}].date`] = [
+      model[`field[${fieldArr.value.length - 1}].date`][0],
+      date ? moment(date).format('YYYY-MM-DD') : null,
+    ];
+  };
+
   const dataSource = reactive({ planStartDate: '1997-01-01', planEndDate: '2099-12-01' });
   const [register] = useDescription({
     title: '项目基础信息',
@@ -191,18 +226,6 @@
     data: dataSource,
     schema,
   });
-
-  const disabledDate = (current) => {
-    const startDate = new Date(
-      isDefer.value === '1'
-        ? moment().add(1, 'days').format('YYYY-MM-DD')
-        : dataSource['planStartDate'],
-    );
-    const endDate = new Date(isDefer.value === '1' ? '2099-12-01' : dataSource['planEndDate']);
-
-    // Disable dates outside the specified range
-    return current && (current < startDate || current > endDate);
-  };
 
   const phaseTitleDisabled = (field: string) => {
     // 找出最后一个阶段索引
@@ -301,8 +324,8 @@
       setFieldsValue({
         [`field[${i}].phaseBudgetRatio`]: x['phaseBudgetRatio'],
         [`field[${i}].date`]: [
-          i === 0 ? dataSource['planStartDate'] : null,
-          i === field.length - 1 ? dataSource['planEndDate'] : null,
+          i === 0 ? dataSource['planStartDate'] ?? null : null,
+          i === field.length - 1 ? dataSource['planEndDate'] ?? null : null,
         ],
         [`field[${i}].phaseBudgetCost`]: _.round(
           dataSource['generalBudget'] * (x.phaseBudgetRatio / 100),

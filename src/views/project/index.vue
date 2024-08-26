@@ -11,9 +11,7 @@
           :type="
             [+ControlStatusEnum.NONE, +ControlStatusEnum.END].includes(record.controlStatus)
               ? 'secondary'
-              : [+ControlStatusEnum.END_AUDIT, +ControlStatusEnum.DELAY_AUDIT].includes(
-                  record.controlStatus,
-                )
+              : [+ControlStatusEnum.END_AUDIT].includes(record.controlStatus)
               ? 'danger'
               : undefined
           "
@@ -53,33 +51,38 @@
                 record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED &&
                 projectStore.hasRoles(ProjectRoleEnum.CBFZR),
             },
-            {
-              label: '延期配置',
-              onClick: handleDeferConfig.bind(null, record),
-              ifShow:
-                record.controlStatus === +ControlStatusEnum.DELAY_CONFIGURATION &&
-                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
-            },
+            // {
+            //   label: '延期配置',
+            //   onClick: handleDeferConfig.bind(null, record),
+            //   ifShow:
+            //     record.controlStatus === +ControlStatusEnum.DELAY_CONFIGURATION &&
+            //     projectStore.hasRoles(ProjectRoleEnum.XMFZR),
+            // },
             {
               label: '结束管控',
               popConfirm: {
-                title: '是否确认操作',
+                // @ts-ignore
+                title: h('div', { class: 'flex flex-col  justify-center items-center' }, [
+                  h('div', { class: 'mb-3 self-start' }, '提示'),
+                  h('div', { class: 'flex-1 ' }, '结束管控后不可恢复再次管控!'),
+                  h('div', { class: 'flex-1 ' }, '结束管控的项目不再进行产值统计!'),
+                ]),
                 confirm: handleControlBtn.bind(null, record, true),
               },
               ifShow:
-                record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED &&
+                record.controlStatus === +ControlStatusEnum.CONTROL &&
                 projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
-            {
-              label: '延期管控',
-              popConfirm: {
-                title: '是否确认操作',
-                confirm: handleControlBtn.bind(null, record, false),
-              },
-              ifShow:
-                record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED &&
-                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
-            },
+            // {
+            //   label: '延期管控',
+            //   popConfirm: {
+            //     title: '是否确认操作',
+            //     confirm: handleControlBtn.bind(null, record, false),
+            //   },
+            //   ifShow:
+            //     record.controlStatus === +ControlStatusEnum.TO_BE_COMPLETED &&
+            //     projectStore.hasRoles(ProjectRoleEnum.XMFZR),
+            // },
             {
               label: '详情',
               onClick: handleDetail.bind(null, record),
@@ -110,7 +113,7 @@
   } from '/@/api/project/project';
   import ProjectModal from './projectModal.vue';
   import { columns, searchFormSchema } from './project.data';
-  import { computed, onMounted, ref, unref } from 'vue';
+  import { computed, onMounted, ref, unref, h } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useRouter } from 'vue-router';
   import {
@@ -193,7 +196,7 @@
   // 创建项目管理
   const handleCreate = (record) => {
     const { planStartDate, planEndDate } = record;
-    const planDate = `${planStartDate} - ${planEndDate}`;
+    const planDate = `${planStartDate ?? '-'} 至 ${planEndDate ?? '-'}`;
 
     openModal(true, {
       ...record,

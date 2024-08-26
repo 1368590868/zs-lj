@@ -44,18 +44,14 @@
   import { useRouter } from 'vue-router';
   import { exportApi, pageApi } from '/@/api/projectOutputValue/projectOutputValue';
   import { useProjectControl } from '/@/store/modules/projectControl';
+  import moment from 'moment';
 
   const router = useRouter();
-  const currentMonth = (router.currentRoute.value.query?.outputValueMonth as string) ?? '';
-  const month = currentMonth.split('-')[1];
   const searchParams = ref({});
   const projectStore = useProjectControl();
   const [registerTable, { reload }] = useTable({
     api: pageApi,
-    columns: columns(+month),
-    searchInfo: {
-      outputValueMonth: currentMonth,
-    },
+    columns: columns,
     formConfig: {
       labelWidth: 120,
       colon: true,
@@ -63,6 +59,9 @@
       autoSubmitOnEnter: true,
     },
     beforeFetch: (info) => {
+      if (info.outputValueMonth) {
+        info.outputValueMonth = `${moment(info.outputValueMonth).format('YYYY-MM')}-26`;
+      }
       const searchs = {
         ...info,
         projectOwnerNumber:
@@ -121,7 +120,7 @@
   const store = useProjectControl();
   const onDetail = (record, type) => {
     store.setReportData(record);
-    router.push({ name: 'ProjectReportDetail', query: { type, month } });
+    router.push({ name: 'ProjectReportDetail', query: { type } });
   };
   // 导出
   const exportExcel = async () => {
@@ -150,3 +149,8 @@
     });
   };
 </script>
+<style lang="less" scoped>
+  :global(.ant-calendar-picker) {
+    width: 100%;
+  }
+</style>

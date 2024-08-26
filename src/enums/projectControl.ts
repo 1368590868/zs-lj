@@ -13,15 +13,15 @@ export enum ControlStatusEnum {
   /**管控中 */
   CONTROL = '2',
   /**待完成 */
-  TO_BE_COMPLETED = '3',
+  // TO_BE_COMPLETED = '3',
   /**延期配置 */
-  DELAY_CONFIGURATION = '4',
+  // DELAY_CONFIGURATION = '4',
   /**已结束 */
   END = '5',
   /**待判定 */
   TO_BE_JUDGED = '6',
   /**延期审核中 */
-  DELAY_AUDIT = '7',
+  // DELAY_AUDIT = '7',
   /**结束审核中 */
   END_AUDIT = '8',
 }
@@ -71,7 +71,7 @@ export const warningStatusOptions = {
 export const projectProgressOptions = {
   0: '进行中',
   1: '已完成',
-  2: '待完成',
+  2: '延期中',
   3: '待开始',
 };
 
@@ -80,11 +80,11 @@ export const controlStatusOptions = {
   0: '不管控',
   1: '未配置',
   2: '管控中',
-  3: '待完成',
-  4: '延期配置',
+  // 3: '待完成',
+  // 4: '延期配置',
   5: '已结束',
   6: '待判定',
-  7: '延期审核中',
+  // 7: '延期审核中',
   8: '结束审核中',
 };
 
