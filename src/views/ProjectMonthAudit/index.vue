@@ -116,6 +116,10 @@
       searchParams.value = searchs;
       return searchs;
     },
+    indexColumnProps: {
+      title: '序号',
+      width: 100,
+    },
     immediate: false,
     useSearchForm: true,
     showTableSetting: true,

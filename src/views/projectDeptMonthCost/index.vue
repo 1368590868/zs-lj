@@ -32,6 +32,10 @@
       searchParams.value = info;
       return info;
     },
+    indexColumnProps: {
+      title: '序号',
+      width: 100,
+    },
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,

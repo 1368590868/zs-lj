@@ -90,7 +90,8 @@
     bordered: true,
     showIndexColumn: true,
     indexColumnProps: {
-      fixed: 'left',
+      title: '序号',
+      width: 100,
     },
     pagination: {
       current: 1,

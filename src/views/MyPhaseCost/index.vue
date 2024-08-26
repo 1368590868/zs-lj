@@ -62,6 +62,10 @@
         ['costSubmitTime', ['submitStartDate', 'submitEndDate'], 'YYYY-MM-DD'],
       ],
     },
+    indexColumnProps: {
+      title: '序号',
+      width: 100,
+    },
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,
