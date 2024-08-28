@@ -221,6 +221,17 @@ export const columns: BasicColumn[] = [
             : '0.00';
         },
       },
+      {
+        title: '产值剩余值',
+        dataIndex: 'surplusOutputValue',
+        width: 200,
+        align: 'right',
+        customRender: ({ record }) => {
+          return typeof record.surplusOutputValue === 'number'
+            ? useCurrencyFormatter(record.surplusOutputValue)
+            : '0.00';
+        },
+      },
     ],
   },
   {
