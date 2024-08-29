@@ -75,14 +75,14 @@
     class: 'pl-[50px]',
     schema: [
       {
-        field: 'lastYearRatio',
-        label: '截止上年底完成比例',
-        render: (val) => `${val}%`,
+        field: 'lastMonthRatio',
+        label: '截止到上月完成百分比',
+        render: (val) => `${val ?? 0}%`,
       },
       {
         field: 'allYearRatio',
-        label: '截止目前累计完成比例',
-        render: (val) => `${val}%`,
+        label: '截止到本月完成的百分比',
+        render: (val) => `${val ?? 0}%`,
       },
     ],
   });
@@ -99,18 +99,18 @@
     schema: [
       {
         field: 'monthRatio',
-        label: '当月完成比例',
-        render: (val) => (val ? `${val}%` : ''),
+        label: '本月内完成百分比',
+        render: (val) => (val ? `${val}%` : '0%'),
       },
       {
         field: 'monthCost',
-        label: '当月完成产值(元)',
-        render: (val) => (val ? useCurrencyFormatter(val) : 0),
+        label: '本月内完成产值(元)',
+        render: (val) => (val ? useCurrencyFormatter(val) : '0.00'),
       },
       {
-        field: 'monthBud',
-        label: '当月生产成本(元)',
-        render: (val) => (val ? useCurrencyFormatter(val) : '0'),
+        field: 'monthBudget',
+        label: '本月内发生成本(元)',
+        render: (val) => (val ? useCurrencyFormatter(val) : '0.00'),
       },
     ],
     bordered: false,
@@ -129,14 +129,14 @@
     data: store.getReportData,
     schema: [
       {
-        field: 'lastYearOutputValue',
-        label: '截止上年底完成产值(元)',
-        render: (val) => useCurrencyFormatter(val),
+        field: 'lastMonthOutputValue',
+        label: '截止到上月完成产值(元)',
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
       {
         field: 'allYearOutputValue',
-        label: '截止目前累计完成产值(元)',
-        render: (val) => useCurrencyFormatter(val),
+        label: '截止目前完成的产值总额(元)',
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
     ],
   });
@@ -155,28 +155,28 @@
     schema: [
       {
         field: 'thisMonthValueMonth',
-        label: '当月完成产值(元)',
-        render: (val) => useCurrencyFormatter(val),
+        label: '本月内完成产值(元)',
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
       {
         field: 'allValueMonth',
-        label: '累计完成产值(元)',
-        render: (val) => useCurrencyFormatter(val),
+        label: '累计实际完成产值(元)',
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
       {
         field: 'selfSurplusOutputValue',
         label: '剩余产值(元)',
-        render: (val) => useCurrencyFormatter(val),
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
       {
         field: 'selfPredictMonthOutputValue',
         label: '未来3个月预测产值(元)',
-        render: (val) => useCurrencyFormatter(val),
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
       {
         field: 'selfPredictYearOutputValue',
         label: '全年预测产值(元)',
-        render: (val) => useCurrencyFormatter(val),
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
     ],
   });
@@ -194,14 +194,14 @@
     data: store.getReportData,
     schema: [
       {
-        field: 'lastYearOutputValue',
-        label: '截止上年底生产成本(元)',
-        render: (val) => useCurrencyFormatter(val),
+        field: 'lastMonthCost',
+        label: '截止到上月已发生成本(元)',
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
       {
-        field: 'allYearOutputValue',
-        label: '截止目前生产成本(元)',
-        render: (val) => useCurrencyFormatter(val),
+        field: 'allYearCost',
+        label: '截止到本月已发生成本总额(元)',
+        render: (val) => useCurrencyFormatter(val) || '0.00',
       },
     ],
   });
