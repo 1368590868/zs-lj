@@ -52,16 +52,17 @@
     resetButtonOptions: {
       text: '返回',
       // @ts-ignore
-      class: 'w-[150px]',
+      class: 'w-[150px] mr-4',
+      type: 'primary',
     },
     submitButtonOptions: {
       text: '提交',
       // @ts-ignore
-      class: 'w-[150px]',
+      class: 'w-[150px] ml-4',
     },
     showSubmitButton: router.currentRoute.value.query.type !== ActionType.VIEW,
     resetFunc: () => {
-      router.go(-1);
+      router.push({ name: 'ProjectOutputReport' });
       return Promise.resolve();
     },
   });
@@ -208,7 +209,7 @@
 
   onMounted(() => {
     if (Object.keys(store.getReportData).length === 0) {
-      router.go(-1);
+      router.push({ name: 'ProjectOutputReport' });
     } else {
       setFieldsValue({
         ...store.getReportData,
@@ -230,7 +231,7 @@
     });
     message.success('修改成功');
     setTimeout(() => {
-      router.go(-1);
+      router.push({ name: 'ProjectOutputReport' });
     }, 500);
   };
 </script>
