@@ -26,7 +26,7 @@
             {
               label: '查看',
               onClick: onDetail.bind(null, record, ActionType.VIEW),
-              ifShow: record.updateBy === '0',
+              ifShow: projectStore.hasRoles(ProjectRoleEnum.XMFZR) ? record.updateBy === '0' : true,
             },
           ]"
         />
