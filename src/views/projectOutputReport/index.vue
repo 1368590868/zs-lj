@@ -13,7 +13,7 @@
               ifShow:
                 record.updateBy === '1' &&
                 (projectStore.hasRoles(ProjectRoleEnum.YYB) ||
-                  projectStore.hasRoles(ProjectRoleEnum.CBFZR)),
+                  projectStore.hasRoles(ProjectRoleEnum.XMFZR)),
             },
             {
               label: '填写',
@@ -21,7 +21,7 @@
               ifShow:
                 record.updateBy === '2' &&
                 (projectStore.hasRoles(ProjectRoleEnum.YYB) ||
-                  projectStore.hasRoles(ProjectRoleEnum.CBFZR)),
+                  projectStore.hasRoles(ProjectRoleEnum.XMFZR)),
             },
             {
               label: '查看',
