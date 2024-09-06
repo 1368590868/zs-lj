@@ -184,7 +184,7 @@
 
   const [registerCost] = useDescription({
     colon: true,
-    title: '项目直接生成成本数据查看',
+    title: '项目直接生产成本数据查看',
     column: {
       sm: 2,
       xl: 3,
