@@ -311,7 +311,8 @@ export const ProjectLeaderStatus = defineComponent({
             onInput={handleInput}
           />
         </BasicModal>
-        {props.text === 0 && projectStore.hasRoles(ProjectRoleEnum.XMFZR) ? (
+        {props.text === 0 &&
+        props.record.projectOwnerNumber.split(',').includes(projectStore.userCode) ? (
           <Space>
             <Button type="link" onClick={() => onOpenModal(1)}>
               通过
