@@ -55,6 +55,7 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       showSearch: true,
+      mode: 'multiple',
       filterOption: (input: string, option: any) => {
         return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
       },

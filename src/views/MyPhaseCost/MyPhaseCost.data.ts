@@ -137,6 +137,10 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     labelWidth: 200,
     componentProps: {
+      showSearch: true,
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       options: Object.keys(myCostStatusEnum).map((key) => ({
         label: myCostStatusEnum[key],
         value: key,
@@ -158,6 +162,11 @@ export const searchFormSchema: FormSchema[] = [
     label: '成本科目',
     component: 'Select',
     componentProps: {
+      showSearch: true,
+      mode: 'multiple',
+      filterOption: (input: string, option: any) => {
+        return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+      },
       options: Object.values(costSubjectEnum).map((val) => ({
         label: val,
         value: val,
