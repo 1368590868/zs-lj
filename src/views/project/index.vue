@@ -59,6 +59,20 @@
             //     projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             // },
             {
+              label: '恢复管控',
+              popConfirm: {
+                // @ts-ignore
+                title: h('div', { class: 'flex flex-col  justify-center items-center' }, [
+                  h('div', { class: 'mb-3 self-start' }, '提示'),
+                  h('div', { class: 'flex-1 ' }, '恢复管控后项目负责人可直接进行里程碑配置'),
+                ]),
+                confirm: handleControl.bind(null, record, true),
+              },
+              ifShow:
+                record.controlStatus === +ControlStatusEnum.NONE &&
+                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
+            },
+            {
               label: '结束管控',
               popConfirm: {
                 // @ts-ignore
