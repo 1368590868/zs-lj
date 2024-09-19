@@ -45,7 +45,7 @@
               label: '管控',
               popConfirm: {
                 title: '是否确认操作',
-                confirm: handleControl.bind(null, record, true),
+                confirm: handleControl.bind(null, record, true, 1),
               },
               ifShow:
                 record.controlStatus === +ControlStatusEnum.TO_BE_JUDGED &&
@@ -64,9 +64,9 @@
                 // @ts-ignore
                 title: h('div', { class: 'flex flex-col  justify-center items-center' }, [
                   h('div', { class: 'mb-3 self-start' }, '提示'),
-                  h('div', { class: 'flex-1 ' }, '恢复管控后项目负责人可直接进行里程碑配置'),
+                  h('div', { class: 'flex-1 ' }, '恢复管控后请重新判定是否需要管控！'),
                 ]),
-                confirm: handleControl.bind(null, record, true),
+                confirm: handleControl.bind(null, record, true, 6),
               },
               ifShow:
                 record.controlStatus === +ControlStatusEnum.NONE &&
@@ -261,9 +261,9 @@
     }
   });
   // 管控项目确认
-  const handleControl = async (record: Recordable, isControl: Boolean) => {
+  const handleControl = async (record: Recordable, isControl: Boolean, controlStatus) => {
     const { id } = record;
-    await controlDetermineApi({ id, determineStatus: isControl ? 1 : 0 });
+    await controlDetermineApi({ id, determineStatus: isControl ? controlStatus : 0 });
 
     // 填写管控意见
     if (!isControl) {
@@ -271,6 +271,13 @@
         id: record.id,
         remark: `${store.getUserInfo.nickName} : 无需管控`,
       });
+    } else {
+      if (controlStatus === 6) {
+        await editApi({
+          id: record.id,
+          remark: '',
+        });
+      }
     }
     message.success('操作成功');
     reload();
