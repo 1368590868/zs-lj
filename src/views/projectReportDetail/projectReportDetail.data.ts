@@ -164,6 +164,55 @@ export const formSchema: FormSchema[] = [
       span: 8,
     },
   },
+  // 空field占位布局
+  {
+    field: 'divider-money',
+    component: 'Divider',
+    label: '金额',
+    colProps: {
+      sm: 24,
+      xl: 24,
+      xxl: 24,
+      md: 24,
+    },
+  },
+  {
+    field: '_monthRatio',
+    component: 'Input',
+    label: '当月金额',
+    colProps: {
+      span: 6,
+    },
+    render: ({ model, field }) => {
+      return useCurrencyFormatter((model['contractPrice'] / 100) * model['monthRatio']) + '元';
+    },
+  },
+  {
+    field: '_predictMonthRatio',
+    component: 'Input',
+    label: '未来3个月金额',
+    colProps: {
+      span: 6,
+    },
+    render: ({ model, field }) => {
+      return (
+        useCurrencyFormatter((model['contractPrice'] / 100) * model['predictMonthRatio']) + '元'
+      );
+    },
+  },
+  {
+    field: '_predictYearRatio',
+    component: 'Input',
+    label: '全年金额',
+    colProps: {
+      span: 6,
+    },
+    render: ({ model, field }) => {
+      return (
+        useCurrencyFormatter((model['contractPrice'] / 100) * model['predictYearRatio']) + '元'
+      );
+    },
+  },
   {
     field: 'divider-info',
     component: 'Divider',
