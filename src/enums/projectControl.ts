@@ -246,6 +246,7 @@ export const professionTypeTree = (disabled) => [
     children: [
       { label: '现场检测', value: '试验检测-现场检测' },
       { label: '驻地检查', value: '试验检测-驻地检查' },
+      { label: '室内建材', value: '试验检测-室内建材' },
     ],
   },
   {

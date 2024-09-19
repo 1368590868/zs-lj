@@ -130,6 +130,16 @@
   // 导出
   const exportExcel = async () => {
     try {
+      if (searchParams.value['warningStatus'] !== undefined) {
+        searchParams.value['warningStatus'] = [searchParams.value['warningStatus']];
+      }
+      if (searchParams.value['controlStatus'] !== undefined) {
+        searchParams.value['controlStatus'] = [searchParams.value['controlStatus']];
+      }
+      if (searchParams.value['projectProgress'] !== undefined) {
+        searchParams.value['projectProgress'] = [searchParams.value['projectProgress']];
+      }
+
       const res = await projectStatisticsExportApi(searchParams.value);
       const blob = new Blob([res.data], { type: 'application/vnd.ms-excel' });
       const url = window.URL.createObjectURL(blob);

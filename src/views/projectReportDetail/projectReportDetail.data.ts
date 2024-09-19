@@ -168,7 +168,7 @@ export const formSchema: FormSchema[] = [
   {
     field: 'divider-money',
     component: 'Divider',
-    label: '金额',
+    label: '产值金额',
     colProps: {
       sm: 24,
       xl: 24,
@@ -179,7 +179,7 @@ export const formSchema: FormSchema[] = [
   {
     field: '_monthRatio',
     component: 'Input',
-    label: '当月金额',
+    label: '当月',
     colProps: {
       span: 6,
     },
@@ -190,7 +190,7 @@ export const formSchema: FormSchema[] = [
   {
     field: '_predictMonthRatio',
     component: 'Input',
-    label: '未来3个月金额',
+    label: '预计未来3个月',
     colProps: {
       span: 6,
     },
@@ -203,7 +203,7 @@ export const formSchema: FormSchema[] = [
   {
     field: '_predictYearRatio',
     component: 'Input',
-    label: '全年金额',
+    label: '预计全年',
     colProps: {
       span: 6,
     },

@@ -7,7 +7,7 @@
     @ok="handleSubmit"
   >
     <div>
-      <BasicForm @register="registerFrom">
+      <BasicForm @register="registerFrom" v-if="getVisible">
         <template #phaseBudgetRatio="{ model, field }">
           <InputNumbers
             v-if="getVisible"
@@ -45,14 +45,19 @@
   const isUpdate = ref(true);
   const emits = defineEmits(['success', 'register']);
   const [register, { setModalProps, closeModal, getVisible }] = useModalInner((data) => {
+    isUpdate.value = data.isUpdate;
     resetFields();
     setModalProps({ confirmLoading: false });
     if (unref(isUpdate)) {
+      console.log(`${data.record.projectType}-${data.record.professionType}`);
       setFieldsValue({
         ...data.record,
+        phaseBudgetRatio: JSON.parse(data.record.phaseBudgetRatio),
+        professionTypes: `${data.record.businessType}-${data.record.professionType}`,
       });
+    } else {
+      setFieldsValue({});
     }
-    setFieldsValue({});
   });
 
   const userStore = useUserStore();
@@ -90,12 +95,21 @@
         Reflect.deleteProperty(values, 'professionTypes');
       }
 
-      await addApi({
-        createByName: getUserInfo.value.nickName,
-        ...values,
-        phaseBudgetRatio: JSON.stringify(values.phaseBudgetRatio),
-      });
-      message.success('添加成功');
+      if (isUpdate.value) {
+        await editApi({
+          createByName: getUserInfo.value.nickName,
+          ...values,
+          phaseBudgetRatio: JSON.stringify(values.phaseBudgetRatio),
+        });
+        message.success('编辑成功');
+      } else {
+        await addApi({
+          createByName: getUserInfo.value.nickName,
+          ...values,
+          phaseBudgetRatio: JSON.stringify(values.phaseBudgetRatio),
+        });
+        message.success('添加成功');
+      }
 
       closeModal();
       resetFields();
