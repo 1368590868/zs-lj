@@ -36,6 +36,19 @@
     rowSelection: {
       type: 'radio',
     },
+    beforeFetch: (info) => {
+      if (info?.professionTypes) {
+        const professionTypes = info.professionTypes.split('-');
+        if (professionTypes.length === 2) {
+          info.professionType = professionTypes[1];
+          info.businessType = professionTypes[0];
+        } else {
+          info.businessType = professionTypes[0];
+        }
+        Reflect.deleteProperty(info, 'professionTypes');
+      }
+      return info;
+    },
     useSearchForm: true,
     showTableSetting: true,
     bordered: true,

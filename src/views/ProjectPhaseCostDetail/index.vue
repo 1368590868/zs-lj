@@ -93,7 +93,9 @@
         type: 'checkbox',
         getCheckboxProps: (record) => {
           return {
-            disabled: record.projectLeaderStatus !== 0,
+            disabled:
+              record.projectLeaderStatus !== 0 ||
+              !record.projectOwnerNumber.split(',').includes(projectStore.userCode),
           };
         },
       },

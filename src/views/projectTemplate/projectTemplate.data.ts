@@ -69,7 +69,7 @@ export const searchFormSchema: FormSchema[] = [
     component: 'TreeSelect',
     componentProps: {
       dropdownStyle: { maxHeight: '300px' },
-      treeData: professionTypeTree(true),
+      treeData: professionTypeTree(false),
       replaceFields: {
         label: 'label',
         key: 'value',
@@ -129,7 +129,7 @@ export const formSchema: FormSchema[] = [
     field: 'phaseNum',
     component: 'Select',
     required: true,
-    componentProps: {
+    componentProps: ({ formModel }) => ({
       options: Array.from({ length: 18 }, (v, k) => k + 3).map((val) => ({
         label: val,
         value: val,
@@ -140,7 +140,10 @@ export const formSchema: FormSchema[] = [
       },
       defaultValue: 3,
       getPopupContainer: () => document.body,
-    },
+      onChange: (val) => {
+        formModel.phaseBudgetRatio = [];
+      },
+    }),
   },
   {
     label: '阶段预算比例',
