@@ -11,7 +11,7 @@
           </div>
         </div>
       </template>
-      <BasicForm @register="registerGroup">
+      <BasicForm class="config-wrap" @register="registerGroup">
         <template #phaseTitle="{ model, field }">
           <!-- 需要使用field判断 -->
           <Input
@@ -456,6 +456,10 @@
     align-items: center;
     justify-content: center;
   }
+  .config-wrap :global(.ant-input-suffix) {
+    display: none !important;
+  }
+
   .ant-table-striped :global(.table-striped) td {
     background-color: #fafafa;
   }
