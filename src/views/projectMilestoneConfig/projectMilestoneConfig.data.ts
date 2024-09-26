@@ -61,7 +61,7 @@ export const formSchema = (count): FormSchema[] => {
         disabled: true,
       },
       suffix: '元',
-      labelWidth: 170,
+      labelWidth: 105,
       colProps: { span: 6 },
     },
     // 用于form赋值

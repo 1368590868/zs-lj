@@ -451,6 +451,11 @@
   :global(.ant-input-number) {
     width: 100%;
   }
+  :global(.ant-form-item) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
   .ant-table-striped :global(.table-striped) td {
     background-color: #fafafa;
   }

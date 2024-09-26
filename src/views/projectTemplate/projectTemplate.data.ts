@@ -108,6 +108,7 @@ export const formSchema: FormSchema[] = [
   {
     label: '专业类型',
     field: 'professionTypes',
+    required: true,
     component: 'TreeSelect',
     componentProps: {
       dropdownStyle: { maxHeight: '300px' },

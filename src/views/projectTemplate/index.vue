@@ -10,7 +10,7 @@
             {
               label: '编辑',
               onClick: handleEditModal.bind(null, record, true),
-              ifShow: index !== 0,
+              ifShow: record.professionType !== '通用',
             },
             {
               label: '删除',
@@ -18,7 +18,7 @@
                 title: '是否确认操作',
                 confirm: handleDelete.bind(null, record),
               },
-              ifShow: index !== 0,
+              ifShow: record.professionType !== '通用',
             },
           ]"
         />
