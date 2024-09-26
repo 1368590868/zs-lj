@@ -69,12 +69,12 @@
             projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
             projectStore.hasRoles(ProjectRoleEnum.YYB)
               ? null
-              : projectStore.userCode,
+              : projectStore.userCode || '没有查询到用户信息',
           costOwnerNumber:
             projectStore.hasRoles(ProjectRoleEnum.LEADER) ||
             projectStore.hasRoles(ProjectRoleEnum.YYB)
               ? null
-              : projectStore.userCode,
+              : projectStore.userCode || '没有查询到用户信息',
         };
         searchParams.value = searchs;
         return searchs;
