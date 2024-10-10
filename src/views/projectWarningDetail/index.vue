@@ -13,7 +13,7 @@
     <Card title="数据总览">
       <Row>
         <Col :span="12">执行中项目预警情况</Col>
-        <Col :span="12">执行中项目阶段预警情况</Col>
+        <Col :span="12">执行中项目里程碑阶段预警情况</Col>
       </Row>
       <Row>
         <Col :span="12">

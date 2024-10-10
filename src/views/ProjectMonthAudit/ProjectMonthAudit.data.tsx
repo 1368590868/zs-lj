@@ -14,19 +14,29 @@ import { monthAuditApi } from '/@/api/projectMonthAudit/projectMonthAudit';
 const projectStore = useProjectControl();
 export const columns: BasicColumn[] = [
   {
+    title: '项目名称',
+    dataIndex: 'projectName',
+    width: 420,
+    fixed: 'left',
+    customRender: ({ record }) => {
+      return h(
+        EllipsisText,
+        { tooltip: record.projectName, maxWidth: 400 },
+        () => record.projectName,
+      );
+    },
+  },
+  {
+    title: '项目负责人',
+    dataIndex: 'projectOwnerName',
+    width: 130,
+  },
+  {
     title: '成本月度',
     dataIndex: 'auditMonthDate',
     width: 100,
   },
-  {
-    title: '项目名称',
-    dataIndex: 'projectName',
-    width: 220,
-    fixed: 'left',
-    customRender: ({ record }) => {
-      return h(EllipsisText, { tooltip: record.projectName }, () => record.projectName);
-    },
-  },
+
   {
     title: '审核金额(元)',
     dataIndex: 'monthBudget',
