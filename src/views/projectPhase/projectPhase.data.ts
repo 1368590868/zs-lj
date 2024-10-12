@@ -22,15 +22,23 @@ export const columns: BasicColumn[] = [
     width: 160,
   },
   {
+    title: '项目负责人',
+    dataIndex: 'projectOwnerName',
+    width: 150,
+    customRender: ({ record }) => {
+      return h(
+        EllipsisText,
+        { tooltip: record.projectOwnerName, maxWidth: '140px' },
+        () => record.projectOwnerName,
+      );
+    },
+  },
+  {
     title: '归属部门',
     dataIndex: 'deptName',
     width: 200,
   },
-  {
-    title: '项目负责人',
-    dataIndex: 'projectOwnerName',
-    width: 100,
-  },
+
   {
     title: '里程碑名称',
     dataIndex: 'phaseTitle',

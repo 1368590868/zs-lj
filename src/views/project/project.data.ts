@@ -32,6 +32,16 @@ export const columns: BasicColumn[] = [
     width: 160,
   },
   {
+    title: '项目负责人',
+    dataIndex: 'projectOwnerName',
+    width: 120,
+  },
+  {
+    title: '成本负责人',
+    dataIndex: 'costOwnerName',
+    width: 120,
+  },
+  {
     title: '工程进度',
     dataIndex: 'projectProgress',
     width: 100,
@@ -91,7 +101,7 @@ export const columns: BasicColumn[] = [
   {
     title: '总预算（元）',
     dataIndex: 'generalBudget',
-    width: 120,
+    width: 150,
     align: 'right',
     customRender: ({ record }) => {
       return useCurrencyFormatter(record.generalBudget);
@@ -106,16 +116,6 @@ export const columns: BasicColumn[] = [
     title: '工程计划结束时间',
     dataIndex: 'planEndDate',
     width: 150,
-  },
-  {
-    title: '项目负责人',
-    dataIndex: 'projectOwnerName',
-    width: 200,
-  },
-  {
-    title: '成本负责人',
-    dataIndex: 'costOwnerName',
-    width: 100,
   },
 
   {
