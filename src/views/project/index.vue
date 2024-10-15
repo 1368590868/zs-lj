@@ -84,8 +84,9 @@
                 confirm: handleControlBtn.bind(null, record, true),
               },
               ifShow:
-                record.controlStatus === +ControlStatusEnum.CONTROL &&
-                projectStore.hasRoles(ProjectRoleEnum.XMFZR),
+                [+ControlStatusEnum.CONTROL, +ControlStatusEnum.UNCONFIGURED].includes(
+                  record.controlStatus,
+                ) && projectStore.hasRoles(ProjectRoleEnum.XMFZR),
             },
             // {
             //   label: '延期管控',
@@ -153,6 +154,7 @@
     formConfig: {
       labelWidth: 140,
       colon: true,
+      autoAdvancedLine: 4,
       schemas: searchFormSchema,
       autoSubmitOnEnter: true,
       fieldMapToTime: [
