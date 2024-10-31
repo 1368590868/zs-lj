@@ -167,6 +167,7 @@
       name: 'ProjectReviewCostDetail',
       query: {
         projectId: record.projectId,
+        monthAuditId: record.id,
       },
     });
   };

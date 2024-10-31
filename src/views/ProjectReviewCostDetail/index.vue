@@ -41,6 +41,7 @@
     api: pageApi,
     searchInfo: {
       projectId: router.currentRoute.value.query.projectId,
+      monthAuditId: router.currentRoute.value.query.monthAuditId,
     },
     beforeFetch: (info) => {
       if (!info.minMonthBudget) {
